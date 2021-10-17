@@ -1,6 +1,6 @@
 package com.dkatalist.atm.domain;
 
-public interface ATM {
+public interface ATMApplication {
     int getId();
     Session getSession();
     InputHandler getInputHandler();  

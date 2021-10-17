@@ -2,14 +2,14 @@ package com.dkatalist.atm.domain;
 
 import java.util.Optional;
 
-public class ATMDefault implements ATM {
+public class ATMApplicationDefault implements ATMApplication {
     public int id;
     private AccountDb db;
     private Session currentSession;
     private InputHandler inputHandler;
     private ObjectFactory<CreateSessionArg,Session> sessionFactory;
 
-    public ATMDefault(int id, AccountDb db, ObjectFactory<CreateSessionArg,Session> sessionFactory, ObjectFactory<ATM, InputHandler> inputhandlerFactory){
+    public ATMApplicationDefault(int id, AccountDb db, ObjectFactory<CreateSessionArg,Session> sessionFactory, ObjectFactory<ATMApplication, InputHandler> inputhandlerFactory){
         Guard.validateArgNotNull(db, "db");
         Guard.validateArgNotNull(sessionFactory, "sessionFactory");
         Guard.validateArgNotNull(inputhandlerFactory, "inputhandlerFactory");

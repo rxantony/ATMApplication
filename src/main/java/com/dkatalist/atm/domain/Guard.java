@@ -16,7 +16,7 @@ public class Guard {
 
     public static void validateArgMustBeGreaterThan(int arg, int reff, String argName) {
         if (arg <= reff)
-            throw new IllegalArgumentException(String.format("%s amount must be greater than %d", argName, reff));
+            throw new IllegalArgumentException(String.format("%s must be greater than %d", argName, reff));
     }
     
 }
