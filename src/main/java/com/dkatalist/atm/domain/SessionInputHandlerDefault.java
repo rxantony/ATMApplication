@@ -35,7 +35,7 @@ public class SessionInputHandlerDefault extends AbstractInputHandler {
     }
 
     @Override
-    protected void handle(String command, String[] args) {
+    protected void handle(String command, String... args) {
         try{
             if(command.equals("deposit")){
                 int amount =  Integer.parseInt(args[0]);

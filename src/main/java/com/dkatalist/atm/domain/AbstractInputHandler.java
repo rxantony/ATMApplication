@@ -23,5 +23,5 @@ public abstract class AbstractInputHandler {
 
     protected abstract void showError(Exception ex);
     protected abstract void showCommandInfo(String command);
-    protected abstract void handle(String command, String[] args);
+    protected abstract void handle(String command, String... args);
 }

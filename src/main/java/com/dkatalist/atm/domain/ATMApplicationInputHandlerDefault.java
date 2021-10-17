@@ -32,7 +32,7 @@ public class ATMApplicationInputHandlerDefault extends AbstractInputHandler {
     }
 
     @Override
-    protected void handle(String command, String[] args) {
+    protected void handle(String command, String... args) {
         try{
             if(command.equals("login")){
                 String userName =  args[0];
