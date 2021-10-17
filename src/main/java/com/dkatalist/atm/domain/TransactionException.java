@@ -1,19 +1,19 @@
 package com.dkatalist.atm.domain;
 
-public class TransactionException extends SessionBaseException {
-    private final String errorCode;
+public class TransactionException extends ATMBaseException {
+    private final String accountName;
     private final String transaction;
     private final int amount;
 
     protected TransactionException(String errorCode,  String accountName, String transaction, int amount, String message) {
-        super(accountName, message);
-        this.errorCode = errorCode;
+        super(errorCode, message);
+        this.accountName = accountName;
         this.transaction = transaction;
         this.amount = amount;
     }
 
-    public String getErrorCode() {
-        return errorCode;
+    public String getAccountName() {
+        return accountName;
     }
 
     public int getAmount() {

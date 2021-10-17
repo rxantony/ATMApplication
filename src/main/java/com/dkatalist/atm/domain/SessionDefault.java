@@ -4,12 +4,13 @@ import java.util.Optional;
 import java.util.function.Consumer;
 
 public class SessionDefault implements Session {
+    private boolean sessionClosed;
     private AccountDb db;
     private String accountName;
     private Consumer<String> eventLogout;
-    private InputHandler inputHandler;
+    private AbstractInputHandler inputHandler;
 
-    public SessionDefault(String accountName, AccountDb db, Consumer<String> eventLogout, ObjectFactory<Session, InputHandler> inputhandlerFactory) {
+    public SessionDefault(String accountName, AccountDb db, Consumer<String> eventLogout, ObjectFactory<Session, AbstractInputHandler> inputhandlerFactory) {
         Guard.validateArgNotNullOrEmpty(accountName, "accountName");
         Guard.validateArgNotNull(db, "db");
         Guard.validateArgNotNull(eventLogout, "eventLogout");
@@ -21,17 +22,33 @@ public class SessionDefault implements Session {
     }
 
     @Override
-    public void logout() {
-        eventLogout.accept(accountName);
+    public String getAccountName() {
+        validateSessionExpired();
+        return accountName;
     }
     
     @Override
     public Account getAccount() throws AccountNotExistsException {
-        return getAccount(accountName);
+        validateSessionExpired();
+        try {
+            return getAccount(accountName);
+        }
+        catch(AccountNotExistsException ex){
+            logout();
+            sessionClosed = true;
+            throw ex;
+        }
+    }
+
+    @Override
+    public void logout() {
+        validateSessionExpired();
+        eventLogout.accept(accountName);
     }
 
     @Override
     public void deposit(int amount) throws AccountNotExistsException {
+        validateSessionExpired();
         Guard.validateArgMustBeGreaterThan(amount, 0, "amount");
         Account acc = getAccount();
         acc.setSaving(acc.getSaving() + amount);
@@ -39,7 +56,8 @@ public class SessionDefault implements Session {
     }
 
     @Override
-    public void withdraw(int amount) throws SessionBaseException {
+    public void withdraw(int amount) throws ATMBaseException {
+        validateSessionExpired();
         Guard.validateArgMustBeGreaterThan(amount, 0, "amount");
         Account acc = getAccount();
         if (amount > acc.getSaving())
@@ -49,7 +67,8 @@ public class SessionDefault implements Session {
     }
 
     @Override
-    public void transfer(String toAccountName, int amount) throws SessionBaseException {
+    public void transfer(String toAccountName, int amount) throws ATMBaseException {
+        validateSessionExpired();
         Guard.validateArgNotNullOrEmpty(toAccountName, "toAccountName");
         Guard.validateArgMustBeGreaterThan(amount, 0, "amount");
         if(toAccountName.equals(accountName))
@@ -65,15 +84,21 @@ public class SessionDefault implements Session {
 
     }
 
+    @Override
+    public AbstractInputHandler getInputHandler() {
+        validateSessionExpired();
+        return inputHandler;
+    }
+
+    private void validateSessionExpired(){
+        if(sessionClosed)
+            throw new SessionExpiredException();
+    }
+
     private Account getAccount(String accountName) throws AccountNotExistsException {
         Optional<Account> oacc = db.get(accountName);
         if (!oacc.isPresent())
             throw AccountNotExistsException.create(accountName);
         return oacc.get();
-    }
-
-    @Override
-    public InputHandler getInputHandler() {
-        return inputHandler;
     }
 }

@@ -1,9 +1,8 @@
 package com.dkatalist.atm.domain;
 
 import java.util.HashMap;
-import java.util.stream.Stream;
 
-public class ATMApplicationInputHandlerDefault implements InputHandler {
+public class ATMApplicationInputHandlerDefault extends AbstractInputHandler {
     private ATMApplication atm;
     private MediaOutput output;
     private HashMap<String, String> commandInfos = new HashMap<>();
@@ -23,14 +22,20 @@ public class ATMApplicationInputHandlerDefault implements InputHandler {
     }
 
     @Override
-    public void handle(String input) throws AccountNotExistsException{
-		String[] args = input.replaceAll("\\s+", " ").split(" ");
-		String command = args.length == 0 ? "help" : args[0];
-        String[] params = Stream.of(args).skip(1).map(String::toLowerCase).toArray(size -> new String[size]);
+    protected void showError(Exception ex) {
+        output.writeln(ex.getMessage());
+    }
 
+    @Override
+    protected void showCommandInfo(String command) {
+        output.writeln(commandInfos.get(command));
+    }
+
+    @Override
+    protected void handle(String command, String[] args) {
         try{
             if(command.equals("login")){
-                String userName =  params[0];
+                String userName =  args[0];
                 atm.login(userName);
                 Session session = atm.getSession();
                 output.writeln(String.format("Hello, %s!",userName));
@@ -42,11 +47,8 @@ public class ATMApplicationInputHandlerDefault implements InputHandler {
                 commandInfos.values().forEach(c-> output.writeln(c));
             }
         }
-        catch(IndexOutOfBoundsException ex){
-            output.writeln(commandInfos.get(command));
-        }
-        catch(IllegalArgumentException ex){
-            output.writeln(ex.getMessage());
+        catch(AccountNotExistsException ex){
+            showError(ex);
         }
     }
     

@@ -6,10 +6,10 @@ public class ATMApplicationDefault implements ATMApplication {
     public int id;
     private AccountDb db;
     private Session currentSession;
-    private InputHandler inputHandler;
+    private AbstractInputHandler inputHandler;
     private ObjectFactory<CreateSessionArg,Session> sessionFactory;
 
-    public ATMApplicationDefault(int id, AccountDb db, ObjectFactory<CreateSessionArg,Session> sessionFactory, ObjectFactory<ATMApplication, InputHandler> inputhandlerFactory){
+    public ATMApplicationDefault(int id, AccountDb db, ObjectFactory<CreateSessionArg,Session> sessionFactory, ObjectFactory<ATMApplication, AbstractInputHandler> inputhandlerFactory){
         Guard.validateArgNotNull(db, "db");
         Guard.validateArgNotNull(sessionFactory, "sessionFactory");
         Guard.validateArgNotNull(inputhandlerFactory, "inputhandlerFactory");
@@ -31,7 +31,7 @@ public class ATMApplicationDefault implements ATMApplication {
         return currentSession;
     }
 
-    public InputHandler getInputHandler(){
+    public AbstractInputHandler getInputHandler(){
         return inputHandler;
     }
 

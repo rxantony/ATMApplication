@@ -13,22 +13,20 @@ public class ATMMachine {
 
     public void run(){
         while(true){
-            String line = input.readLine().trim();
-            if(line.equals("exit")) 
-                return;
             Session session = app.getSession();
-            try{
-                InputHandler handler;
-                if(session == null)
-                    handler = app.getInputHandler();
-                else 
-                    handler = session.getInputHandler();
-                handler.handle(line);
+            String line = input.readLine().trim();
+            if(line.equals("exit")){
+                session.logout();
+                return;
             }
-            catch(AccountNotExistsException ex){
-                if(session != null)
-                    session.logout();
-            }
+
+            AbstractInputHandler handler;
+
+            if(session == null)
+                handler = app.getInputHandler();
+            else 
+                handler = session.getInputHandler();
+            handler.handle(line);
         }
     }
 }

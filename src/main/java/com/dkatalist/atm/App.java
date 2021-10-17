@@ -10,6 +10,7 @@ import com.dkatalist.atm.domain.ATMApplication;
 import com.dkatalist.atm.domain.ATMApplicationDefault;
 import com.dkatalist.atm.domain.ATMApplicationInputHandlerDefault;
 import com.dkatalist.atm.domain.ATMMachine;
+import com.dkatalist.atm.domain.AbstractInputHandler;
 import com.dkatalist.atm.domain.AccountDb;
 import com.dkatalist.atm.domain.AccountMemoryDb;
 import com.dkatalist.atm.domain.CreateSessionArg;
@@ -51,11 +52,10 @@ public class App {
         };
 
         AccountDb db = new AccountMemoryDb();
-
-        ObjectFactory<CreateSessionArg, Session> sessionFactory = arg -> new SessionDefault(arg.accountName, db, arg.eventLogout, session-> new SessionInputHandlerDefault(session, inputWriter));
-
-        ATMApplication app = new ATMApplicationDefault(1, db, sessionFactory,  a-> new ATMApplicationInputHandlerDefault(a, inputWriter));
-
+        ObjectFactory<ATMApplication, AbstractInputHandler> atmInputHandlerFactory = a-> new ATMApplicationInputHandlerDefault(a, inputWriter);
+        ObjectFactory<Session, AbstractInputHandler> sessionInputHandlerFactory =  session-> new SessionInputHandlerDefault(session, inputWriter);
+        ObjectFactory<CreateSessionArg, Session> sessionFactory = arg -> new SessionDefault(arg.accountName, db, arg.eventLogout, sessionInputHandlerFactory);
+        ATMApplication app = new ATMApplicationDefault(1, db, sessionFactory, atmInputHandlerFactory)  ;
         ATMMachine machine = new ATMMachine(app, inputReader);
         machine.run();
     }
