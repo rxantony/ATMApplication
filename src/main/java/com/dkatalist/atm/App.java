@@ -38,7 +38,7 @@ public final class App {
             reader = System.console() != null ? new BufferedReader(System.console().reader())
                     : new BufferedReader(new InputStreamReader(System.in));
         } else {
-            String path = Thread.currentThread().getContextClassLoader().getResource("input_file.txt").getFile();
+            String path = Thread.currentThread().getContextClassLoader().getResource(args[0]).getFile();
             reader = new BufferedReader(new FileReader(path));
         }
 
