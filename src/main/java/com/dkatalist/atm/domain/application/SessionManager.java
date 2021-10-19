@@ -1,7 +1,6 @@
-package com.dkatalist.atm.domain;
+package com.dkatalist.atm.domain.application;
 
-public interface ATMApplication {
-    int getId();
+public interface SessionManager {
     Session getSession();
     void login(String userName);
     AbstractInputHandler getInputHandler();  

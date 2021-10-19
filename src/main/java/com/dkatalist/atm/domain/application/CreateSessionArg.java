@@ -1,6 +1,8 @@
-package com.dkatalist.atm.domain;
+package com.dkatalist.atm.domain.application;
 
 import java.util.function.Consumer;
+
+import com.dkatalist.atm.domain.common.Guard;
 
 public class CreateSessionArg {
     public final String accountName;

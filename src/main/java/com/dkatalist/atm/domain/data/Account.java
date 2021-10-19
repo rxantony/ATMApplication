@@ -1,26 +1,24 @@
-package com.dkatalist.atm.domain;
+package com.dkatalist.atm.domain.data;
+
+import com.dkatalist.atm.domain.common.Guard;
 
 public class Account {
     private String name;
     private int saving;
 
     public Account(String name, int savingAmount){
-        setName(name);
+        Guard.validateArgNotNullOrEmpty(name, "name");
+        this.name = name;
         setSaving(savingAmount);
     }
 
     public Account(Account account){
-        this.name = account.getName();
-        this.saving = account.getSaving();
+        this.name = account.name;
+        this.saving = account.saving;
     }
 
     public String getName(){
         return name;
-    }
-
-    public void setName(String name){
-        Guard.validateArgNotNullOrEmpty(name, "name");
-        this.name = name;
     }
 
     public int getSaving(){

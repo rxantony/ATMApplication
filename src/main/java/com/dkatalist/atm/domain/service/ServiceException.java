@@ -1,9 +1,9 @@
-package com.dkatalist.atm.domain;
+package com.dkatalist.atm.domain.service;
 
-public class ATMBaseException extends Exception {
+public class ServiceException extends Exception {
     private final String errorCode;
 
-    protected ATMBaseException(String errorCode, String message) {
+    protected ServiceException(String errorCode, String message) {
         super(message);
         this.errorCode = errorCode;
     }

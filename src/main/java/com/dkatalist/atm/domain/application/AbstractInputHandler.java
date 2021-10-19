@@ -1,4 +1,4 @@
-package com.dkatalist.atm.domain;
+package com.dkatalist.atm.domain.application;
 
 import java.util.stream.Stream;
 
@@ -8,8 +8,8 @@ public abstract class AbstractInputHandler {
 
     public void handle(String input){
         String[] args = input.replaceAll("\\s+", " ").split(" ");
-		String command = args.length == 0 ? "" : args[0];
-        String[] params = Stream.of(args).skip(1).map(String::toLowerCase).toArray(size -> new String[size]);
+		String command = args.length == 0 ? "" : args[0].toLowerCase();
+        String[] params = Stream.of(args).skip(1).toArray(size -> new String[size]);
         try {
             handle(command, params);
         }

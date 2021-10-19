@@ -1,29 +1,30 @@
-package com.dkatalist.atm.domain;
+package com.dkatalist.atm.domain.application;
+
+import com.dkatalist.atm.domain.common.Guard;
 
 public class ATMMachine {
-    private ATMApplication app;
+    private SessionManager manager;
     private MediaInput input;
 
-    public ATMMachine (ATMApplication app, MediaInput input){
-        Guard.validateArgNotNull(app, "app");
+    public ATMMachine (SessionManager manager, MediaInput input){
+        Guard.validateArgNotNull(manager, "manager");
         Guard.validateArgNotNull(input, "input");
-        this.app = app;
+        this.manager = manager;
         this.input = input;
     }
 
     public void run(){
         while(true){
-            Session session = app.getSession();
+            Session session = manager.getSession();
             String line = input.readLine().trim();
             if(line.equals("exit")){
-                session.logout();
+                if(session != null)
+                    session.logout();
                 return;
             }
-
             AbstractInputHandler handler;
-
             if(session == null)
-                handler = app.getInputHandler();
+                handler = manager.getInputHandler();
             else 
                 handler = session.getInputHandler();
             handler.handle(line);

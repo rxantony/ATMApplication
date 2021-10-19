@@ -1,6 +1,8 @@
-package com.dkatalist.atm.domain;
+package com.dkatalist.atm.domain.service;
 
-public class TransactionException extends ATMBaseException {
+import com.dkatalist.atm.domain.common.Guard;
+
+public class TransactionException extends ServiceException {
     private final String accountName;
     private final String transaction;
     private final int amount;

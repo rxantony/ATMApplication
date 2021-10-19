@@ -1,4 +1,6 @@
-package com.dkatalist.atm.domain;
+package com.dkatalist.atm.domain.service;
+
+import com.dkatalist.atm.domain.common.Guard;
 
 public class TransferException extends TransactionException {
     private final String recipient;
