@@ -46,7 +46,7 @@ public final class App {
         MediaInput inputMedia = () -> {
             try {
                 String line = ireader.readLine();
-                if(args.length != 0) 
+                if (args.length != 0)
                     System.out.println("=== input: " + line + " ===");
                 return line == null ? "exit" : line;
             } catch (IOException ex) {
@@ -54,22 +54,23 @@ public final class App {
             }
         };
 
-        try{
+        try {
             runATMMachine(inputMedia);
-        }
-        finally{
+        } finally {
             reader.close();
         }
     }
 
-    private static void runATMMachine(MediaInput inputReader){
+    private static void runATMMachine(MediaInput inputReader) {
 
-        PrintWriter writer = System.console() != null ? System.console().writer() : new PrintWriter(new BufferedOutputStream(System.out));
-        MediaOutput inputWriter = new MediaOutput(){
+        PrintWriter writer = System.console() != null ? System.console().writer()
+                : new PrintWriter(new BufferedOutputStream(System.out));
+        MediaOutput inputWriter = new MediaOutput() {
             @Override
             public void writeln(String str) {
                 writer.println(str);
             }
+
             @Override
             public void writef(String format, Object... args) {
                 writer.printf(format, args);
