@@ -95,11 +95,11 @@ public final class App {
         ObjectFactory<CreateSessionArg, Session> sessionFactory = arg -> new SessionDefault(arg.accountName, atmService,
                 accService, arg.eventLogout, sessionInputHandlerFactory);
 
-        // 4. create application
-        SessionManager app = new SessionManagerDefault(accService, sessionFactory, atmInputHandlerFactory);
+        // 4. create session manager
+        SessionManager sessionMgr = new SessionManagerDefault(accService, sessionFactory, atmInputHandlerFactory);
 
         // 5. create atm machine
-        ATMMachine machine = new ATMMachine(app, inputReader);
+        ATMMachine machine = new ATMMachine(sessionMgr, inputReader);
 
         // 6. run atm machine
         machine.run();
