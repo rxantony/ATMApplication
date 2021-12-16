@@ -16,7 +16,7 @@ public class AccountNotExistsException extends ServiceException {
 
     public static AccountNotExistsException create(String accountName) {
         Guard.validateArgNotNullOrEmpty(accountName, "accountName");
-        String message = String.format("account with name %s is not exists", accountName);
+        var message = String.format("account with name %s is not exists", accountName);
         return new AccountNotExistsException(accountName, message);
     }
 

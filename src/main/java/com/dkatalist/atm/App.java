@@ -6,102 +6,65 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.net.URISyntaxException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
-import com.dkatalist.atm.domain.application.ATMMachine;
-import com.dkatalist.atm.domain.application.AbstractInputHandler;
-import com.dkatalist.atm.domain.application.CreateSessionArg;
 import com.dkatalist.atm.domain.application.MediaInput;
 import com.dkatalist.atm.domain.application.MediaOutput;
-import com.dkatalist.atm.domain.application.Session;
-import com.dkatalist.atm.domain.application.SessionDefault;
-import com.dkatalist.atm.domain.application.SessionInputHandlerDefault;
-import com.dkatalist.atm.domain.application.SessionManager;
-import com.dkatalist.atm.domain.application.SessionManagerDefault;
-import com.dkatalist.atm.domain.application.SessionManagerInputHandlerDefault;
-import com.dkatalist.atm.domain.common.ObjectFactory;
-import com.dkatalist.atm.domain.data.AccountDb;
-import com.dkatalist.atm.domain.data.OweDb;
-import com.dkatalist.atm.domain.service.ATMService;
-import com.dkatalist.atm.domain.service.ATMServiceDefault;
-import com.dkatalist.atm.domain.service.AccountService;
-import com.dkatalist.atm.domain.service.AccountServiceDefault;
 
 public final class App {
     private App() {
     }
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] xargs) throws IOException, URISyntaxException {
+        final var args = new String[] { "input_file.txt" };
 
-        // 1. create machine media
+        // 1. create machine media outpu
         BufferedReader reader = null;
         if (args.length == 0) {
             reader = System.console() != null ? new BufferedReader(System.console().reader())
                     : new BufferedReader(new InputStreamReader(System.in));
         } else {
-            String path = Thread.currentThread().getContextClassLoader().getResource(args[0]).getFile();
-            reader = new BufferedReader(new FileReader(path));
+            var path = Paths.get(args[0]);
+            if (!Files.exists(path)) {
+                path = Paths.get(Thread.currentThread().getContextClassLoader().getResource(args[0]).toURI());
+            }
+            reader = new BufferedReader(new FileReader(path.toFile()));
         }
 
-        final BufferedReader ireader = reader;
-        MediaInput inputMedia = () -> {
+        final var ireader = reader;
+        MediaInput inputReader = () -> {
             try {
-                String line = ireader.readLine();
+                var line = ireader.readLine();
                 if (args.length != 0)
-                    System.out.println("=== input: " + line + " ===");
+                    System.out.printf("%n$ %s%n", line);
                 return line == null ? "exit" : line;
             } catch (IOException ex) {
                 return "exit";
             }
         };
 
-        try {
-            runATMMachine(inputMedia);
-        } finally {
-            reader.close();
-        }
-    }
-
-    private static void runATMMachine(MediaInput inputReader) {
-
-        PrintWriter writer = System.console() != null ? System.console().writer()
+        // 2. create machine media input
+        var writer = System.console() != null ? System.console().writer()
                 : new PrintWriter(new BufferedOutputStream(System.out));
-        MediaOutput inputWriter = new MediaOutput() {
+        var inputWriter = new MediaOutput() {
             @Override
             public void writeln(String str) {
                 writer.println(str);
             }
 
             @Override
-            public void writef(String format, Object... args) {
-                writer.printf(format, args);
+            public void writelnf(String format, Object... args) {
+                writer.println(String.format(format, args));
             }
         };
-
-        // 2. create db connection
-        AccountDb accDb = new AccountDb();
-        OweDb oweDb = new OweDb();
-
-        // 3. create service
-        ATMService atmService = new ATMServiceDefault(accDb, oweDb);
-        AccountService accService = new AccountServiceDefault(accDb);
-
-        // 4. create factories
-        ObjectFactory<SessionManager, AbstractInputHandler> atmInputHandlerFactory = a -> new SessionManagerInputHandlerDefault(
-                a, inputWriter);
-
-        ObjectFactory<Session, AbstractInputHandler> sessionInputHandlerFactory = session -> new SessionInputHandlerDefault(
-                session, inputWriter);
-
-        ObjectFactory<CreateSessionArg, Session> sessionFactory = arg -> new SessionDefault(arg.accountName, atmService,
-                accService, arg.eventLogout, sessionInputHandlerFactory);
-
-        // 4. create session manager
-        SessionManager sessionMgr = new SessionManagerDefault(accService, sessionFactory, atmInputHandlerFactory);
-
-        // 5. create atm machine
-        ATMMachine machine = new ATMMachine(sessionMgr, inputReader);
-
-        // 6. run atm machine
-        machine.run();
+        // 3. run atm machine
+        try {
+            ATMMachineRunner runner = new Cqrs();
+            runner.runATMMachine(inputReader, inputWriter);
+        } finally {
+            reader.close();
+        }
     }
 }

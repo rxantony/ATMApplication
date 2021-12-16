@@ -2,6 +2,7 @@ package com.dkatalist.atm.domain.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.dkatalist.atm.domain.common.Guard;
 import com.dkatalist.atm.domain.data.Owe;
@@ -17,12 +18,23 @@ public interface ATMService {
     List<Owe> getOweList(String accountName);
 
     public static class TransactionResult {
-        public final String accountName;
+        private final String accountName;
         private int amount;
-        private int saving;
+        private int balace;
+
         public TransactionResult(String accountName) {
             Guard.validateArgNotNullOrEmpty(accountName, "accountName");
             this.accountName = accountName;
+        }
+
+        public TransactionResult(String accountName, int amount, int balace) {
+            this(accountName);
+            setAmount(amount);
+            setBalance(balace);
+        }
+
+        public String getAccountName(){
+            return accountName;
         }
 
         public int getAmount() {
@@ -30,46 +42,82 @@ public interface ATMService {
         }
 
         public void setAmount(int amount) {
+            Guard.validateArgMustBeGreaterThan(amount, -1, "amount");
             this.amount = amount;
         }
 
-        public int getSaving() {
-            return saving;
+        public int getBalance() {
+            return balace;
         }
 
-        public void setSaving(int amount) {
-            this.saving = amount;
+        public void setBalance(int amount) {
+            Guard.validateArgMustBeGreaterThan(amount, -1, "amount");
+            this.balace = amount;
         }
     }
 
-    public static class DepositResult extends TransactionResult {
-        public final List<TransferResult> transferList;
+    public static class DepositResult extends TransactionResult implements OweListResult {
+        private final List<TransferResult> transferList;
+
         public DepositResult(String accountName) {
-            super(accountName);
+            this(accountName, 0, 0);
+        }
+
+        public DepositResult(String accountName, int amount, int saving) {
+            super(accountName, amount, saving);
             this.transferList = new ArrayList<>();
         }
 
+        public DepositResult(String accountName, int amount, int saving, List<TransferResult> transferList) {
+            super(accountName, amount, saving);
+            Guard.validateArgNotNull(transferList, "transferList");
+            this.transferList = transferList;
+        }
+
+        public List<TransferResult> getTransferList(){
+            return transferList;
+        }
+
+        @Override
+        public List<Owe> getOweList() {
+            return transferList.stream().map(TransferResult::getOweList).flatMap(List<Owe>::stream).collect(Collectors.toList());
+        }
     }
 
-    public static class TransferResult extends TransactionResult {
-        public final String recipient;
-        public final List<Owe> oweList;
+    public static class TransferResult extends TransactionResult implements OweListResult {
+        private final String recipient;
+        private  final List<Owe> oweList;
+
         public TransferResult(String accountName, String recipient) {
-            super(accountName);
+            this(accountName, recipient, 0, 0);
+        }
+
+        public TransferResult(String accountName, String recipient, int amount, int saving) {
+            super(accountName, amount, saving);
             Guard.validateArgNotNullOrEmpty(recipient, "recipient");
             this.recipient = recipient;
             this.oweList = new ArrayList<>();
         }
 
+        public TransferResult(String accountName, String recipient, int amount, int saving, List<Owe> oweList) {
+            super(accountName, amount, saving);
+            Guard.validateArgNotNullOrEmpty(recipient, "recipient");
+            Guard.validateArgNotNull(oweList, "oweList");
+            this.recipient = recipient;
+            this.oweList = oweList;
+        }
+
+        public String getRecipient(){
+            return recipient;
+        }
+
+        public List<Owe> getOweList(){
+            return oweList;
+        }
     }
 
-    /*public static class TransferItem {
-        public final String accountName;
-        public final int amount;
-        public TransferItem(String accountName, int amount) {
-            Guard.validateArgNotNullOrEmpty(accountName, "accountName");
-            this.accountName = accountName;
-            this.amount = amount;
-        }
-    }*/
+    public static interface OweListResult {
+        String getAccountName();
+        List<Owe> getOweList();
+    }
 }

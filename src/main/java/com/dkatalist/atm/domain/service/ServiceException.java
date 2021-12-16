@@ -1,10 +1,21 @@
 package com.dkatalist.atm.domain.service;
 
 public class ServiceException extends Exception {
+    
     private final String errorCode;
 
     protected ServiceException(String errorCode, String message) {
         super(message);
+        this.errorCode = errorCode;
+    }
+
+    protected ServiceException(String errorCode, Exception inner) {
+        super(inner);
+        this.errorCode = errorCode;
+    }
+
+    protected ServiceException(String errorCode, String message, Exception inner) {
+        super(message, inner);
         this.errorCode = errorCode;
     }
 

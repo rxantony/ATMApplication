@@ -4,29 +4,30 @@ import com.dkatalist.atm.domain.common.Guard;
 
 public class Account {
     private String name;
-    private int saving;
+    private int balance;
 
-    public Account(String name, int savingAmount){
+    public Account(String name, int balace) {
         Guard.validateArgNotNullOrEmpty(name, "name");
         this.name = name;
-        setSaving(savingAmount);
+        setBalance(balace);
     }
 
-    public Account(Account account){
+    public Account(Account account) {
+        Guard.validateArgNotNull(account, "account");
         this.name = account.name;
-        this.saving = account.saving;
+        this.balance = account.balance;
     }
 
-    public String getName(){
+    public String getName() {
         return name;
     }
 
-    public int getSaving(){
-        return saving;
+    public int getBalance() {
+        return balance;
     }
 
-    public void setSaving(int amount){
+    public void setBalance(int amount) {
         Guard.validateArgMustBeGreaterThan(amount, -1, "amount");
-        saving = amount;
+        balance = amount;
     }
 }

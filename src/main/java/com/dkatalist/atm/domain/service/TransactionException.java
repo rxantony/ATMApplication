@@ -3,6 +3,7 @@ package com.dkatalist.atm.domain.service;
 import com.dkatalist.atm.domain.common.Guard;
 
 public class TransactionException extends ServiceException {
+    
     private final String accountName;
     private final String transaction;
     private final int amount;
@@ -30,5 +31,11 @@ public class TransactionException extends ServiceException {
         Guard.validateArgNotNullOrEmpty(accountName, "accountName");
         Guard.validateArgNotNullOrEmpty(transaction, "transaction");
         return new TransactionException("01",accountName, transaction, amount, String.format("your saving account is not sufficient for %s transaction", transaction));
+    }
+
+    public static TransactionException amountMustGreaterThanOrEqualsTo(String accountName, String transaction, int amount) {
+        Guard.validateArgNotNullOrEmpty(accountName, "accountName");
+        Guard.validateArgNotNullOrEmpty(transaction, "transaction");
+        return new TransactionException("02",accountName, transaction, amount, String.format("your %s must be greater than or equals to %d", transaction, amount));
     }
 }

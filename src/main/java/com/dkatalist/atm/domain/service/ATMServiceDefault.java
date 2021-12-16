@@ -2,77 +2,84 @@ package com.dkatalist.atm.domain.service;
 
 import java.util.Comparator;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import com.dkatalist.atm.domain.common.Guard;
 import com.dkatalist.atm.domain.data.Account;
-import com.dkatalist.atm.domain.data.Db;
+import com.dkatalist.atm.domain.data.AccountRepository;
 import com.dkatalist.atm.domain.data.Owe;
-import com.dkatalist.atm.domain.data.OweDb;
-import com.dkatalist.atm.domain.data.OweDb.Key;
+import com.dkatalist.atm.domain.data.OweRepository;
 
 public class ATMServiceDefault implements ATMService {
-    private Db<String, Account> accDb;
-    private Db<OweDb.Key, Owe> oweDb;
+    
+    private AccountRepository accRepo;
+    private OweRepository oweRepo;
+    private OweCalculationService oweService;
 
-    public ATMServiceDefault(Db<String, Account> accDb, Db<OweDb.Key, Owe> oweDb) {
-        Guard.validateArgNotNull(accDb, "accDb");
-        Guard.validateArgNotNull(oweDb, "oweDb");
+    public ATMServiceDefault(AccountRepository accRepo, OweRepository oweRepo, OweCalculationService oweService) {
+        Guard.validateArgNotNull(accRepo, "accRepo");
+        Guard.validateArgNotNull(oweRepo, "oweRepo");
+        Guard.validateArgNotNull(oweService, "oweService");
 
-        this.accDb = accDb;
-        this.oweDb = oweDb;
+        this.accRepo = accRepo;
+        this.oweRepo = oweRepo;
+        this.oweService = oweService;
     }
 
     @Override
     public TransactionResult withdraw(String accountName, int amount) throws ServiceException {
         Guard.validateArgNotNullOrEmpty(accountName, "accountName");
-        Guard.validateArgMustBeGreaterThan(amount, 0, "amount");
 
-        Account acc = getAccount(accountName);
-        TransactionResult result = new TransactionResult(accountName);
-        if (amount > acc.getSaving())
+        if(amount < 1)
+            throw TransactionException.amountMustGreaterThanOrEqualsTo(accountName, "withdraw", amount);
+
+        var acc = getAccount(accountName);
+        var result = new TransactionResult(accountName);
+        if (amount > acc.getBalance())
             throw TransactionException.notEnoughAmount(accountName, "withdraw", amount);
 
-        acc.setSaving(acc.getSaving() - amount);
-        accDb.update(acc);
+        acc.setBalance(acc.getBalance() - amount);
+        accRepo.update(acc);
 
         result.setAmount(amount);
-        result.setSaving(acc.getSaving());
+        result.setBalance(acc.getBalance());
         return result;
     }
 
     @Override
     public DepositResult deposit(String accountName, int amount) throws ServiceException {
-        Guard.validateArgMustBeGreaterThan(amount, 0, "amount");
+        Guard.validateArgNotNullOrEmpty(accountName, "accountName");
 
-        Account acc = getAccount(accountName);
-        acc.setSaving(acc.getSaving()+amount);
-        accDb.update(acc);
+        if(amount < 1)
+            throw TransactionException.amountMustGreaterThanOrEqualsTo(accountName, "deposit", amount);
 
-        List<Owe> oweToList = oweDb.where(o -> o.getAccount1().equals(acc.getName()) && o.getAmount() < 0).stream()
-                .sorted(Comparator.comparing(Owe::createdAt).reversed()).collect(Collectors.toList());
+        var acc = getAccount(accountName);
+        acc.setBalance(acc.getBalance()+amount);
+        accRepo.update(acc);
+
+        var oweToList = oweRepo.getOweToList(acc.getName()).stream()
+                .sorted(Comparator.comparing(Owe::getCreatedAt).reversed()).collect(Collectors.toList());
 
         if(oweToList.isEmpty()){
             DepositResult result = new DepositResult(accountName);
             result.setAmount(amount);
-            result.setSaving(acc.getSaving());
+            result.setBalance(acc.getBalance());
             return result;
         }
 
         TransferResult transResult = null;
-        DepositResult result = new DepositResult(accountName);
-        for (Owe oweTo : oweToList) {
-            int transAmount = amount;
+        var result = new DepositResult(accountName);
+        for (var oweTo : oweToList) {
+            var transAmount = amount;
             if (amount > -oweTo.getAmount()) {
                 transAmount = -oweTo.getAmount();
-                amount += transAmount;
             }
             transResult = transfer(accountName, oweTo.getAccount2(), transAmount);
-            result.transferList.add(transResult);
+            result.getTransferList().add(transResult);
+            amount -= transAmount;
         }
         result.setAmount(amount);
-        result.setSaving(transResult.getSaving());
+        result.setBalance(transResult.getBalance());
         return result;
     }
 
@@ -80,129 +87,35 @@ public class ATMServiceDefault implements ATMService {
     public TransferResult transfer(String accountName, String recipient, int amount) throws ServiceException {
         Guard.validateArgNotNullOrEmpty(accountName, "accountName");
         Guard.validateArgNotNullOrEmpty(recipient, "recipient");
-        Guard.validateArgMustBeGreaterThan(amount, 0, "amount");
+
+        if(amount < 1)
+            throw TransactionException.amountMustGreaterThanOrEqualsTo(accountName, "transfer", amount);
 
         if (recipient.equals(accountName))
             throw TransferException.cannotTransferToSameAccount(accountName, recipient, amount);
 
-        Account acc = getAccount(accountName);
-        Account recAcc = getAccount(recipient);
-        TransferResult result = new TransferResult(accountName, recipient);
+        var acc = getAccount(accountName);
+        var recAcc = getAccount(recipient);
+        var result = new TransferResult(accountName, recipient);
 
-        // will transfer callculation result amount
-        amount = reduceOweFrom(accountName, recipient, amount, result);
-        if (result.oweList.isEmpty()) {
-            //will transfer amount of param not callculation result amount
-            reduceOweTo(accountName, recipient, amount, result);
-            if(result.oweList.isEmpty())
-                //will transfer calculation result amount
-                amount = requestOweTo(acc, recipient, amount, result);
-        }
-
-        //transfer here
+        amount = oweService.calculate(acc, recAcc, amount, result.getOweList());
         if (amount != 0) {
-            acc.setSaving(acc.getSaving() - amount);
-            recAcc.setSaving(recAcc.getSaving() + amount);
-            accDb.update(acc);
-            accDb.update(recAcc);
+            acc.setBalance(acc.getBalance() - amount);
+            recAcc.setBalance(recAcc.getBalance() + amount);
+            accRepo.update(acc, recAcc);
         }
         result.setAmount(amount);
-        result.setSaving(acc.getSaving());
+        result.setBalance(acc.getBalance());
         return result;
     }
-
-    //tidak ada transfer, deduce owefrom
-    private int reduceOweFrom(String accountName,  String recipient, int amount, TransferResult result){
-        Optional<Owe> ooweFrom = oweDb.first(
-            o -> o.getAccount1().equals(accountName) && o.getAccount2().equals(recipient) && o.getAmount() > 0);
-            
-        if(!ooweFrom.isPresent())
-            return amount;
-
-        Owe oweFrom = ooweFrom.get();
-        Owe oweTo = oweDb.get(new Key(oweFrom.getAccount2(), oweFrom.getAccount1())).get();
-        if (amount <= oweFrom.getAmount()) {
-            oweFrom.setAmount(oweFrom.getAmount() - amount);
-            oweTo.setAmount(oweTo.getAmount() + amount);
-            amount = 0;
-        } else {
-            amount -= oweFrom.getAmount();
-            oweFrom.setAmount(0);
-            oweTo.setAmount(0);
-        }
-        
-        oweDb.update(oweFrom);
-        oweDb.update(oweTo);
-
-        result.oweList.add(oweFrom);
-        result.oweList.add(oweTo);
-        return amount;
-    }
-
-    //lakukan transfer sejumlah amount dan deduce oweTo
-    private int reduceOweTo(String accountName,  String recipient, int amount, TransferResult result){
-        Optional<Owe> ooweTo = oweDb.first(
-            o -> o.getAccount1().equals(accountName) && o.getAccount2().equals(recipient) && o.getAmount() < 0);    
-        
-        if(!ooweTo.isPresent())
-            return amount;
-        
-        Owe oweTo = ooweTo.get();
-        Owe oweFrom = oweDb.get(new Key(oweTo.getAccount2(), oweTo.getAccount1())).get();
-        if (amount <= oweFrom.getAmount()) {
-            oweTo.setAmount(oweTo.getAmount() + amount);
-            oweFrom.setAmount(oweFrom.getAmount() - amount);
-            amount = 0;
-        } else {
-            amount -= oweFrom.getAmount();
-            oweTo.setAmount(0);
-            oweFrom.setAmount(0);
-        }
-        
-        oweDb.update(oweTo);
-        oweDb.update(oweFrom);
-
-        result.oweList.add(oweTo);
-        result.oweList.add(oweFrom);
-        return amount;
-    }
-
-    //transfer amount dan increase oweto
-    private int requestOweTo(Account acc, String recipient, int amount, TransferResult result){
-        if (amount > acc.getSaving()) {
-            Owe oweTo = null;
-            Owe oweFrom = null;
-            int oweAmount = amount - acc.getSaving();
-            amount = acc.getSaving();
-            Optional<Owe> ooweTo = oweDb
-                    .first(o -> o.getAccount1().equals(acc.getName()) && o.getAccount2().equals(recipient)); //search our owe to  recipient took place before
-            if (ooweTo.isPresent()) {
-                oweTo = ooweTo.get();
-                oweFrom = oweDb.first(o -> o.getAccount1().equals(recipient) && o.getAccount2().equals(acc.getName()))
-                        .get();
-                oweTo.setAmount(oweTo.getAmount() + oweAmount);
-                oweFrom.setAmount(oweFrom.getAmount() - oweAmount);
-                oweDb.update(oweTo);
-                oweDb.update(oweFrom);
-            } else {
-                oweTo = new Owe(acc.getName(), recipient, -oweAmount);
-                oweFrom = new Owe(recipient, acc.getName(), oweAmount);
-                oweDb.add(oweTo);
-                oweDb.add(oweFrom);
-            }
-            result.oweList.add(oweFrom);
-            result.oweList.add(oweTo);
-        }
-        return amount;
-    }
-
+    
     @Override
     public List<Owe> getOweList(String accountName) {
-        return oweDb.where(o -> o.getAccount1().equals(accountName));
+        return oweRepo.getList(accountName);
     }
 
     private Account getAccount(String accountName) throws AccountNotExistsException {
-        Optional<Account> oacc = accDb.get(accountName);
+        var oacc = accRepo.get(accountName);
         if (!oacc.isPresent())
             throw AccountNotExistsException.create(accountName);
         return oacc.get();
