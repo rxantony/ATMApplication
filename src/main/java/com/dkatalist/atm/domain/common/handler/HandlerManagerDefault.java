@@ -7,8 +7,8 @@ import java.util.Map;
 import com.dkatalist.atm.domain.common.ATMException;
 
 public class HandlerManagerDefault implements HandlerManager {
-    private Map<Class<?>, Handler<?, ?>> handlerStores = new HashMap<>();
-    private Map<Class<?>, HandlerWithException<?, ?, ?>> handlerWithErrStores = new HashMap<>();
+    private final Map<Class<?>, Handler<?, ?>> handlerStores = new HashMap<>();
+    private final Map<Class<?>, HandlerWithException<?, ?, ?>> handlerWithErrStores = new HashMap<>();
 
     @Override
     @SuppressWarnings("unchecked")

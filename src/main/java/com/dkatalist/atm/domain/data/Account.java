@@ -3,7 +3,7 @@ package com.dkatalist.atm.domain.data;
 import com.dkatalist.atm.domain.common.Guard;
 
 public class Account {
-    private String name;
+    private final String name;
     private int balance;
 
     public Account(String name, int balace) {

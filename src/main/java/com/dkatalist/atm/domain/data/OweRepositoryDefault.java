@@ -6,7 +6,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class OweRepositoryDefault implements OweRepository {
-    private List<Owe> db = new ArrayList<>();
+    private final List<Owe> db = new ArrayList<>();
 
     @Override
     public void add(Owe... owes) {

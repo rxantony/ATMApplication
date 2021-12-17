@@ -4,10 +4,10 @@ import java.util.Date;
 import com.dkatalist.atm.domain.common.Guard;
 
 public class Owe {
-    private String account1;
-    private String account2;
+    private final String account1;
+    private final String account2;
+    private final Date createdAt;
     private int amount;
-    private Date createdAt;
 
     public Owe(String account1, String account2, int amount) {
         this(account1, account2, amount, new Date());
