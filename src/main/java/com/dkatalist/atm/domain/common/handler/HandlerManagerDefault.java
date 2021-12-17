@@ -8,7 +8,7 @@ import com.dkatalist.atm.domain.common.ATMException;
 
 public class HandlerManagerDefault implements HandlerManager {
     private Map<Class<?>, Handler<?,?>> handlerStores = new HashMap<>();
-    private Map<Class<?>, HandlerWithException<?,?, ?>> handlerWithExpStores = new HashMap<>();
+    private Map<Class<?>, HandlerWithException<?,?, ?>> handlerWithErrStores = new HashMap<>();
 
 
     @Override
@@ -34,7 +34,7 @@ public class HandlerManagerDefault implements HandlerManager {
     @SuppressWarnings("unchecked")
     public <TRequest extends RequestWithException<TResult, TException>, TResult, TException extends ATMException> TResult execute(TRequest request) throws TException {
         var cls = request.getClass();
-        var handler = (HandlerWithException<TRequest, TResult, TException>)handlerWithExpStores.get(cls);
+        var handler = (HandlerWithException<TRequest, TResult, TException>)handlerWithErrStores.get(cls);
         if(handler == null)
             throw new HandlerIsNotFoundException(cls.getCanonicalName());
         return handler.execute(request);
@@ -44,7 +44,7 @@ public class HandlerManagerDefault implements HandlerManager {
     public <TRequest extends RequestWithException<TResult,TException>,TResult, TException extends ATMException> HandlerManagerDefault registerHandler(HandlerWithException<TRequest, TResult, TException> handler){
         var cls = handler.getClass();
         var type =  getRequestClassFrom(cls);
-        handlerWithExpStores.put(type, handler);
+        handlerWithErrStores.put(type, handler);
         return this;
     }
 
