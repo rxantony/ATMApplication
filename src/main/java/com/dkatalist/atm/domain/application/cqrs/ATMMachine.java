@@ -5,19 +5,19 @@ import com.dkatalist.atm.domain.application.MediaInput;
 import com.dkatalist.atm.domain.common.Guard;
 
 public class ATMMachine {
-    private SessionManager manager;
+    private SessionManager sessionMgr;
     private MediaInput input;
 
-    public ATMMachine (SessionManager manager, MediaInput input){
-        Guard.validateArgNotNull(manager, "manager");
+    public ATMMachine (SessionManager sessionMgr, MediaInput input){
+        Guard.validateArgNotNull(sessionMgr, "sessionMgr");
         Guard.validateArgNotNull(input, "input");
-        this.manager = manager;
+        this.sessionMgr = sessionMgr;
         this.input = input;
     }
 
     public void run(){
         while(true){
-            var session = manager.getSession();
+            var session = sessionMgr.getSession();
             var line = input.readLine().trim();
             if(line.equals("exit")){
                 if(session != null)
@@ -26,7 +26,7 @@ public class ATMMachine {
             }
             AbstractInputHandler handler;
             if(session == null)
-                handler = manager.getInputHandler();
+                handler = sessionMgr.getInputHandler();
             else 
                 handler = session.getInputHandler();
             handler.handle(line);

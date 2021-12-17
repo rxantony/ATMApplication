@@ -57,11 +57,7 @@ public class DepositCommand extends AbstractATMCommand<DepositRequest, DepositRe
                 transAmount = -oweTo.getAmount();
             }
             var transferRequest = new TransferRequest(request.getAccountName(), oweTo.getAccount2(), transAmount);
-            try {
-                transferResult = transferCommand.execute(transferRequest);
-            } catch (Exception ex) {
-                throw DepositException.fromException(request.getAccountName(), amount, ex);
-            }
+            transferResult = transferCommand.execute(transferRequest);
             result.getTransferList().add(transferResult);
             amount -= transAmount;
         }
