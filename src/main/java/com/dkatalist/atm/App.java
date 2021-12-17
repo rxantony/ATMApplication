@@ -10,8 +10,23 @@ import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
+import com.dkatalist.atm.domain.application.ATMMachine;
 import com.dkatalist.atm.domain.application.MediaInput;
 import com.dkatalist.atm.domain.application.MediaOutput;
+import com.dkatalist.atm.domain.application.SessionDefault;
+import com.dkatalist.atm.domain.application.SessionInputHandlerDefault;
+import com.dkatalist.atm.domain.application.SessionManagerDefault;
+import com.dkatalist.atm.domain.application.SessionManagerInputHandlerDefault;
+import com.dkatalist.atm.domain.common.handler.HandlerManagerDefault;
+import com.dkatalist.atm.domain.data.AccountRepositoryDefault;
+import com.dkatalist.atm.domain.data.OweRepositoryDefault;
+import com.dkatalist.atm.domain.service.account.command.createAccount.CreateAccountCommand;
+import com.dkatalist.atm.domain.service.account.query.getAccount.GetAccountQuery;
+import com.dkatalist.atm.domain.service.atm.command.deposit.DepositCommand;
+import com.dkatalist.atm.domain.service.atm.command.transfer.TransferCommand;
+import com.dkatalist.atm.domain.service.atm.command.withdraw.WithdrawCommand;
+import com.dkatalist.atm.domain.service.atm.query.getOweList.GetOweListQuery;
+import com.dkatalist.atm.domain.service.oweCallculation.*;
 
 public final class App {
     private App() {
@@ -61,10 +76,37 @@ public final class App {
         };
         // 3. run atm machine
         try {
-            ATMMachineRunner atmRunner = new CqrsATMMachineRunner();
-            atmRunner.run(inputReader, inputWriter);
+            runAtmMachine(inputReader, inputWriter);
         } finally {
             reader.close();
         }
     }
+
+    private static void runAtmMachine(MediaInput inputReader, MediaOutput inputWriter) {
+        var accRepo = new AccountRepositoryDefault();
+        var oweRepo = new OweRepositoryDefault();
+
+        var callculationServ = new ReduceOweFromService(oweRepo
+        , new ReduceOweToService(oweRepo
+            , new RequestOweToService(oweRepo, null)));
+
+        var transferCmd = new TransferCommand(accRepo, callculationServ);
+        var handlerMgr = new HandlerManagerDefault()
+            .registerHandler(new GetAccountQuery(accRepo))
+            .registerHandler(new GetOweListQuery(oweRepo))
+            .registerHandler(new CreateAccountCommand(accRepo))
+            .registerHandler(transferCmd)
+            .registerHandler(new WithdrawCommand(accRepo))
+            .registerHandler(new DepositCommand(accRepo, oweRepo, transferCmd));
+
+        var sessionMgr = new SessionManagerDefault(handlerMgr, 
+            arg -> new SessionDefault(arg.accountName, handlerMgr, arg.eventLogout,
+                session -> new SessionInputHandlerDefault(session, inputWriter)),
+            mgr -> new SessionManagerInputHandlerDefault(mgr, inputWriter));
+
+        var machine = new ATMMachine(sessionMgr, inputReader);
+
+        // 5. run atm machine
+        machine.run();
+    } 
 }
