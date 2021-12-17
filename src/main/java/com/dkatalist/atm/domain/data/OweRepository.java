@@ -3,7 +3,7 @@ package com.dkatalist.atm.domain.data;
 import java.util.List;
 import java.util.Optional;
 
-public interface  OweRepository {
+public interface OweRepository {
     void add(Owe... owe);
 
     void update(Owe... owes);

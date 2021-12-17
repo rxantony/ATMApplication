@@ -88,11 +88,12 @@ public class SessionInputHandlerDefault extends AbstractInputHandler {
     }
 
     private void printOweInfos(OweListResult result) {
-        result.getOweList().stream().filter(o -> o.getAccount1().equals(result.getAccountName()) && o.getAmount() != 0).forEach(o -> {
-            if (o.getAmount() > 0)
-                output.writelnf("Owed $%d from %s", o.getAmount(), o.getAccount2());
-            else
-                output.writelnf("Owed $%d to %s", -o.getAmount(), o.getAccount2());
-        });
+        result.getOweList().stream().filter(o -> o.getAccount1().equals(result.getAccountName()) && o.getAmount() != 0)
+                .forEach(o -> {
+                    if (o.getAmount() > 0)
+                        output.writelnf("Owed $%d from %s", o.getAmount(), o.getAccount2());
+                    else
+                        output.writelnf("Owed $%d to %s", -o.getAmount(), o.getAccount2());
+                });
     }
 }

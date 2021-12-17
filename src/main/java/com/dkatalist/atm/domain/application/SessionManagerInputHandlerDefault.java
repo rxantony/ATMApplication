@@ -44,15 +44,13 @@ public class SessionManagerInputHandlerDefault extends AbstractInputHandler {
                 output.writeln(String.format("Hello, %s!", userName));
                 output.writeln(String.format("Your balance is $%d", session.getAccount().getBalance()));
                 session.getOweList().stream().filter(o -> o.getAmount() != 0)
-                    .forEach(o ->{ 
-                        if(o.getAmount() > 0){
-                            output.writelnf("Owed %d from %s", o.getAmount(), o.getAccount2());
-                        }
-                        else{
-                            output.writelnf("Owed %d to %s", -o.getAmount(), o.getAccount2());
-                        }
-                    }
-                );
+                        .forEach(o -> {
+                            if (o.getAmount() > 0) {
+                                output.writelnf("Owed %d from %s", o.getAmount(), o.getAccount2());
+                            } else {
+                                output.writelnf("Owed %d to %s", -o.getAmount(), o.getAccount2());
+                            }
+                        });
             } else {
                 output.writeln("Available commands:");
                 commandInfos.values().forEach(c -> output.writeln("- " + c));

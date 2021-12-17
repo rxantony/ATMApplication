@@ -15,8 +15,8 @@ import com.dkatalist.atm.domain.service.atm.command.transfer.TransferResult;
 
 public class DepositCommand extends AbstractATMCommand<DepositRequest, DepositResult> {
 
-    private OweRepository oweRepo;
-    private HandlerWithException<TransferRequest, TransferResult, ServiceException> transferCommand;
+    private final OweRepository oweRepo;
+    private final HandlerWithException<TransferRequest, TransferResult, ServiceException> transferCommand;
 
     public DepositCommand(AccountRepository accRepo, OweRepository oweRepo,
             HandlerWithException<TransferRequest, TransferResult, ServiceException> transferCommand) {

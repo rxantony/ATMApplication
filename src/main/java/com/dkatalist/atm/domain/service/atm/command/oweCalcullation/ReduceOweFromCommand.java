@@ -6,8 +6,8 @@ import com.dkatalist.atm.domain.data.OweRepository;
 
 public class ReduceOweFromCommand implements Handler<OweCallculationRequest, Integer> {
 
-    private OweRepository repo;
-    private Handler<OweCallculationRequest, Integer> nextCallcuationCmd;
+    private final OweRepository repo;
+    private final Handler<OweCallculationRequest, Integer> nextCallcuationCmd;
 
     public ReduceOweFromCommand(OweRepository repo, Handler<OweCallculationRequest, Integer> nextCallcuationCmd) {
         Guard.validateArgNotNull(repo, "repo");
@@ -44,5 +44,5 @@ public class ReduceOweFromCommand implements Handler<OweCallculationRequest, Int
 
         return amount;
     }
-    
+
 }

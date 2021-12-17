@@ -9,12 +9,12 @@ import com.dkatalist.atm.domain.data.Owe;
 
 public class OweCallculationRequest implements Request<Integer> {
 
-    private Account account;
-    private Account recipient;
-    private int amount; 
-    private List<Owe> oweList;
+    private final Account account;
+    private final Account recipient;
+    private final int amount;
+    private final List<Owe> oweList;
 
-    public OweCallculationRequest(Account account, Account recipient, int amount, List<Owe> oweList){
+    public OweCallculationRequest(Account account, Account recipient, int amount, List<Owe> oweList) {
         Guard.validateArgNotNull(account, "account");
         Guard.validateArgNotNull(recipient, "recipient");
         Guard.validateArgMustBeGreaterThan(amount, 0, "amount");
@@ -26,19 +26,19 @@ public class OweCallculationRequest implements Request<Integer> {
         this.oweList = oweList;
     }
 
-    public Account getAccount(){
+    public Account getAccount() {
         return account;
     }
 
-    public Account getRecipient(){
+    public Account getRecipient() {
         return recipient;
     }
 
-    public int getAmount(){
+    public int getAmount() {
         return amount;
     }
 
-    public List<Owe> getOweList(){
+    public List<Owe> getOweList() {
         return oweList;
     }
 }

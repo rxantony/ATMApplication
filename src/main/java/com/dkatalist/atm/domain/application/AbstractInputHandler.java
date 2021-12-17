@@ -6,26 +6,26 @@ import java.util.stream.Stream;
 import com.dkatalist.atm.domain.common.Guard;
 
 public abstract class AbstractInputHandler {
-    protected AbstractInputHandler(){
+    protected AbstractInputHandler() {
     }
 
-    public void handle(String input){
+    public void handle(String input) {
         Guard.validateArgNotNull(input, "input");
         String[] args = input.replaceAll("\\s+", " ").split(" ");
-		String command = args[0].toLowerCase();
+        String command = args[0].toLowerCase();
         String[] params = Stream.of(args).skip(1).toArray(size -> new String[size]);
         try {
             handle(command, params);
-        }
-        catch(IndexOutOfBoundsException|NumberFormatException|DateTimeParseException ex){
+        } catch (IndexOutOfBoundsException | NumberFormatException | DateTimeParseException ex) {
             showCommandInfo(command);
-        }
-        catch(IllegalArgumentException ex){
+        } catch (IllegalArgumentException ex) {
             showError(ex);
         }
     }
 
     protected abstract void showError(Exception ex);
+
     protected abstract void showCommandInfo(String command);
+
     protected abstract void handle(String command, String... args);
 }

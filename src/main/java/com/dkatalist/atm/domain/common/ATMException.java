@@ -1,7 +1,7 @@
 package com.dkatalist.atm.domain.common;
 
 public class ATMException extends Exception {
-    
+
     protected ATMException(String message) {
         super(message);
     }

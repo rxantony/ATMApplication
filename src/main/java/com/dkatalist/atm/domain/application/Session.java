@@ -11,11 +11,18 @@ import com.dkatalist.atm.domain.service.atm.command.withdraw.WithdrawResult;
 
 public interface Session {
     void logout();
+
     String getAccountName();
+
     Account getAccount() throws ServiceException;
+
     DepositResult deposit(int amount) throws ServiceException;
+
     WithdrawResult withdraw(int amount) throws ServiceException;
-    TransferResult transfer(String toAccountName, int amount) throws ServiceException; 
-    List<Owe> getOweList()throws ServiceException;
-    AbstractInputHandler getInputHandler();  
+
+    TransferResult transfer(String toAccountName, int amount) throws ServiceException;
+
+    List<Owe> getOweList() throws ServiceException;
+
+    AbstractInputHandler getInputHandler();
 }

@@ -19,15 +19,15 @@ import com.dkatalist.atm.domain.service.atm.command.withdraw.WithdrawRequest;
 import com.dkatalist.atm.domain.service.atm.command.withdraw.WithdrawResult;
 import com.dkatalist.atm.domain.service.atm.query.getOweList.GetOweListRequest;
 
-public class SessionDefault implements Session{
+public class SessionDefault implements Session {
     private String accountName;
     private HandlerManager manager;
     private boolean sessionClosed;
     private Consumer<String> eventLogout;
     private AbstractInputHandler inputHandler;
 
-    public SessionDefault(String accountName, HandlerManager manager, Consumer<String> eventLogout
-        , ObjectFactory<Session, AbstractInputHandler> inputhandlerFactory) {
+    public SessionDefault(String accountName, HandlerManager manager, Consumer<String> eventLogout,
+            ObjectFactory<Session, AbstractInputHandler> inputhandlerFactory) {
 
         Guard.validateArgNotNullOrEmpty(accountName, "accountName");
         Guard.validateArgNotNull(manager, "manager");
@@ -50,7 +50,7 @@ public class SessionDefault implements Session{
     public Account getAccount() throws ServiceException {
         validateSessionExpired();
         var oacc = manager.execute(new GetAccountRequest(accountName));
-        if(!oacc.isPresent()){
+        if (!oacc.isPresent()) {
             logout();
             throw AccountNotExistsException.create(accountName);
         }
@@ -83,7 +83,7 @@ public class SessionDefault implements Session{
     }
 
     @Override
-    public List<Owe> getOweList() throws ServiceException{
+    public List<Owe> getOweList() throws ServiceException {
         validateSessionExpired();
         return manager.execute(new GetOweListRequest(accountName));
     }

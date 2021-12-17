@@ -7,8 +7,8 @@ import com.dkatalist.atm.domain.data.OweRepository;
 
 public class RequestOweToCommand implements Handler<OweCallculationRequest, Integer> {
 
-    private OweRepository repo;
-    private Handler<OweCallculationRequest, Integer> nextCallcuationCmd;
+    private final OweRepository repo;
+    private final Handler<OweCallculationRequest, Integer> nextCallcuationCmd;
 
     public RequestOweToCommand(OweRepository repo, Handler<OweCallculationRequest, Integer> nextCallcuationCmd) {
         Guard.validateArgNotNull(repo, "repo");
@@ -27,10 +27,13 @@ public class RequestOweToCommand implements Handler<OweCallculationRequest, Inte
         Owe oweTo = null;
         Owe oweFrom = null;
         var oweAmount = request.getAmount() - request.getAccount().getBalance();
-        var ooweTo = repo.getOweTo(request.getAccount().getName(), request.getRecipient().getName()); // search our owe to recipient // took place before
+        var ooweTo = repo.getOweTo(request.getAccount().getName(), request.getRecipient().getName()); // search our owe
+                                                                                                      // to recipient //
+                                                                                                      // took place
+                                                                                                      // before
         if (ooweTo.isPresent()) {
             oweTo = ooweTo.get();
-            oweFrom = repo.getOweFrom(request.getRecipient().getName(),request.getAccount().getName()).get();
+            oweFrom = repo.getOweFrom(request.getRecipient().getName(), request.getAccount().getName()).get();
             oweTo.setAmount(oweTo.getAmount() - oweAmount);
             oweFrom.setAmount(oweFrom.getAmount() + oweAmount);
             repo.update(oweTo, oweFrom);
