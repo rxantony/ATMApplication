@@ -1,19 +1,20 @@
 package com.dkatalist.atm.domain.service.atm.command.transfer;
 
 import com.dkatalist.atm.domain.common.Guard;
+import com.dkatalist.atm.domain.common.handler.Handler;
 import com.dkatalist.atm.domain.data.AccountRepository;
 import com.dkatalist.atm.domain.service.ServiceException;
 import com.dkatalist.atm.domain.service.atm.command.AbstractATMCommand;
-import com.dkatalist.atm.domain.service.oweCallculation.OweCalculationService;
+import com.dkatalist.atm.domain.service.atm.command.oweCalcullation.OweCallculationRequest;
 
 public class TransferCommand extends AbstractATMCommand<TransferRequest, TransferResult> {
 
-    private final OweCalculationService calculationService;
+    private final Handler<OweCallculationRequest, Integer> calculationCmd;
 
-    public TransferCommand(AccountRepository accRepo, OweCalculationService calculationService) {
+    public TransferCommand(AccountRepository accRepo, Handler<OweCallculationRequest, Integer> calculationCmd) {
         super(accRepo);
-        Guard.validateArgNotNull(calculationService, "calculationService");
-        this.calculationService = calculationService;
+        Guard.validateArgNotNull(calculationCmd, "calculationCmd");
+        this.calculationCmd = calculationCmd;
     }
 
     @Override
@@ -33,7 +34,7 @@ public class TransferCommand extends AbstractATMCommand<TransferRequest, Transfe
         var recAcc = getAccount(request.getRecipient());
         var result = new TransferResult(request.getAccountName(), request.getRecipient());
 
-        var amount = this.calculationService.calculate(acc, recAcc, request.getAmount(), result.getOweList());
+        var amount = calculationCmd.execute(new OweCallculationRequest(acc, recAcc, request.getAmount(), result.getOweList()));
         if (amount != 0) {
             acc.setBalance(acc.getBalance() - amount);
             recAcc.setBalance(recAcc.getBalance() + amount);
