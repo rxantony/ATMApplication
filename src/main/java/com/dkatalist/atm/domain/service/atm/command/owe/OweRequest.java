@@ -1,4 +1,4 @@
-package com.dkatalist.atm.domain.service.atm.command.oweCalcullation;
+package com.dkatalist.atm.domain.service.atm.command.owe;
 
 import java.util.List;
 
@@ -7,14 +7,14 @@ import com.dkatalist.atm.domain.common.handler.Request;
 import com.dkatalist.atm.domain.data.Account;
 import com.dkatalist.atm.domain.data.Owe;
 
-public class OweCallculationRequest implements Request<Integer> {
+public class OweRequest implements Request<Integer> {
 
     private final Account account;
     private final Account recipient;
     private final int amount;
     private final List<Owe> oweList;
 
-    public OweCallculationRequest(Account account, Account recipient, int amount, List<Owe> oweList) {
+    public OweRequest(Account account, Account recipient, int amount, List<Owe> oweList) {
         Guard.validateArgNotNull(account, "account");
         Guard.validateArgNotNull(recipient, "recipient");
         Guard.validateArgMustBeGreaterThan(amount, 0, "amount");

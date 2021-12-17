@@ -1,26 +1,26 @@
-package com.dkatalist.atm.domain.service.atm.command.oweCalcullation;
+package com.dkatalist.atm.domain.service.atm.command.owe;
 
 import com.dkatalist.atm.domain.common.Guard;
 import com.dkatalist.atm.domain.common.handler.Handler;
 import com.dkatalist.atm.domain.data.OweRepository;
 
-public class ReduceOweFromCommand implements Handler<OweCallculationRequest, Integer> {
+public class ReduceOweFromCommand implements Handler<OweRequest, Integer> {
 
     private final OweRepository repo;
-    private final Handler<OweCallculationRequest, Integer> nextCallcuationCmd;
+    private final Handler<OweRequest, Integer> nextOweCmd;
 
-    public ReduceOweFromCommand(OweRepository repo, Handler<OweCallculationRequest, Integer> nextCallcuationCmd) {
+    public ReduceOweFromCommand(OweRepository repo, Handler<OweRequest, Integer> nextOweCmd) {
         Guard.validateArgNotNull(repo, "repo");
         this.repo = repo;
-        this.nextCallcuationCmd = nextCallcuationCmd;
+        this.nextOweCmd = nextOweCmd;
     }
 
     @Override
-    public Integer execute(OweCallculationRequest request) {
+    public Integer execute(OweRequest request) {
         var ooweFrom = repo.getOweFrom(request.getAccount().getName(), request.getRecipient().getName());
         if (!ooweFrom.isPresent()) {
-            if (nextCallcuationCmd != null)
-                return nextCallcuationCmd.execute(request);
+            if (nextOweCmd != null)
+                return nextOweCmd.execute(request);
             return request.getAmount();
         }
 

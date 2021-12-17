@@ -23,9 +23,9 @@ import com.dkatalist.atm.domain.data.OweRepositoryDefault;
 import com.dkatalist.atm.domain.service.account.command.createAccount.CreateAccountCommand;
 import com.dkatalist.atm.domain.service.account.query.getAccount.GetAccountQuery;
 import com.dkatalist.atm.domain.service.atm.command.deposit.DepositCommand;
-import com.dkatalist.atm.domain.service.atm.command.oweCalcullation.ReduceOweFromCommand;
-import com.dkatalist.atm.domain.service.atm.command.oweCalcullation.ReduceOweToCommand;
-import com.dkatalist.atm.domain.service.atm.command.oweCalcullation.RequestOweToCommand;
+import com.dkatalist.atm.domain.service.atm.command.owe.ReduceOweFromCommand;
+import com.dkatalist.atm.domain.service.atm.command.owe.ReduceOweToCommand;
+import com.dkatalist.atm.domain.service.atm.command.owe.RequestOweToCommand;
 import com.dkatalist.atm.domain.service.atm.command.transfer.TransferCommand;
 import com.dkatalist.atm.domain.service.atm.command.withdraw.WithdrawCommand;
 import com.dkatalist.atm.domain.service.atm.query.getOweList.GetOweListQuery;
@@ -88,11 +88,11 @@ public final class App {
         var accRepo = new AccountRepositoryDefault();
         var oweRepo = new OweRepositoryDefault();
 
-        var callculationCmd = new ReduceOweFromCommand(oweRepo
+        var oweCmd = new ReduceOweFromCommand(oweRepo
         , new ReduceOweToCommand(oweRepo
             , new RequestOweToCommand(oweRepo, null)));
 
-        var transferCmd = new TransferCommand(accRepo, callculationCmd);
+        var transferCmd = new TransferCommand(accRepo, oweCmd);
         var handlerMgr = new HandlerManagerDefault()
             .registerHandler(new GetAccountQuery(accRepo))
             .registerHandler(new GetOweListQuery(oweRepo))
@@ -106,9 +106,9 @@ public final class App {
                 session -> new SessionInputHandlerDefault(session, inputWriter)),
             mgr -> new SessionManagerInputHandlerDefault(mgr, inputWriter));
 
-        var machine = new ATMMachine(sessionMgr, inputReader);
+        var atm = new ATMMachine(sessionMgr, inputReader);
 
         // 5. run atm machine
-        machine.run();
+        atm.run();
     } 
 }
