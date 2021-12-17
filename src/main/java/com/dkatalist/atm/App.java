@@ -85,9 +85,11 @@ public final class App {
     }
 
     private static void runAtmMachine(MediaInput inputReader, MediaOutput inputWriter) {
+        // 4. create repos
         var accRepo = new AccountRepositoryDefault();
         var oweRepo = new OweRepositoryDefault();
 
+        // 5. create owe commands and handler manager
         var oweCmd = new ReduceOweFromCommand(oweRepo
         , new ReduceOweToCommand(oweRepo
             , new RequestOweToCommand(oweRepo, null)));
@@ -101,14 +103,14 @@ public final class App {
             .registerHandler(new WithdrawCommand(accRepo))
             .registerHandler(new DepositCommand(accRepo, oweRepo, transferCmd));
 
+        // 6. create session manager
         var sessionMgr = new SessionManagerDefault(handlerMgr, 
             arg -> new SessionDefault(arg.accountName, handlerMgr, arg.eventLogout,
                 session -> new SessionInputHandlerDefault(session, inputWriter)),
             mgr -> new SessionManagerInputHandlerDefault(mgr, inputWriter));
 
+        // 7. create and run atm machine.
         var atm = new ATMMachine(sessionMgr, inputReader);
-
-        // 5. run atm machine
         atm.run();
     } 
 }
