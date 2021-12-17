@@ -6,9 +6,9 @@ import com.dkatalist.atm.domain.application.AbstractInputHandler;
 import com.dkatalist.atm.domain.data.Account;
 import com.dkatalist.atm.domain.data.Owe;
 import com.dkatalist.atm.domain.service.ServiceException;
-import com.dkatalist.atm.domain.service.ATMService.DepositResult;
-import com.dkatalist.atm.domain.service.ATMService.TransactionResult;
-import com.dkatalist.atm.domain.service.ATMService.TransferResult;
+import com.dkatalist.atm.domain.service.facade.ATMService.DepositResult;
+import com.dkatalist.atm.domain.service.facade.ATMService.TransactionResult;
+import com.dkatalist.atm.domain.service.facade.ATMService.TransferResult;
 
 public interface Session {
     void logout();

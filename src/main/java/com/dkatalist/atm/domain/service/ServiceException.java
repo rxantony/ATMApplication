@@ -1,6 +1,8 @@
 package com.dkatalist.atm.domain.service;
 
-public class ServiceException extends Exception {
+import com.dkatalist.atm.domain.common.ATMException;
+
+public class ServiceException extends ATMException {
     
     private final String errorCode;
 

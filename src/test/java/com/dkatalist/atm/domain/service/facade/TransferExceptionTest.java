@@ -3,9 +3,6 @@ package com.dkatalist.atm.domain.service.facade;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import com.dkatalist.atm.domain.service.TransactionException;
-import com.dkatalist.atm.domain.service.TransferException;
-
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 

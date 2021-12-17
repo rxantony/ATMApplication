@@ -1,4 +1,4 @@
-package com.dkatalist.atm.domain.service.facade;
+package com.dkatalist.atm.domain.service.oweCallculation;
 
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -17,8 +17,6 @@ import java.util.stream.Stream;
 import com.dkatalist.atm.domain.data.Account;
 import com.dkatalist.atm.domain.data.Owe;
 import com.dkatalist.atm.domain.data.OweRepository;
-import com.dkatalist.atm.domain.service.OweCalculationService;
-import com.dkatalist.atm.domain.service.ReduceOweFromService;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;

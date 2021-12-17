@@ -7,7 +7,7 @@ import com.dkatalist.atm.domain.application.CreateSessionArg;
 import com.dkatalist.atm.domain.common.Guard;
 import com.dkatalist.atm.domain.common.ObjectFactory;
 import com.dkatalist.atm.domain.data.Account;
-import com.dkatalist.atm.domain.service.AccountService;
+import com.dkatalist.atm.domain.service.facade.AccountService;
 
 public class SessionManagerDefault implements SessionManager {
     private AccountService service;

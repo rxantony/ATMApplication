@@ -4,6 +4,8 @@ import java.lang.reflect.ParameterizedType;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.dkatalist.atm.domain.common.ATMException;
+
 public class HandlerManagerDefault implements HandlerManager {
     private Map<Class<?>, Handler<?,?>> handlerStores = new HashMap<>();
     private Map<Class<?>, HandlerWithException<?,?, ?>> handlerWithExpStores = new HashMap<>();
@@ -12,9 +14,10 @@ public class HandlerManagerDefault implements HandlerManager {
     @Override
     @SuppressWarnings("unchecked")
     public <TRequest extends Request<TResult>, TResult> TResult execute(TRequest request) {
-        var handler = (Handler<TRequest, TResult>)handlerStores.get(request.getClass());
+        var cls = request.getClass();
+        var handler = (Handler<TRequest, TResult>)handlerStores.get(cls);
         if(handler == null)
-            throw new HandlerIsNotFoundException();
+            throw new HandlerIsNotFoundException(cls.getCanonicalName());
         return handler.execute(request);
     }
 
@@ -29,25 +32,18 @@ public class HandlerManagerDefault implements HandlerManager {
 
     @Override
     @SuppressWarnings("unchecked")
-    public <TRequest extends RequestWithException<TResult, TException>, TResult, TException extends Exception> TResult execute(TRequest request) throws TException {
-        var handler = (HandlerWithException<TRequest, TResult, TException>)handlerWithExpStores.get(request.getClass());
+    public <TRequest extends RequestWithException<TResult, TException>, TResult, TException extends ATMException> TResult execute(TRequest request) throws TException {
+        var cls = request.getClass();
+        var handler = (HandlerWithException<TRequest, TResult, TException>)handlerWithExpStores.get(cls);
         if(handler == null)
-            throw new HandlerIsNotFoundException();
+            throw new HandlerIsNotFoundException(cls.getCanonicalName());
         return handler.execute(request);
     }
 
     @Override 
-    public <TRequest extends RequestWithException<TResult,TException>,TResult, TException extends Exception> HandlerManagerDefault registerHandler(HandlerWithException<TRequest, TResult, TException> handler){
+    public <TRequest extends RequestWithException<TResult,TException>,TResult, TException extends ATMException> HandlerManagerDefault registerHandler(HandlerWithException<TRequest, TResult, TException> handler){
         var cls = handler.getClass();
         var type =  getRequestClassFrom(cls);
-        /*
-        Class<TRequest> type
-        var interfaces =  cls.getGenericInterfaces();
-        if(interfaces.length > 0){
-            type = (Class<TRequest>) ((ParameterizedType)cls.getGenericInterfaces()[0]).getActualTypeArguments()[0];
-        } else {
-            type = (Class<TRequest>)((ParameterizedType) handler.getClass().getGenericSuperclass()).getActualTypeArguments()[0];
-        }*/
         handlerWithExpStores.put(type, handler);
         return this;
     }

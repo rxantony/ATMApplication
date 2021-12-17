@@ -4,17 +4,18 @@ import java.util.List;
 import java.util.function.Consumer;
 
 import com.dkatalist.atm.domain.application.AbstractInputHandler;
+import com.dkatalist.atm.domain.application.SessionExpiredException;
 import com.dkatalist.atm.domain.common.Guard;
 import com.dkatalist.atm.domain.common.ObjectFactory;
 import com.dkatalist.atm.domain.data.Account;
 import com.dkatalist.atm.domain.data.Owe;
 import com.dkatalist.atm.domain.service.ServiceException;
-import com.dkatalist.atm.domain.service.ATMService.DepositResult;
-import com.dkatalist.atm.domain.service.ATMService.TransactionResult;
-import com.dkatalist.atm.domain.service.ATMService.TransferResult;
-import com.dkatalist.atm.domain.service.ATMService;
+import com.dkatalist.atm.domain.service.facade.ATMService;
+import com.dkatalist.atm.domain.service.facade.AccountService;
+import com.dkatalist.atm.domain.service.facade.ATMService.DepositResult;
+import com.dkatalist.atm.domain.service.facade.ATMService.TransactionResult;
+import com.dkatalist.atm.domain.service.facade.ATMService.TransferResult;
 import com.dkatalist.atm.domain.service.AccountNotExistsException;
-import com.dkatalist.atm.domain.service.AccountService;
 
 public class SessionDefault implements Session {
     private String accountName;

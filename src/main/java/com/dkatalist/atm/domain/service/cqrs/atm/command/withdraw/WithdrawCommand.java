@@ -3,7 +3,7 @@ package com.dkatalist.atm.domain.service.cqrs.atm.command.withdraw;
 import com.dkatalist.atm.domain.common.Guard;
 import com.dkatalist.atm.domain.data.AccountRepository;
 import com.dkatalist.atm.domain.service.ServiceException;
-import com.dkatalist.atm.domain.service.cqrs.AbstractATMCommand;
+import com.dkatalist.atm.domain.service.cqrs.atm.command.AbstractATMCommand;
 
 public class WithdrawCommand extends AbstractATMCommand<WithdrawRequest, WithdrawResult> {
 

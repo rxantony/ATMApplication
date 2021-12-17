@@ -61,8 +61,8 @@ public final class App {
         };
         // 3. run atm machine
         try {
-            ATMMachineRunner runner = new Cqrs();
-            runner.runATMMachine(inputReader, inputWriter);
+            ATMMachineRunner atmRunner = new CqrsATMMachineRunner();
+            atmRunner.run(inputReader, inputWriter);
         } finally {
             reader.close();
         }

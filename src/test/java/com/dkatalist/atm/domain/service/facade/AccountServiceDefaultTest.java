@@ -15,7 +15,6 @@ import java.util.Optional;
 
 import com.dkatalist.atm.domain.data.Account;
 import com.dkatalist.atm.domain.data.AccountRepository;
-import com.dkatalist.atm.domain.service.AccountServiceDefault;
 
 import org.junit.jupiter.api.Test;
 import org.mockito.stubbing.Answer;

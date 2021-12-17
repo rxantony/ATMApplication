@@ -4,10 +4,10 @@ import java.util.List;
 import java.util.function.Consumer;
 
 import com.dkatalist.atm.domain.application.AbstractInputHandler;
-import com.dkatalist.atm.domain.application.facade.SessionExpiredException;
+import com.dkatalist.atm.domain.application.SessionExpiredException;
 import com.dkatalist.atm.domain.common.Guard;
 import com.dkatalist.atm.domain.common.ObjectFactory;
-import com.dkatalist.atm.domain.common.cqrs.handler.HandlerManagerDefault;
+import com.dkatalist.atm.domain.common.cqrs.handler.HandlerManager;
 import com.dkatalist.atm.domain.data.Account;
 import com.dkatalist.atm.domain.data.Owe;
 import com.dkatalist.atm.domain.service.AccountNotExistsException;
@@ -23,12 +23,12 @@ import com.dkatalist.atm.domain.service.cqrs.atm.query.getOweList.GetOweListRequ
 
 public class SessionDefault implements Session{
     private String accountName;
-    private HandlerManagerDefault manager;
+    private HandlerManager manager;
     private boolean sessionClosed;
     private Consumer<String> eventLogout;
     private AbstractInputHandler inputHandler;
 
-    public SessionDefault(String accountName, HandlerManagerDefault manager, Consumer<String> eventLogout
+    public SessionDefault(String accountName, HandlerManager manager, Consumer<String> eventLogout
         , ObjectFactory<Session, AbstractInputHandler> inputhandlerFactory) {
 
         Guard.validateArgNotNullOrEmpty(accountName, "accountName");

@@ -1,4 +1,4 @@
-package com.dkatalist.atm.domain.service;
+package com.dkatalist.atm.domain.service.facade;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 
 import com.dkatalist.atm.domain.common.Guard;
 import com.dkatalist.atm.domain.data.Owe;
+import com.dkatalist.atm.domain.service.ServiceException;
 
 public interface ATMService {
 

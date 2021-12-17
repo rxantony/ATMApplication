@@ -1,4 +1,4 @@
-package com.dkatalist.atm.domain.service.facade;
+package com.dkatalist.atm.domain.service.oweCallculation;
 
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -13,7 +13,6 @@ import java.util.function.BiFunction;
 import com.dkatalist.atm.domain.data.Account;
 import com.dkatalist.atm.domain.data.Owe;
 import com.dkatalist.atm.domain.data.OweRepository;
-import com.dkatalist.atm.domain.service.OweCalculationService;
 
 abstract class AbstractReduceOweServiceTest {
 

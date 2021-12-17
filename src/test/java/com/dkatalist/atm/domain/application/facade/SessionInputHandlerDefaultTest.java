@@ -12,11 +12,11 @@ import java.util.Arrays;
 
 import com.dkatalist.atm.domain.ListStringMediaOutput;
 import com.dkatalist.atm.domain.data.Owe;
-import com.dkatalist.atm.domain.service.ATMService.DepositResult;
-import com.dkatalist.atm.domain.service.ATMService.TransactionResult;
-import com.dkatalist.atm.domain.service.ATMService.TransferResult;
 import com.dkatalist.atm.domain.service.AccountNotExistsException;
 import com.dkatalist.atm.domain.service.ServiceException;
+import com.dkatalist.atm.domain.service.facade.ATMService.DepositResult;
+import com.dkatalist.atm.domain.service.facade.ATMService.TransactionResult;
+import com.dkatalist.atm.domain.service.facade.ATMService.TransferResult;
 
 import org.junit.jupiter.api.Test;
 

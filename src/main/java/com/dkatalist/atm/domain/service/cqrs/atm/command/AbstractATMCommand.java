@@ -1,4 +1,4 @@
-package com.dkatalist.atm.domain.service.cqrs;
+package com.dkatalist.atm.domain.service.cqrs.atm.command;
 
 import com.dkatalist.atm.domain.common.Guard;
 import com.dkatalist.atm.domain.common.cqrs.handler.HandlerWithException;

@@ -5,10 +5,10 @@ import java.util.HashMap;
 import com.dkatalist.atm.domain.application.AbstractInputHandler;
 import com.dkatalist.atm.domain.application.MediaOutput;
 import com.dkatalist.atm.domain.common.Guard;
-import com.dkatalist.atm.domain.service.ATMService.OweListResult;
-import com.dkatalist.atm.domain.service.ATMService.TransactionResult;
-import com.dkatalist.atm.domain.service.ATMService.TransferResult;
 import com.dkatalist.atm.domain.service.ServiceException;
+import com.dkatalist.atm.domain.service.facade.ATMService.OweListResult;
+import com.dkatalist.atm.domain.service.facade.ATMService.TransactionResult;
+import com.dkatalist.atm.domain.service.facade.ATMService.TransferResult;
 
 public class SessionInputHandlerDefault extends AbstractInputHandler {
     private Session session;

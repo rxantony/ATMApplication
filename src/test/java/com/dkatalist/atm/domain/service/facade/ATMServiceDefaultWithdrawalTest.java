@@ -11,11 +11,9 @@ import java.util.stream.Stream;
 import com.dkatalist.atm.domain.data.Account;
 import com.dkatalist.atm.domain.data.AccountRepository;
 import com.dkatalist.atm.domain.data.OweRepository;
-import com.dkatalist.atm.domain.service.ATMServiceDefault;
 import com.dkatalist.atm.domain.service.AccountNotExistsException;
-import com.dkatalist.atm.domain.service.OweCalculationService;
 import com.dkatalist.atm.domain.service.ServiceException;
-import com.dkatalist.atm.domain.service.TransactionException;
+import com.dkatalist.atm.domain.service.oweCallculation.OweCalculationService;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;

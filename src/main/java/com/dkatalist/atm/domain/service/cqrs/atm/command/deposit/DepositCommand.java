@@ -9,7 +9,7 @@ import com.dkatalist.atm.domain.data.AccountRepository;
 import com.dkatalist.atm.domain.data.Owe;
 import com.dkatalist.atm.domain.data.OweRepository;
 import com.dkatalist.atm.domain.service.ServiceException;
-import com.dkatalist.atm.domain.service.cqrs.AbstractATMCommand;
+import com.dkatalist.atm.domain.service.cqrs.atm.command.AbstractATMCommand;
 import com.dkatalist.atm.domain.service.cqrs.atm.command.transfer.TransferRequest;
 import com.dkatalist.atm.domain.service.cqrs.atm.command.transfer.TransferResult;
 

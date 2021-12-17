@@ -1,6 +1,7 @@
-package com.dkatalist.atm.domain.service;
+package com.dkatalist.atm.domain.service.facade;
 
 import com.dkatalist.atm.domain.common.Guard;
+import com.dkatalist.atm.domain.service.ServiceException;
 
 public class TransactionException extends ServiceException {
     

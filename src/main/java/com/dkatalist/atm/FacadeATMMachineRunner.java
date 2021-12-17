@@ -9,15 +9,15 @@ import com.dkatalist.atm.domain.application.facade.SessionManagerDefault;
 import com.dkatalist.atm.domain.application.facade.SessionManagerInputHandlerDefault;
 import com.dkatalist.atm.domain.data.AccountRepositoryDefault;
 import com.dkatalist.atm.domain.data.OweRepositoryDefault;
-import com.dkatalist.atm.domain.service.ATMServiceDefault;
-import com.dkatalist.atm.domain.service.AccountServiceDefault;
-import com.dkatalist.atm.domain.service.ReduceOweFromService;
-import com.dkatalist.atm.domain.service.ReduceOweToService;
-import com.dkatalist.atm.domain.service.RequestOweToService;
+import com.dkatalist.atm.domain.service.facade.ATMServiceDefault;
+import com.dkatalist.atm.domain.service.facade.AccountServiceDefault;
+import com.dkatalist.atm.domain.service.oweCallculation.ReduceOweFromService;
+import com.dkatalist.atm.domain.service.oweCallculation.ReduceOweToService;
+import com.dkatalist.atm.domain.service.oweCallculation.RequestOweToService;
 
-public class Facade implements ATMMachineRunner{
+public class FacadeATMMachineRunner implements ATMMachineRunner{
     @Override
-    public void runATMMachine(MediaInput inputReader, MediaOutput inputWriter) {
+    public void run(MediaInput inputReader, MediaOutput inputWriter) {
         // 1. repositories
         var accRepo = new AccountRepositoryDefault();
         var oweRepo = new OweRepositoryDefault();

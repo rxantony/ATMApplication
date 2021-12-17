@@ -2,29 +2,27 @@ package com.dkatalist.atm;
 
 import com.dkatalist.atm.domain.application.MediaInput;
 import com.dkatalist.atm.domain.application.MediaOutput;
+import com.dkatalist.atm.domain.application.cqrs.ATMMachine;
 import com.dkatalist.atm.domain.application.cqrs.SessionDefault;
 import com.dkatalist.atm.domain.application.cqrs.SessionInputHandlerDefault;
 import com.dkatalist.atm.domain.application.cqrs.SessionManagerDefault;
 import com.dkatalist.atm.domain.application.cqrs.SessionManagerInputHandlerDefault;
-import com.dkatalist.atm.domain.application.cqrs.ATMMachine;
 import com.dkatalist.atm.domain.common.cqrs.handler.HandlerManagerDefault;
 import com.dkatalist.atm.domain.data.AccountRepositoryDefault;
 import com.dkatalist.atm.domain.data.OweRepositoryDefault;
-import com.dkatalist.atm.domain.service.ATMServiceDefault;
-import com.dkatalist.atm.domain.service.AccountServiceDefault;
-import com.dkatalist.atm.domain.service.ReduceOweFromService;
-import com.dkatalist.atm.domain.service.ReduceOweToService;
-import com.dkatalist.atm.domain.service.RequestOweToService;
 import com.dkatalist.atm.domain.service.cqrs.account.command.createAccount.CreateAccountCommand;
 import com.dkatalist.atm.domain.service.cqrs.account.query.getAccount.GetAccountQuery;
 import com.dkatalist.atm.domain.service.cqrs.atm.command.deposit.DepositCommand;
 import com.dkatalist.atm.domain.service.cqrs.atm.command.transfer.TransferCommand;
 import com.dkatalist.atm.domain.service.cqrs.atm.command.withdraw.WithdrawCommand;
 import com.dkatalist.atm.domain.service.cqrs.atm.query.getOweList.GetOweListQuery;
+import com.dkatalist.atm.domain.service.oweCallculation.ReduceOweFromService;
+import com.dkatalist.atm.domain.service.oweCallculation.ReduceOweToService;
+import com.dkatalist.atm.domain.service.oweCallculation.RequestOweToService;
 
-public class Cqrs implements ATMMachineRunner{
+public class CqrsATMMachineRunner implements ATMMachineRunner{
     @Override
-    public void runATMMachine(MediaInput inputReader, MediaOutput inputWriter) {
+    public void run(MediaInput inputReader, MediaOutput inputWriter) {
         var accRepo = new AccountRepositoryDefault();
         var oweRepo = new OweRepositoryDefault();
 
@@ -48,7 +46,7 @@ public class Cqrs implements ATMMachineRunner{
 
         var machine = new ATMMachine(sessionMgr, inputReader);
 
-            // 5. run atm machine
+        // 5. run atm machine
         machine.run();
     } 
 }

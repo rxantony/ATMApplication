@@ -1,4 +1,4 @@
-package com.dkatalist.atm.domain.service;
+package com.dkatalist.atm.domain.service.oweCallculation;
 
 import java.util.List;
 

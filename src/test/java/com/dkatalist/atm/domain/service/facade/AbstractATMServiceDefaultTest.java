@@ -11,8 +11,7 @@ import com.dkatalist.atm.domain.data.Account;
 import com.dkatalist.atm.domain.data.AccountRepository;
 import com.dkatalist.atm.domain.data.Owe;
 import com.dkatalist.atm.domain.data.OweRepository;
-import com.dkatalist.atm.domain.service.ATMServiceDefault;
-import com.dkatalist.atm.domain.service.OweCalculationService;
+import com.dkatalist.atm.domain.service.oweCallculation.OweCalculationService;
 
 public abstract class AbstractATMServiceDefaultTest {
     protected final static String bob = "bob";

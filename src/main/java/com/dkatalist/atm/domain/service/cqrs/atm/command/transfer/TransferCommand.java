@@ -2,11 +2,11 @@ package com.dkatalist.atm.domain.service.cqrs.atm.command.transfer;
 
 import com.dkatalist.atm.domain.common.Guard;
 import com.dkatalist.atm.domain.data.AccountRepository;
-import com.dkatalist.atm.domain.service.OweCalculationService;
 import com.dkatalist.atm.domain.service.ServiceException;
-import com.dkatalist.atm.domain.service.TransactionException;
-import com.dkatalist.atm.domain.service.TransferException;
-import com.dkatalist.atm.domain.service.cqrs.AbstractATMCommand;
+import com.dkatalist.atm.domain.service.cqrs.atm.command.AbstractATMCommand;
+import com.dkatalist.atm.domain.service.facade.TransactionException;
+import com.dkatalist.atm.domain.service.facade.TransferException;
+import com.dkatalist.atm.domain.service.oweCallculation.OweCalculationService;
 
 public class TransferCommand extends AbstractATMCommand<TransferRequest, TransferResult> {
 

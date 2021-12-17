@@ -16,7 +16,7 @@ import com.dkatalist.atm.domain.application.AbstractInputHandler;
 import com.dkatalist.atm.domain.application.CreateSessionArg;
 import com.dkatalist.atm.domain.common.ObjectFactory;
 import com.dkatalist.atm.domain.data.Account;
-import com.dkatalist.atm.domain.service.AccountService;
+import com.dkatalist.atm.domain.service.facade.AccountService;
 
 import org.junit.jupiter.api.Test;
 import org.mockito.invocation.InvocationOnMock;

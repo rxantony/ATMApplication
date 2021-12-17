@@ -1,11 +1,11 @@
-package com.dkatalist.atm.domain.service.facade;
+package com.dkatalist.atm.domain.service.oweCallculation;
 
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.anyList;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -17,8 +17,6 @@ import java.util.stream.Stream;
 import com.dkatalist.atm.domain.data.Account;
 import com.dkatalist.atm.domain.data.Owe;
 import com.dkatalist.atm.domain.data.OweRepository;
-import com.dkatalist.atm.domain.service.OweCalculationService;
-import com.dkatalist.atm.domain.service.ReduceOweToService;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
