@@ -7,20 +7,20 @@ import com.dkatalist.atm.domain.data.OweRepository;
 public class ReduceOweToCommand implements Handler<OweCallculationRequest, Integer> {
 
     private OweRepository repo;
-    private Handler<OweCallculationRequest, Integer> next;
+    private Handler<OweCallculationRequest, Integer> nextCallcuationCmd;
 
-    public ReduceOweToCommand(OweRepository repo, Handler<OweCallculationRequest, Integer> next) {
+    public ReduceOweToCommand(OweRepository repo, Handler<OweCallculationRequest, Integer> nextCallcuationCmd) {
         Guard.validateArgNotNull(repo, "repo");
         this.repo = repo;
-        this.next = next;
+        this.nextCallcuationCmd = nextCallcuationCmd;
     }
 
     @Override
     public Integer execute(OweCallculationRequest request) {
         var ooweTo = repo.getOweTo(request.getAccount().getName(), request.getRecipient().getName());
         if (!ooweTo.isPresent()) {
-            if (next != null)
-                return next.execute(request);
+            if (nextCallcuationCmd != null)
+                return nextCallcuationCmd.execute(request);
             return request.getAmount();
         }
 

@@ -8,19 +8,19 @@ import com.dkatalist.atm.domain.data.OweRepository;
 public class RequestOweToCommand implements Handler<OweCallculationRequest, Integer> {
 
     private OweRepository repo;
-    private Handler<OweCallculationRequest, Integer> next;
+    private Handler<OweCallculationRequest, Integer> nextCallcuationCmd;
 
-    public RequestOweToCommand(OweRepository repo, Handler<OweCallculationRequest, Integer> next) {
+    public RequestOweToCommand(OweRepository repo, Handler<OweCallculationRequest, Integer> nextCallcuationCmd) {
         Guard.validateArgNotNull(repo, "repo");
         this.repo = repo;
-        this.next = next;
+        this.nextCallcuationCmd = nextCallcuationCmd;
     }
 
     @Override
     public Integer execute(OweCallculationRequest request) {
         if (request.getAmount() <= request.getAccount().getBalance()) {
-            if (next != null)
-                return next.execute(request);
+            if (nextCallcuationCmd != null)
+                return nextCallcuationCmd.execute(request);
             return request.getAmount();
         }
 
