@@ -80,6 +80,7 @@ public final class App {
         try {
             runAtmMachine(inputReader, inputWriter);
         } finally {
+            writer.close();
             reader.close();
         }
     }

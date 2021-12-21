@@ -11,6 +11,8 @@ public class OweRepositoryDefault implements OweRepository {
     @Override
     public void add(Owe... owes) {
         for (var owe : owes) {
+            if (owe == null)
+                throw new IllegalArgumentException("one or some of owes is null");
             db.add(new Owe(owe));
         }
     }
