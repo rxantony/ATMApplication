@@ -1,8 +1,11 @@
 package com.dkatalist.atm.domain.service.atm.command.transfer;
 
+import java.util.ArrayList;
+
 import com.dkatalist.atm.domain.common.Guard;
 import com.dkatalist.atm.domain.common.handler.Handler;
 import com.dkatalist.atm.domain.data.AccountRepository;
+import com.dkatalist.atm.domain.data.Owe;
 import com.dkatalist.atm.domain.service.ServiceException;
 import com.dkatalist.atm.domain.service.atm.command.AbstractATMCommand;
 import com.dkatalist.atm.domain.service.atm.command.owe.OweRequest;
@@ -32,15 +35,16 @@ public class TransferCommand extends AbstractATMCommand<TransferRequest, Transfe
 
         var acc = getAccount(request.getAccountName());
         var recAcc = getAccount(request.getRecipient());
-        var result = new TransferResult(request.getAccountName(), request.getRecipient());
+        var oweList = new ArrayList<Owe>();
 
         var amount = oweCmd
-                .execute(new OweRequest(acc, recAcc, request.getAmount(), result.getOweList()));
+                .execute(new OweRequest(acc, recAcc, request.getAmount(), oweList));
         if (amount != 0) {
             acc.setBalance(acc.getBalance() - amount);
             recAcc.setBalance(recAcc.getBalance() + amount);
             updateAccounts(acc, recAcc);
         }
+        var result = new TransferResult(request.getAccountName(), request.getRecipient(), oweList);
         result.setAmount(amount);
         result.setBalance(acc.getBalance());
         return result;

@@ -1,7 +1,6 @@
 package com.dkatalist.atm.domain.service.atm.command.transfer;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Collections;
 
 import com.dkatalist.atm.domain.common.Guard;
 import com.dkatalist.atm.domain.data.Owe;
@@ -10,29 +9,33 @@ import com.dkatalist.atm.domain.service.TransactionResult;
 
 public class TransferResult extends TransactionResult implements OweListResult {
     private final String recipient;
-    private final List<Owe> oweList;
-
+    private final Iterable<Owe> oweList;
+    private static final Iterable<Owe> EMPTY_OWES = Collections.emptyList();
     public TransferResult(String accountName, String recipient) {
-        this(accountName, recipient, 0, 0);
+        this(accountName, recipient, EMPTY_OWES);
     }
 
-    public TransferResult(String accountName, String recipient, int amount, int balace) {
+    /*public TransferResult(String accountName, String recipient, int amount, int balace) {
         this(accountName, recipient, amount, balace, new ArrayList<Owe>());
+    }*/
+
+    public TransferResult(String accountName, String recipient, Iterable<Owe> owes) {
+        this(accountName, recipient, 0, 0, EMPTY_OWES);
     }
 
-    public TransferResult(String accountName, String recipient, int amount, int balace, List<Owe> oweList) {
+    public TransferResult(String accountName, String recipient, int amount, int balace, Iterable<Owe> owes) {
         super(accountName, amount, balace);
         Guard.validateArgNotNullOrEmpty(recipient, "recipient");
-        Guard.validateArgNotNull(oweList, "oweList");
+        Guard.validateArgNotNull(owes, "owes");
         this.recipient = recipient;
-        this.oweList = oweList;
+        this.oweList = owes;
     }
 
     public String getRecipient() {
         return recipient;
     }
 
-    public List<Owe> getOweList() {
+    public Iterable<Owe> getOwes() {
         return oweList;
     }
 }

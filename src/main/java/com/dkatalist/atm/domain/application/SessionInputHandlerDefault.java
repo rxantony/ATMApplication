@@ -2,6 +2,7 @@ package com.dkatalist.atm.domain.application;
 
 import java.util.HashMap;
 
+import static com.dkatalist.atm.domain.common.Utils.streamFrom;
 import com.dkatalist.atm.domain.common.Guard;
 import com.dkatalist.atm.domain.service.OweListResult;
 import com.dkatalist.atm.domain.service.ServiceException;
@@ -47,7 +48,7 @@ public class SessionInputHandlerDefault extends AbstractInputHandler {
             if (command.equals("deposit")) {
                 var amount = Integer.parseInt(args[0]);
                 var result = session.deposit(amount);
-                result.getTransferList().forEach(this::printTransfer);
+                result.getTransfers().forEach(this::printTransfer);
                 printBalance(result);
                 printOweInfos(result);
 
@@ -88,7 +89,7 @@ public class SessionInputHandlerDefault extends AbstractInputHandler {
     }
 
     private void printOweInfos(OweListResult result) {
-        result.getOweList().stream().filter(o -> o.getAccount1().equals(result.getAccountName()) && o.getAmount() != 0)
+        streamFrom(result.getOwes()).filter(o -> o.getAccount1().equals(result.getAccountName()) && o.getAmount() != 0)
                 .forEach(o -> {
                     if (o.getAmount() > 0)
                         output.writelnf("Owed $%d from %s", o.getAmount(), o.getAccount2());

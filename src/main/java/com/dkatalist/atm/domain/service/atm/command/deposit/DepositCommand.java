@@ -58,7 +58,7 @@ public class DepositCommand extends AbstractATMCommand<DepositRequest, DepositRe
             }
             var transferRequest = new TransferRequest(request.getAccountName(), oweTo.getAccount2(), transAmount);
             transferResult = transferCommand.execute(transferRequest);
-            result.getTransferList().add(transferResult);
+            result.addTransferResult(transferResult);
             amount -= transAmount;
         }
         result.setAmount(amount);

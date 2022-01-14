@@ -3,6 +3,7 @@ package com.dkatalist.atm.domain.service.atm.command.deposit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import com.dkatalist.atm.domain.common.Guard;
 import com.dkatalist.atm.domain.data.Owe;
@@ -27,13 +28,19 @@ public class DepositResult extends TransactionResult implements OweListResult {
         this.transferList = transferList;
     }
 
-    public List<TransferResult> getTransferList() {
+    public DepositResult addTransferResult(TransferResult result){
+        transferList.add(result);
+        return this;
+    }
+
+    public Iterable<TransferResult> getTransfers() {
         return transferList;
     }
 
     @Override
-    public List<Owe> getOweList() {
-        return transferList.stream().map(TransferResult::getOweList).flatMap(List<Owe>::stream)
-                .collect(Collectors.toList());
+    public Iterable<Owe> getOwes() {
+        return transferList.stream()
+                .map(TransferResult::getOwes)
+                .flatMap(it->StreamSupport.stream(it.spliterator(), false).sequential()).collect(Collectors.toList());
     }
 }
