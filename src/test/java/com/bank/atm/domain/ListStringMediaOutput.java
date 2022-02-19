@@ -17,4 +17,8 @@ public class ListStringMediaOutput implements MediaOutput{
     public void writelnf(String format, Object... args) {
         strings.add(String.format(format, args)); 
     }
+
+    @Override
+    public void close() throws Exception {
+    }
 };

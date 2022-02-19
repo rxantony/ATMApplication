@@ -10,7 +10,6 @@ import com.bank.atm.domain.service.ServiceException;
 
 public abstract class AbstractATMCommand<TRequest extends RequestWithException<TResult, ServiceException>, TResult>
         implements HandlerWithException<TRequest, TResult, ServiceException> {
-
     private final AccountRepository accRepo;
 
     protected AbstractATMCommand(AccountRepository accRepo) {

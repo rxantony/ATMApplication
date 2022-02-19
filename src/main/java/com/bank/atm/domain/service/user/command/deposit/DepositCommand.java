@@ -14,7 +14,6 @@ import com.bank.atm.domain.service.user.command.transfer.TransferRequest;
 import com.bank.atm.domain.service.user.command.transfer.TransferResult;
 
 public class DepositCommand extends AbstractATMCommand<DepositRequest, DepositResult> {
-
     private final OweRepository oweRepo;
     private final HandlerWithException<TransferRequest, TransferResult, ServiceException> transferCommand;
 

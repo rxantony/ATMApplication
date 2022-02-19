@@ -6,7 +6,6 @@ import com.bank.atm.domain.data.Owe;
 import com.bank.atm.domain.data.OweRepository;
 
 public class RequestOweToCommand implements Handler<OweRequest, Integer> {
-
     private final OweRepository repo;
     private final Handler<OweRequest, Integer> nextOweCmd;
 

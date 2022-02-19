@@ -5,7 +5,6 @@ import com.bank.atm.domain.common.handler.Handler;
 import com.bank.atm.domain.data.OweRepository;
 
 public class ReduceOweFromCommand implements Handler<OweRequest, Integer> {
-
     private final OweRepository repo;
     private final Handler<OweRequest, Integer> nextOweCmd;
 

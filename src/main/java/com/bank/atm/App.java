@@ -6,7 +6,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
@@ -34,10 +33,16 @@ public final class App {
     private App() {
     }
 
-    public static void main(String[] xargs) throws IOException, URISyntaxException {
-        final var args = new String[] { "input_file.txt" };
+    public static void main(String[] args) {
+        try(var input = createInput(args); var output = createOutput();){
+            runAtmMachine(input, output);
+        }
+        catch(Exception ex){
+            ex.printStackTrace();
+        }
+    }
 
-        // 1. create machine media output
+    private static MediaInput createInput(String[] args) throws Exception{
         BufferedReader reader = null;
         if (args.length == 0) {
             reader = System.console() != null ? new BufferedReader(System.console().reader())
@@ -51,21 +56,30 @@ public final class App {
         }
 
         final var ireader = reader;
-        MediaInput inputReader = () -> {
-            try {
-                var line = ireader.readLine();
-                if (args.length != 0)
-                    System.out.printf("%n$ %s%n", line);
-                return line == null ? "exit" : line;
-            } catch (IOException ex) {
-                return "exit";
+        return new MediaInput() {
+            @Override
+            public String readLine() {
+                try {
+                    var line = ireader.readLine();
+                    if (args.length != 0)
+                        System.out.printf("%n$ %s%n", line);
+                    return line == null ? "exit" : line;
+                } catch (IOException ex) {
+                    return "exit";
+                }
+            }
+
+            @Override
+            public void close() throws Exception {
+                ireader.close();;
             }
         };
+    }
 
-        // 2. create machine media input
+    private static MediaOutput createOutput(){
         var writer = System.console() != null ? System.console().writer()
-                : new PrintWriter(new BufferedOutputStream(System.out));
-        var inputWriter = new MediaOutput() {
+                        : new PrintWriter(new BufferedOutputStream(System.out));
+        return new MediaOutput() {
             @Override
             public void writeln(String str) {
                 writer.println(str);
@@ -75,43 +89,39 @@ public final class App {
             public void writelnf(String format, Object... args) {
                 writer.println(String.format(format, args));
             }
-        };
-        // 3. run atm machine
-        try {
-            runAtmMachine(inputReader, inputWriter);
-        } finally {
-            writer.close();
-            reader.close();
-        }
-    }
 
-    private static void runAtmMachine(MediaInput inputReader, MediaOutput inputWriter) {
-        // 4. create repos
+            @Override
+            public void close() throws Exception {
+                writer.close();
+            }
+        };
+    }
+    private static void runAtmMachine(MediaInput input, MediaOutput output) {
+        // 1. create repos
         var accRepo = new AccountRepositoryDefault();
         var oweRepo = new OweRepositoryDefault();
 
-        // 5. create owe commands and handler manager
-        var oweCmd = new ReduceOweFromCommand(oweRepo
-        , new ReduceOweToCommand(oweRepo
-            , new RequestOweToCommand(oweRepo, null)));
+        // 2. create owe commands and handler manager
+        var oweCmd = new ReduceOweFromCommand(oweRepo,
+                new ReduceOweToCommand(oweRepo, new RequestOweToCommand(oweRepo, null)));
 
         var transferCmd = new TransferCommand(accRepo, oweCmd);
         var handlerMgr = new HandlerManagerDefault()
-            .registerHandler(new GetAccountQuery(accRepo))
-            .registerHandler(new GetOweListQuery(oweRepo))
-            .registerHandler(new CreateAccountCommand(accRepo))
-            .registerHandler(transferCmd)
-            .registerHandler(new WithdrawCommand(accRepo))
-            .registerHandler(new DepositCommand(accRepo, oweRepo, transferCmd));
+                .registerHandler(new GetAccountQuery(accRepo))
+                .registerHandler(new GetOweListQuery(oweRepo))
+                .registerHandler(new CreateAccountCommand(accRepo))
+                .registerHandler(transferCmd)
+                .registerHandler(new WithdrawCommand(accRepo))
+                .registerHandler(new DepositCommand(accRepo, oweRepo, transferCmd));
 
-        // 6. create session manager
-        var sessionMgr = new SessionManagerDefault(handlerMgr, 
-            arg -> new SessionDefault(arg.accountName, handlerMgr, arg.eventLogout,
-                session -> new SessionInputHandlerDefault(session, inputWriter)),
-            mgr -> new SessionManagerInputHandlerDefault(mgr, inputWriter));
+        // 3. create session manager
+        var sessionMgr = new SessionManagerDefault(handlerMgr,
+                arg -> new SessionDefault(arg.accountName, handlerMgr, arg.eventLogout,
+                        session -> new SessionInputHandlerDefault(session, output)),
+                mgr -> new SessionManagerInputHandlerDefault(mgr, output));
 
-        // 7. create and run atm machine.
-        var atm = new ATMMachine(sessionMgr, inputReader);
+        // 4. create and run atm machine.
+        var atm = new ATMMachine(sessionMgr, input, output);
         atm.run();
-    } 
+    }
 }

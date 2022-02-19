@@ -3,7 +3,6 @@ package com.bank.atm.domain.service;
 import com.bank.atm.domain.common.ATMException;
 
 public class ServiceException extends ATMException {
-    
     private final String errorCode;
 
     protected ServiceException(String errorCode, String message) {

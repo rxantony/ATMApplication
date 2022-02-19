@@ -8,7 +8,6 @@ import com.bank.atm.domain.data.Account;
 import com.bank.atm.domain.data.AccountRepository;
 
 public class GetAccountQuery implements Handler<GetAccountRequest, Optional<Account>> {
-
     private final AccountRepository accountRepo;
 
     public GetAccountQuery(AccountRepository accountRepo) {

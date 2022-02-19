@@ -9,10 +9,10 @@ import com.bank.atm.domain.service.account.command.createAccount.CreateAccountRe
 import com.bank.atm.domain.service.account.query.getAccount.GetAccountRequest;
 
 public class SessionManagerDefault implements SessionManager {
-    private HandlerManager handlerMgr;
     private Session currentSession;
-    private AbstractInputHandler inputHandler;
-    private ObjectFactory<CreateSessionArg, Session> sessionFactory;
+    private final HandlerManager handlerMgr;
+    private final AbstractInputHandler inputHandler;
+    private final ObjectFactory<CreateSessionArg, Session> sessionFactory;
 
     public SessionManagerDefault(HandlerManager handlerMgr, ObjectFactory<CreateSessionArg, Session> sessionFactory,
             ObjectFactory<SessionManager, AbstractInputHandler> inputhandlerFactory) {

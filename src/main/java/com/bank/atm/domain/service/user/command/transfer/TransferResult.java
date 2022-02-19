@@ -11,13 +11,10 @@ public class TransferResult extends TransactionResult implements OweListResult {
     private final String recipient;
     private final Iterable<Owe> oweList;
     private static final Iterable<Owe> EMPTY_OWES = Collections.emptyList();
+
     public TransferResult(String accountName, String recipient) {
         this(accountName, recipient, EMPTY_OWES);
     }
-
-    /*public TransferResult(String accountName, String recipient, int amount, int balace) {
-        this(accountName, recipient, amount, balace, new ArrayList<Owe>());
-    }*/
 
     public TransferResult(String accountName, String recipient, Iterable<Owe> owes) {
         this(accountName, recipient, 0, 0, EMPTY_OWES);

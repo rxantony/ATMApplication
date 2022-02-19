@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 public class AccountRepositoryDefault implements AccountRepository {
-    private List<Account> db = new ArrayList<>();
+    private final List<Account> db = new ArrayList<>();
 
     @Override
     public Optional<Account> get(String accountName) {

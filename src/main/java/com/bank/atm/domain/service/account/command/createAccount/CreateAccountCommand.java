@@ -6,7 +6,6 @@ import com.bank.atm.domain.data.Account;
 import com.bank.atm.domain.data.AccountRepository;
 
 public class CreateAccountCommand implements Handler<CreateAccountRequest, Account> {
-
     private final AccountRepository accountRepo;
 
     public CreateAccountCommand(AccountRepository accountRepo) {

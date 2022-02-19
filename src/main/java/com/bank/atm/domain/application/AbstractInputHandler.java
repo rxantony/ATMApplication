@@ -15,7 +15,7 @@ public abstract class AbstractInputHandler {
         String command = args[0].toLowerCase();
         String[] params = Stream.of(args).skip(1).toArray(size -> new String[size]);
         try {
-            handle(command, params);
+            handleInternal(command, params);
         } catch (IndexOutOfBoundsException | NumberFormatException | DateTimeParseException ex) {
             showCommandInfo(command);
         } catch (IllegalArgumentException ex) {
@@ -23,9 +23,11 @@ public abstract class AbstractInputHandler {
         }
     }
 
+    public abstract void showCommands();
+
     protected abstract void showError(Exception ex);
 
     protected abstract void showCommandInfo(String command);
 
-    protected abstract void handle(String command, String... args);
+    protected abstract void handleInternal(String command, String... args);
 }

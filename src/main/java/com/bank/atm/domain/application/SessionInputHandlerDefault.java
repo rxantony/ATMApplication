@@ -11,9 +11,9 @@ import com.bank.atm.domain.service.TransactionResult;
 import com.bank.atm.domain.service.user.command.transfer.TransferResult;
 
 public class SessionInputHandlerDefault extends AbstractInputHandler {
-    private Session session;
-    private MediaOutput output;
-    private HashMap<String, String> commandInfos = new HashMap<>();
+    private final Session session;
+    private final MediaOutput output;
+    protected final HashMap<String, String> commandInfos = new HashMap<>();
 
     public SessionInputHandlerDefault(Session session, MediaOutput output) {
         Guard.validateArgNotNull(session, "session");
@@ -23,13 +23,18 @@ public class SessionInputHandlerDefault extends AbstractInputHandler {
         initCommandInfos();
     }
 
-    protected void initCommandInfos() {
+    private void initCommandInfos() {
         commandInfos.put("deposit", "deposit [int amount]");
         commandInfos.put("withdraw", "withdraw [int amount]");
         commandInfos.put("transfer", "transfer [string accountName], [int amount]");
         commandInfos.put("logout", "logout");
         commandInfos.put("help", "help");
         commandInfos.put("exit", "exit");
+    }
+
+    @Override
+    public void showCommands() {
+        handleInternal("");
     }
 
     @Override
@@ -43,7 +48,7 @@ public class SessionInputHandlerDefault extends AbstractInputHandler {
     }
 
     @Override
-    protected void handle(String command, String... args) {
+    protected void handleInternal(String command, String... args) {
         String accName = session.getAccountName();
         try {
             if (command.equals("deposit")) {

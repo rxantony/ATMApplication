@@ -8,7 +8,6 @@ import com.bank.atm.domain.data.Account;
 import com.bank.atm.domain.data.Owe;
 
 public class OweRequest implements Request<Integer> {
-
     private final Account account;
     private final Account recipient;
     private final int amount;

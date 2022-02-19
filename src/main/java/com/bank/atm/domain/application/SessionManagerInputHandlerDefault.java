@@ -6,9 +6,9 @@ import com.bank.atm.domain.common.Guard;
 import com.bank.atm.domain.service.ServiceException;
 
 public class SessionManagerInputHandlerDefault extends AbstractInputHandler {
-    private SessionManager sessionMgr;
-    private MediaOutput output;
-    private HashMap<String, String> commandInfos = new HashMap<>();
+    private final SessionManager sessionMgr;
+    private final MediaOutput output;
+    private final HashMap<String, String> commandInfos = new HashMap<>();
 
     public SessionManagerInputHandlerDefault(SessionManager sessionMgr, MediaOutput output) {
         Guard.validateArgNotNull(sessionMgr, "sessionMgr");
@@ -25,6 +25,11 @@ public class SessionManagerInputHandlerDefault extends AbstractInputHandler {
     }
 
     @Override
+    public void showCommands() {
+        handleInternal("");
+    }
+    
+    @Override
     protected void showError(Exception ex) {
         output.writeln(ex.getMessage());
     }
@@ -35,7 +40,7 @@ public class SessionManagerInputHandlerDefault extends AbstractInputHandler {
     }
 
     @Override
-    protected void handle(String command, String... args) {
+    protected void handleInternal(String command, String... args) {
         try {
             if (command.equals("login")) {
                 String userName = args[0];

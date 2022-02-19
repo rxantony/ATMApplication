@@ -24,8 +24,8 @@ public class AccountNotExistsException extends ServiceException {
         validate(accountName);
         return new AccountNotExistsException(accountName, message);
     }
-    
-    private static void validate(String accountName){
+
+    private static void validate(String accountName) {
         Guard.validateArgNotNullOrEmpty(accountName, "accountName");
     }
 }

@@ -20,11 +20,11 @@ import com.bank.atm.domain.service.user.command.withdraw.WithdrawResult;
 import com.bank.atm.domain.service.user.query.getOweList.GetOweListRequest;
 
 public class SessionDefault implements Session {
-    private String accountName;
-    private HandlerManager manager;
     private boolean sessionClosed;
-    private Consumer<String> eventLogout;
-    private AbstractInputHandler inputHandler;
+    private final String accountName;
+    private final HandlerManager manager;
+    private final Consumer<String> eventLogout;
+    private final AbstractInputHandler inputHandler;
 
     public SessionDefault(String accountName, HandlerManager manager, Consumer<String> eventLogout,
             ObjectFactory<Session, AbstractInputHandler> inputhandlerFactory) {

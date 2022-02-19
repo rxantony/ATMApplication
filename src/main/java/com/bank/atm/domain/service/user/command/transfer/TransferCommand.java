@@ -11,7 +11,6 @@ import com.bank.atm.domain.service.user.command.AbstractATMCommand;
 import com.bank.atm.domain.service.user.command.owe.OweRequest;
 
 public class TransferCommand extends AbstractATMCommand<TransferRequest, TransferResult> {
-
     private final Handler<OweRequest, Integer> oweCmd;
 
     public TransferCommand(AccountRepository accRepo, Handler<OweRequest, Integer> oweCmd) {

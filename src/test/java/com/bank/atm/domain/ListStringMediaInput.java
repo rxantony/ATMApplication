@@ -13,4 +13,8 @@ public class ListStringMediaInput implements MediaInput {
         return strings.get(idx++);
     }
     
+    @Override
+    public void close() throws Exception {
+    }
+    
 }
