@@ -34,7 +34,8 @@ public class SessionInputHandlerDefault extends AbstractInputHandler {
 
     @Override
     public void showCommands() {
-        handleInternal("");
+        output.writeln("Available commands:");
+        commandInfos.values().forEach(c -> output.writeln("- " + c));
     }
 
     @Override
@@ -48,39 +49,34 @@ public class SessionInputHandlerDefault extends AbstractInputHandler {
     }
 
     @Override
-    protected void handleInternal(String command, String... args) {
-        String accName = session.getAccountName();
-        try {
-            if (command.equals("deposit")) {
-                var amount = Integer.parseInt(args[0]);
-                var result = session.deposit(amount);
-                result.getTransfers().forEach(this::printTransfer);
-                printBalance(result);
-                printOweInfos(result);
+    protected void handleInternal(String command, String... args) throws Exception {
+        var accName = session.getAccountName();
+        if (command.equals("deposit")) {
+            var amount = Integer.parseInt(args[0]);
+            var result = session.deposit(amount);
+            result.getTransfers().forEach(this::printTransfer);
+            printBalance(result);
+            printOweInfos(result);
 
-            } else if (command.equals("transfer")) {
-                var recipient = args[0];
-                var amount = Integer.parseInt(args[1]);
-                var result = session.transfer(recipient, amount);
-                printTransfer(result);
-                printBalance(result);
-                printOweInfos(result);
+        } else if (command.equals("transfer")) {
+            var recipient = args[0];
+            var amount = Integer.parseInt(args[1]);
+            var result = session.transfer(recipient, amount);
+            printTransfer(result);
+            printBalance(result);
+            printOweInfos(result);
 
-            } else if (command.equals("withdraw")) {
-                var amount = Integer.parseInt(args[0]);
-                var result = session.withdraw(amount);
-                printBalance(result);
+        } else if (command.equals("withdraw")) {
+            var amount = Integer.parseInt(args[0]);
+            var result = session.withdraw(amount);
+            printBalance(result);
 
-            } else if (command.equals("logout")) {
-                session.logout();
-                output.writelnf("Goodbye, %s!", accName);
+        } else if (command.equals("logout")) {
+            session.logout();
+            output.writelnf("Goodbye, %s!", accName);
 
-            } else {
-                output.writeln("Available commands:");
-                commandInfos.values().forEach(c -> output.writeln("- " + c));
-            }
-        } catch (ServiceException ex) {
-            showError(ex);
+        } else {
+            showCommands();
         }
     }
 

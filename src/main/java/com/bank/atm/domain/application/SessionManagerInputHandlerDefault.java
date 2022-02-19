@@ -26,7 +26,8 @@ public class SessionManagerInputHandlerDefault extends AbstractInputHandler {
 
     @Override
     public void showCommands() {
-        handleInternal("");
+        output.writeln("Available commands:");
+        commandInfos.values().forEach(c -> output.writeln("- " + c));
     }
     
     @Override
@@ -40,28 +41,23 @@ public class SessionManagerInputHandlerDefault extends AbstractInputHandler {
     }
 
     @Override
-    protected void handleInternal(String command, String... args) {
-        try {
-            if (command.equals("login")) {
-                String userName = args[0];
-                sessionMgr.login(userName);
-                Session session = sessionMgr.getSession();
-                output.writeln(String.format("Hello, %s!", userName));
-                output.writeln(String.format("Your balance is $%d", session.getAccount().getBalance()));
-                session.getOweList().stream().filter(o -> o.getAmount() != 0)
-                        .forEach(o -> {
-                            if (o.getAmount() > 0) {
-                                output.writelnf("Owed %d from %s", o.getAmount(), o.getAccount2());
-                            } else {
-                                output.writelnf("Owed %d to %s", -o.getAmount(), o.getAccount2());
-                            }
-                        });
-            } else {
-                output.writeln("Available commands:");
-                commandInfos.values().forEach(c -> output.writeln("- " + c));
-            }
-        } catch (ServiceException ex) {
-            showError(ex);
+    protected void handleInternal(String command, String... args) throws Exception {
+        if (command.equals("login")) {
+            String userName = args[0];
+            sessionMgr.login(userName);
+            Session session = sessionMgr.getSession();
+            output.writeln(String.format("Hello, %s!", userName));
+            output.writeln(String.format("Your balance is $%d", session.getAccount().getBalance()));
+            session.getOweList().stream().filter(o -> o.getAmount() != 0)
+                    .forEach(o -> {
+                        if (o.getAmount() > 0) {
+                            output.writelnf("Owed %d from %s", o.getAmount(), o.getAccount2());
+                        } else {
+                            output.writelnf("Owed %d to %s", -o.getAmount(), o.getAccount2());
+                        }
+                    });
+        } else {
+            showCommands();
         }
     }
 

@@ -18,7 +18,7 @@ public abstract class AbstractInputHandler {
             handleInternal(command, params);
         } catch (IndexOutOfBoundsException | NumberFormatException | DateTimeParseException ex) {
             showCommandInfo(command);
-        } catch (IllegalArgumentException ex) {
+        } catch (Exception ex) {
             showError(ex);
         }
     }
@@ -29,5 +29,5 @@ public abstract class AbstractInputHandler {
 
     protected abstract void showCommandInfo(String command);
 
-    protected abstract void handleInternal(String command, String... args);
+    protected abstract void handleInternal(String command, String... args) throws Exception;
 }
