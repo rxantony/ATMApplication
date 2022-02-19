@@ -1,5 +1,5 @@
 package com.bank.atm.domain.common;
 
-public interface ObjectFactory<TInput, TOutput> {
-    TOutput create(TInput arg);
+public interface ObjectFactory<TArg, TOutput> {
+    TOutput create(TArg arg);
 }
