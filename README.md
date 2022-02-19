@@ -1,6 +1,6 @@
 # ATMApplication
 
-Sample a java clean code on ATM application by applying Command and Query Responsibility Segregation pattern.
+Sample java clean code on ATM application by applying Command and Query Responsibility Segregation pattern.
 
 ### Tech Stacks
 
