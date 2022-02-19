@@ -1,6 +1,6 @@
 # ATMApplication
 
-Sample java clean code on ATM application.
+Sample a simple java clean code on ATM application.
 
 ### Tech Stacks
 
