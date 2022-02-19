@@ -1,6 +1,7 @@
-package com.bank.atm.domain.service;
+package com.bank.atm.domain.service.account;
 
 import com.bank.atm.domain.common.Guard;
+import com.bank.atm.domain.service.ServiceException;
 
 public class AccountNotExistsException extends ServiceException {
     private final String accountName;

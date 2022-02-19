@@ -1,18 +1,17 @@
-package com.bank.atm.domain.service.user.command;
+package com.bank.atm.domain.service;
 
 import com.bank.atm.domain.common.Guard;
 import com.bank.atm.domain.common.handler.HandlerWithException;
 import com.bank.atm.domain.common.handler.RequestWithException;
 import com.bank.atm.domain.data.Account;
 import com.bank.atm.domain.data.AccountRepository;
-import com.bank.atm.domain.service.AccountNotExistsException;
-import com.bank.atm.domain.service.ServiceException;
+import com.bank.atm.domain.service.account.AccountNotExistsException;
 
-public abstract class AbstractATMCommand<TRequest extends RequestWithException<TResult, ServiceException>, TResult>
+public abstract class AbstractServiceCommand<TRequest extends RequestWithException<TResult, ServiceException>, TResult>
         implements HandlerWithException<TRequest, TResult, ServiceException> {
     private final AccountRepository accRepo;
 
-    protected AbstractATMCommand(AccountRepository accRepo) {
+    protected AbstractServiceCommand(AccountRepository accRepo) {
         Guard.validateArgNotNull(accRepo, "accRepo");
         this.accRepo = accRepo;
     }

@@ -8,12 +8,12 @@ import com.bank.atm.domain.common.handler.HandlerWithException;
 import com.bank.atm.domain.data.AccountRepository;
 import com.bank.atm.domain.data.Owe;
 import com.bank.atm.domain.data.OweRepository;
+import com.bank.atm.domain.service.AbstractServiceCommand;
 import com.bank.atm.domain.service.ServiceException;
-import com.bank.atm.domain.service.user.command.AbstractATMCommand;
 import com.bank.atm.domain.service.user.command.transfer.TransferRequest;
 import com.bank.atm.domain.service.user.command.transfer.TransferResult;
 
-public class DepositCommand extends AbstractATMCommand<DepositRequest, DepositResult> {
+public class DepositCommand extends AbstractServiceCommand<DepositRequest, DepositResult> {
     private final OweRepository oweRepo;
     private final HandlerWithException<TransferRequest, TransferResult, ServiceException> transferCommand;
 

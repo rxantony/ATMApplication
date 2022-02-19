@@ -7,7 +7,7 @@ import java.util.HashMap;
 import com.bank.atm.domain.common.Guard;
 import com.bank.atm.domain.service.OweListResult;
 import com.bank.atm.domain.service.ServiceException;
-import com.bank.atm.domain.service.TransactionResult;
+import com.bank.atm.domain.service.user.command.TransactionResult;
 import com.bank.atm.domain.service.user.command.transfer.TransferResult;
 
 public class SessionInputHandlerDefault extends AbstractInputHandler {

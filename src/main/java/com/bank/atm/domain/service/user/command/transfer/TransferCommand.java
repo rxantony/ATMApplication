@@ -6,11 +6,11 @@ import com.bank.atm.domain.common.Guard;
 import com.bank.atm.domain.common.handler.Handler;
 import com.bank.atm.domain.data.AccountRepository;
 import com.bank.atm.domain.data.Owe;
+import com.bank.atm.domain.service.AbstractServiceCommand;
 import com.bank.atm.domain.service.ServiceException;
-import com.bank.atm.domain.service.user.command.AbstractATMCommand;
 import com.bank.atm.domain.service.user.command.owe.OweRequest;
 
-public class TransferCommand extends AbstractATMCommand<TransferRequest, TransferResult> {
+public class TransferCommand extends AbstractServiceCommand<TransferRequest, TransferResult> {
     private final Handler<OweRequest, Integer> oweCmd;
 
     public TransferCommand(AccountRepository accRepo, Handler<OweRequest, Integer> oweCmd) {

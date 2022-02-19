@@ -2,10 +2,10 @@ package com.bank.atm.domain.service.user.command.withdraw;
 
 import com.bank.atm.domain.common.Guard;
 import com.bank.atm.domain.data.AccountRepository;
+import com.bank.atm.domain.service.AbstractServiceCommand;
 import com.bank.atm.domain.service.ServiceException;
-import com.bank.atm.domain.service.user.command.AbstractATMCommand;
 
-public class WithdrawCommand extends AbstractATMCommand<WithdrawRequest, WithdrawResult> {
+public class WithdrawCommand extends AbstractServiceCommand<WithdrawRequest, WithdrawResult> {
 
     public WithdrawCommand(AccountRepository accRepo) {
         super(accRepo);

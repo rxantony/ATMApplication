@@ -1,6 +1,6 @@
 package com.bank.atm.domain.service.user.command.withdraw;
 
-import com.bank.atm.domain.service.TransactionResult;
+import com.bank.atm.domain.service.user.command.TransactionResult;
 
 public class WithdrawResult extends TransactionResult {
 

@@ -1,4 +1,4 @@
-package com.bank.atm.domain.service;
+package com.bank.atm.domain.service.user.command;
 
 import com.bank.atm.domain.common.Guard;
 
