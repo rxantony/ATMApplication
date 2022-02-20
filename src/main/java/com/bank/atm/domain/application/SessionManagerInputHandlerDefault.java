@@ -3,7 +3,6 @@ package com.bank.atm.domain.application;
 import java.util.HashMap;
 
 import com.bank.atm.domain.common.Guard;
-import com.bank.atm.domain.service.ServiceException;
 
 public class SessionManagerInputHandlerDefault extends AbstractInputHandler {
     private final SessionManager sessionMgr;
