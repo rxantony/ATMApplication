@@ -103,7 +103,8 @@ public final class App {
 
         // 2. create owe commands and handler manager
         var oweCmd = new ReduceOweFromCommand(oweRepo,
-                new ReduceOweToCommand(oweRepo, new RequestOweToCommand(oweRepo, null)));
+                        new ReduceOweToCommand(oweRepo, 
+                            new RequestOweToCommand(oweRepo, null)));
 
         var transferCmd = new TransferCommand(accRepo, oweCmd);
         var handlerMgr = new HandlerManagerDefault()
