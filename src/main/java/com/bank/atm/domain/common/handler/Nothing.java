@@ -4,5 +4,5 @@ public class Nothing {
     private Nothing() {
     }
 
-    public final static Nothing instance = new Nothing();
+    public final static Nothing SINGLETON = new Nothing();
 }
