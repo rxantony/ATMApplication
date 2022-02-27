@@ -37,9 +37,9 @@ public class SessionManagerDefault implements SessionManager {
     }
 
     public void login(String userName) {
-        var oacc = handlerMgr.execute(new GetAccountRequest(userName));
+        var oacc = handlerMgr.handle(new GetAccountRequest(userName));
         if (!oacc.isPresent()) {
-            var newAcc = handlerMgr.execute(new CreateAccountRequest(userName, 0));
+            var newAcc = handlerMgr.handle(new CreateAccountRequest(userName, 0));
             oacc = Optional.of(newAcc);
         }
         var arg = new CreateSessionArg(oacc.get().getName(), this::whenSessionLoggedOut);

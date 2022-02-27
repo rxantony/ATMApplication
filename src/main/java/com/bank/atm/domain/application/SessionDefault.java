@@ -49,7 +49,7 @@ public class SessionDefault implements Session {
     @Override
     public Account getAccount() throws ServiceException {
         validateSessionExpired();
-        var oacc = manager.execute(new GetAccountRequest(accountName));
+        var oacc = manager.handle(new GetAccountRequest(accountName));
         if (!oacc.isPresent()) {
             logout();
             throw AccountNotExistsException.create(accountName);
@@ -67,25 +67,25 @@ public class SessionDefault implements Session {
     @Override
     public DepositResult deposit(int amount) throws ServiceException {
         validateSessionExpired();
-        return manager.execute(new DepositRequest(accountName, amount));
+        return manager.handle(new DepositRequest(accountName, amount));
     }
 
     @Override
     public TransferResult transfer(String recipient, int amount) throws ServiceException {
         validateSessionExpired();
-        return manager.execute(new TransferRequest(accountName, recipient, amount));
+        return manager.handle(new TransferRequest(accountName, recipient, amount));
     }
 
     @Override
     public WithdrawResult withdraw(int amount) throws ServiceException {
         validateSessionExpired();
-        return manager.execute(new WithdrawRequest(accountName, amount));
+        return manager.handle(new WithdrawRequest(accountName, amount));
     }
 
     @Override
     public List<Owe> getOweList() throws ServiceException {
         validateSessionExpired();
-        return manager.execute(new GetOweListRequest(accountName));
+        return manager.handle(new GetOweListRequest(accountName));
     }
 
     @Override

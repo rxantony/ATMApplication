@@ -12,7 +12,7 @@ public class HandlerManagerDefault implements HandlerManager {
 
     @Override
     @SuppressWarnings("unchecked")
-    public <TRequest extends Request<TResult>, TResult> TResult execute(TRequest request) {
+    public <TRequest extends Request<TResult>, TResult> TResult handle(TRequest request) {
         var cls = request.getClass();
         var handler = (Handler<TRequest, TResult>) handlerStores.get(cls);
         if (handler == null)
@@ -31,7 +31,7 @@ public class HandlerManagerDefault implements HandlerManager {
 
     @Override
     @SuppressWarnings("unchecked")
-    public <TRequest extends RequestWithException<TResult, TException>, TResult, TException extends ATMException> TResult execute(
+    public <TRequest extends RequestWithException<TResult, TException>, TResult, TException extends ATMException> TResult handle(
             TRequest request) throws TException {
         var cls = request.getClass();
         var handler = (HandlerWithException<TRequest, TResult, TException>) handlerWithErrStores.get(cls);
