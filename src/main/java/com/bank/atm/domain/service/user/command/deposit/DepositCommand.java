@@ -4,7 +4,6 @@ import java.util.Comparator;
 import java.util.stream.Collectors;
 
 import com.bank.atm.domain.common.Guard;
-import com.bank.atm.domain.common.handler.HandlerWithException;
 import com.bank.atm.domain.data.AccountRepository;
 import com.bank.atm.domain.data.Owe;
 import com.bank.atm.domain.data.OweRepository;
@@ -15,10 +14,10 @@ import com.bank.atm.domain.service.user.command.transfer.TransferResult;
 
 public class DepositCommand extends AbstractServiceCommand<DepositRequest, DepositResult> {
     private final OweRepository oweRepo;
-    private final HandlerWithException<TransferRequest, TransferResult, ServiceException> transferCommand;
+    private final AbstractServiceCommand<TransferRequest, TransferResult> transferCommand;
 
     public DepositCommand(AccountRepository accRepo, OweRepository oweRepo,
-            HandlerWithException<TransferRequest, TransferResult, ServiceException> transferCommand) {
+            AbstractServiceCommand<TransferRequest, TransferResult> transferCommand) {
         super(accRepo);
         Guard.validateArgNotNull(transferCommand, "transferCommand");
         Guard.validateArgNotNull(oweRepo, "oweRepo");
