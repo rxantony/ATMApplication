@@ -27,7 +27,7 @@ public class WithdrawException extends ServiceException {
                 String.format("your saving account is not sufficient for withdrawal transaction"));
     }
 
-    public static WithdrawException amountMustGreaterThanOrEqualsTo(String accountName, int amount) {
+    public static WithdrawException amountBeMustGreaterThanOrEqualsTo(String accountName, int amount) {
         validate(accountName);
         return new WithdrawException("02", accountName, amount,
                 String.format("your withdrawals must be greater than or equals to %d", amount));

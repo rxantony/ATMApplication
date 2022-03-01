@@ -16,7 +16,7 @@ public class WithdrawCommand extends AbstractServiceCommand<WithdrawRequest, Wit
         Guard.validateArgNotNullOrEmpty(request.getAccountName(), "accountName");
 
         if (request.getAmount() < 1)
-            throw WithdrawException.amountMustGreaterThanOrEqualsTo(request.getAccountName(), request.getAmount());
+            throw WithdrawException.amountBeMustGreaterThanOrEqualsTo(request.getAccountName(), request.getAmount());
 
         var acc = getAccount(request.getAccountName());
         var result = new WithdrawResult(request.getAccountName());
