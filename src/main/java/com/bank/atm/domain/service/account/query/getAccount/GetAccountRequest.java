@@ -7,7 +7,6 @@ import com.bank.atm.domain.data.Account;
 
 public class GetAccountRequest implements Request<Optional<Account>> {
     private String accountName;
-
     public GetAccountRequest(String accountName) {
         setAccountName(accountName);
     }

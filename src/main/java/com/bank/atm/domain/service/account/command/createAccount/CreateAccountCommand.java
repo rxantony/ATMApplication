@@ -1,14 +1,15 @@
 package com.bank.atm.domain.service.account.command.createAccount;
 
 import com.bank.atm.domain.common.Guard;
-import com.bank.atm.domain.common.handler.Handler;
+import com.bank.atm.domain.common.handler.AbstractHandler;
 import com.bank.atm.domain.data.Account;
 import com.bank.atm.domain.data.AccountRepository;
 
-public class CreateAccountCommand implements Handler<CreateAccountRequest, Account> {
+public class CreateAccountCommand extends AbstractHandler<CreateAccountRequest, Account> {
     private final AccountRepository accountRepo;
 
     public CreateAccountCommand(AccountRepository accountRepo) {
+        super(CreateAccountRequest.class);
         Guard.validateArgNotNull(accountRepo, "accountRepo");
         this.accountRepo = accountRepo;
     }

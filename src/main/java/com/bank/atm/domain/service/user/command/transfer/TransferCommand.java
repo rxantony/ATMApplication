@@ -3,7 +3,7 @@ package com.bank.atm.domain.service.user.command.transfer;
 import java.util.ArrayList;
 
 import com.bank.atm.domain.common.Guard;
-import com.bank.atm.domain.common.handler.Handler;
+import com.bank.atm.domain.common.handler.AbstractHandler;
 import com.bank.atm.domain.data.AccountRepository;
 import com.bank.atm.domain.data.Owe;
 import com.bank.atm.domain.service.AbstractServiceCommand;
@@ -11,10 +11,10 @@ import com.bank.atm.domain.service.ServiceException;
 import com.bank.atm.domain.service.user.command.owe.OweRequest;
 
 public class TransferCommand extends AbstractServiceCommand<TransferRequest, TransferResult> {
-    private final Handler<OweRequest, Integer> oweCmd;
+    private final AbstractHandler<OweRequest, Integer> oweCmd;
 
-    public TransferCommand(AccountRepository accRepo, Handler<OweRequest, Integer> oweCmd) {
-        super(accRepo);
+    public TransferCommand(AccountRepository accRepo, AbstractHandler<OweRequest, Integer> oweCmd) {
+        super(accRepo, TransferRequest.class);
         Guard.validateArgNotNull(oweCmd, "oweCmd");
         this.oweCmd = oweCmd;
     }
@@ -48,5 +48,4 @@ public class TransferCommand extends AbstractServiceCommand<TransferRequest, Tra
         result.setBalance(acc.getBalance());
         return result;
     }
-
 }

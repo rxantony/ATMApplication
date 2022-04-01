@@ -9,8 +9,8 @@ public interface HandlerManager {
             TRequest request) throws TException;
 
     <TRequest extends Request<TResult>, TResult> HandlerManager registerHandler(
-            Handler<TRequest, TResult> handler);
+            AbstractHandler<TRequest, TResult> handler);
 
     <TRequest extends RequestWithException<TResult, TException>, TResult, TException extends ATMException> HandlerManager registerHandler(
-            HandlerWithException<TRequest, TResult, TException> handler);
+            AbstractHandlerWithException<TRequest, TResult, TException> handler);
 }

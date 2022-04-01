@@ -1,14 +1,15 @@
 package com.bank.atm.domain.service.user.command.owe;
 
 import com.bank.atm.domain.common.Guard;
-import com.bank.atm.domain.common.handler.Handler;
+import com.bank.atm.domain.common.handler.AbstractHandler;
 import com.bank.atm.domain.data.OweRepository;
 
-public class ReduceOweFromCommand implements Handler<OweRequest, Integer> {
+public class ReduceOweFromCommand extends AbstractHandler<OweRequest, Integer> {
     private final OweRepository repo;
-    private final Handler<OweRequest, Integer> nextOweCmd;
+    private final AbstractHandler<OweRequest, Integer> nextOweCmd;
 
-    public ReduceOweFromCommand(OweRepository repo, Handler<OweRequest, Integer> nextOweCmd) {
+    public ReduceOweFromCommand(OweRepository repo, AbstractHandler<OweRequest, Integer> nextOweCmd) {
+        super(OweRequest.class);
         Guard.validateArgNotNull(repo, "repo");
         this.repo = repo;
         this.nextOweCmd = nextOweCmd;

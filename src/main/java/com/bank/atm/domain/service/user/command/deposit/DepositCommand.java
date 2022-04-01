@@ -18,7 +18,7 @@ public class DepositCommand extends AbstractServiceCommand<DepositRequest, Depos
 
     public DepositCommand(AccountRepository accRepo, OweRepository oweRepo,
             AbstractServiceCommand<TransferRequest, TransferResult> transferCommand) {
-        super(accRepo);
+        super(accRepo, DepositRequest.class);
         Guard.validateArgNotNull(transferCommand, "transferCommand");
         Guard.validateArgNotNull(oweRepo, "oweRepo");
         this.transferCommand = transferCommand;
@@ -62,6 +62,11 @@ public class DepositCommand extends AbstractServiceCommand<DepositRequest, Depos
         result.setAmount(amount);
         result.setBalance(transferResult.getBalance());
         return result;
+    }
+
+    @Override
+    public Class<DepositRequest> getRequestClass() {
+        return DepositRequest.class;
     }
 
 }

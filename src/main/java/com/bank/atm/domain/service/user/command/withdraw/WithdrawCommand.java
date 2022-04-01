@@ -8,7 +8,7 @@ import com.bank.atm.domain.service.ServiceException;
 public class WithdrawCommand extends AbstractServiceCommand<WithdrawRequest, WithdrawResult> {
 
     public WithdrawCommand(AccountRepository accRepo) {
-        super(accRepo);
+        super(accRepo, WithdrawRequest.class);
     }
 
     @Override
@@ -30,5 +30,4 @@ public class WithdrawCommand extends AbstractServiceCommand<WithdrawRequest, Wit
         result.setBalance(acc.getBalance());
         return result;
     }
-
 }
