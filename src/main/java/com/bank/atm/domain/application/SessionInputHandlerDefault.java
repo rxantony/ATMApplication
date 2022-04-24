@@ -48,35 +48,45 @@ public class SessionInputHandlerDefault extends AbstractInputHandler {
     }
 
     @Override
-    protected void handleInternal(String command, String... args) throws Exception {
+    protected boolean handleInternal(String command, String... args) throws Exception {
         var accName = session.getAccountName();
+
         if (command.equals("deposit")) {
             var amount = Integer.parseInt(args[0]);
             var result = session.deposit(amount);
             result.getTransfers().forEach(this::printTransfer);
             printBalance(result);
             printOweInfos(result);
+            return true;
 
-        } else if (command.equals("transfer")) {
+        } 
+
+        if (command.equals("transfer")) {
             var recipient = args[0];
             var amount = Integer.parseInt(args[1]);
             var result = session.transfer(recipient, amount);
             printTransfer(result);
             printBalance(result);
             printOweInfos(result);
+            return true;
 
-        } else if (command.equals("withdraw")) {
+        } 
+        
+        if (command.equals("withdraw")) {
             var amount = Integer.parseInt(args[0]);
             var result = session.withdraw(amount);
             printBalance(result);
+            return true;
 
-        } else if (command.equals("logout")) {
+        } 
+        
+        if (command.equals("logout")) {
             session.logout();
             output.writelnf("Goodbye, %s!", accName);
-
-        } else {
-            showCommands();
+            return true;
         }
+
+        return false;
     }
 
     private void printTransfer(TransferResult result) {

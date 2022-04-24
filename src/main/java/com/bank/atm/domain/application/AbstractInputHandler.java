@@ -15,7 +15,8 @@ public abstract class AbstractInputHandler {
         var command = args[0].toLowerCase();
         var params = Stream.of(args).skip(1).toArray(size -> new String[size]);
         try {
-            handleInternal(command, params);
+            if(!handleInternal(command, params))
+                showCommands();
         } catch (IndexOutOfBoundsException | NumberFormatException | DateTimeParseException ex) {
             showCommandInfo(command);
         } catch (Exception ex) {
@@ -29,5 +30,5 @@ public abstract class AbstractInputHandler {
 
     protected abstract void showCommandInfo(String command);
 
-    protected abstract void handleInternal(String command, String... args) throws Exception;
+    protected abstract boolean handleInternal(String command, String... args) throws Exception;
 }

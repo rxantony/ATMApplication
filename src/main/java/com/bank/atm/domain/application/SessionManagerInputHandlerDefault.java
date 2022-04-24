@@ -40,7 +40,7 @@ public class SessionManagerInputHandlerDefault extends AbstractInputHandler {
     }
 
     @Override
-    protected void handleInternal(String command, String... args) throws Exception {
+    protected boolean handleInternal(String command, String... args) throws Exception {
         if (command.equals("login")) {
             String userName = args[0];
             sessionMgr.login(userName);
@@ -55,9 +55,10 @@ public class SessionManagerInputHandlerDefault extends AbstractInputHandler {
                             output.writelnf("Owed %d to %s", -o.getAmount(), o.getAccount2());
                         }
                     });
-        } else {
-            showCommands();
+            return true;
         }
+
+        return false;
     }
 
 }
