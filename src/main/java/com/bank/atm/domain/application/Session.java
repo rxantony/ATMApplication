@@ -2,7 +2,6 @@ package com.bank.atm.domain.application;
 
 import java.util.List;
 
-import com.bank.atm.domain.data.Owe;
 import com.bank.atm.domain.service.ServiceException;
 import com.bank.atm.domain.service.account.query.getaccount.GetAccountResult;
 import com.bank.atm.domain.service.user.command.deposit.DepositResult;

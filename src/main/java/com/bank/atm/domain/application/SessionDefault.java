@@ -6,8 +6,6 @@ import java.util.function.Consumer;
 import com.bank.atm.domain.common.Guard;
 import com.bank.atm.domain.common.ObjectFactory;
 import com.bank.atm.domain.common.handler.HandlerManager;
-import com.bank.atm.domain.data.Account;
-import com.bank.atm.domain.data.Owe;
 import com.bank.atm.domain.service.ServiceException;
 import com.bank.atm.domain.service.account.AccountNotExistsException;
 import com.bank.atm.domain.service.account.query.getaccount.GetAccountRequest;
