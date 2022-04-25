@@ -49,7 +49,7 @@ public class SessionDefault implements Session {
     }
 
     @Override
-    public GetAccountResult    getAccount() throws ServiceException {
+    public GetAccountResult getAccount() throws ServiceException {
         validateSessionExpired();
         var oacc = manager.handle(new GetAccountRequest(accountName));
         if (!oacc.isPresent()) {
