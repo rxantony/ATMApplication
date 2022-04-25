@@ -5,7 +5,7 @@ import com.bank.atm.domain.common.Guard;
 
 public class GetAccountResult {
     private final String name;
-    private int balance;
+    private final int balance;
 
     public GetAccountResult(String name, int balance) {
         Guard.validateArgNotNullOrEmpty(name, "name");
