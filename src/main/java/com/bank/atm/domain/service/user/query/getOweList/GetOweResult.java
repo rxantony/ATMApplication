@@ -13,6 +13,7 @@ public class GetOweResult {
     public GetOweResult(String account1, String account2, int amount, Date createdAt) {
         Guard.validateArgNotNullOrEmpty(account1, "account1");
         Guard.validateArgNotNullOrEmpty(account2, "account2");
+        Guard.validateArgNotNull(createdAt, "createdAt");
 
         this.account1 = account1;
         this.account2 = account2;
