@@ -11,6 +11,7 @@ import com.bank.atm.domain.data.Owe;
 import com.bank.atm.domain.service.ServiceException;
 import com.bank.atm.domain.service.account.AccountNotExistsException;
 import com.bank.atm.domain.service.account.query.getaccount.GetAccountRequest;
+import com.bank.atm.domain.service.account.query.getaccount.GetAccountResult;
 import com.bank.atm.domain.service.user.command.deposit.DepositRequest;
 import com.bank.atm.domain.service.user.command.deposit.DepositResult;
 import com.bank.atm.domain.service.user.command.transfer.TransferRequest;
@@ -18,6 +19,7 @@ import com.bank.atm.domain.service.user.command.transfer.TransferResult;
 import com.bank.atm.domain.service.user.command.withdraw.WithdrawRequest;
 import com.bank.atm.domain.service.user.command.withdraw.WithdrawResult;
 import com.bank.atm.domain.service.user.query.getowelist.GetOweListRequest;
+import com.bank.atm.domain.service.user.query.getowelist.GetOweResult;
 
 public class SessionDefault implements Session {
     private boolean sessionClosed;
@@ -47,7 +49,7 @@ public class SessionDefault implements Session {
     }
 
     @Override
-    public Account getAccount() throws ServiceException {
+    public GetAccountResult    getAccount() throws ServiceException {
         validateSessionExpired();
         var oacc = manager.handle(new GetAccountRequest(accountName));
         if (!oacc.isPresent()) {
@@ -83,7 +85,7 @@ public class SessionDefault implements Session {
     }
 
     @Override
-    public List<Owe> getOweList() throws ServiceException {
+    public List<GetOweResult> getOweList() throws ServiceException {
         validateSessionExpired();
         return manager.handle(new GetOweListRequest(accountName));
     }

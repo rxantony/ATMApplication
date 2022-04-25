@@ -2,19 +2,20 @@ package com.bank.atm.domain.application;
 
 import java.util.List;
 
-import com.bank.atm.domain.data.Account;
 import com.bank.atm.domain.data.Owe;
 import com.bank.atm.domain.service.ServiceException;
+import com.bank.atm.domain.service.account.query.getaccount.GetAccountResult;
 import com.bank.atm.domain.service.user.command.deposit.DepositResult;
 import com.bank.atm.domain.service.user.command.transfer.TransferResult;
 import com.bank.atm.domain.service.user.command.withdraw.WithdrawResult;
+import com.bank.atm.domain.service.user.query.getowelist.GetOweResult;
 
 public interface Session {
     void logout();
 
     String getAccountName();
 
-    Account getAccount() throws ServiceException;
+    GetAccountResult getAccount() throws ServiceException;
 
     DepositResult deposit(int amount) throws ServiceException;
 
@@ -22,7 +23,7 @@ public interface Session {
 
     TransferResult transfer(String toAccountName, int amount) throws ServiceException;
 
-    List<Owe> getOweList() throws ServiceException;
+    List<GetOweResult> getOweList() throws ServiceException;
 
     AbstractInputHandler getInputHandler();
 }

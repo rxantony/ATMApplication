@@ -4,10 +4,9 @@ import java.util.Optional;
 
 import com.bank.atm.domain.common.Guard;
 import com.bank.atm.domain.common.handler.AbstractHandler;
-import com.bank.atm.domain.data.Account;
 import com.bank.atm.domain.data.AccountRepository;
 
-public class GetAccountQuery extends AbstractHandler<GetAccountRequest, Optional<Account>> {
+public class GetAccountQuery extends AbstractHandler<GetAccountRequest, Optional<GetAccountResult>> {
     private final AccountRepository accountRepo;
 
     public GetAccountQuery(AccountRepository accountRepo) {
@@ -17,7 +16,12 @@ public class GetAccountQuery extends AbstractHandler<GetAccountRequest, Optional
     }
 
     @Override
-    public Optional<Account> execute(GetAccountRequest request) {
-        return accountRepo.get(request.getAccountName());
+    public Optional<GetAccountResult> execute(GetAccountRequest request) {
+        var acc = accountRepo.get(request.getAccountName());
+        if(!acc.isPresent())
+            return Optional.empty();
+
+        var result =  new GetAccountResult(acc.get().getName(), acc.get().getBalance());
+        return Optional.of(result);
     }
 }

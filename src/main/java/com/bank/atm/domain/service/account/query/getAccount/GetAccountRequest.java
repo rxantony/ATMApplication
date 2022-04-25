@@ -3,9 +3,8 @@ package com.bank.atm.domain.service.account.query.getaccount;
 import java.util.Optional;
 
 import com.bank.atm.domain.common.handler.Request;
-import com.bank.atm.domain.data.Account;
 
-public class GetAccountRequest implements Request<Optional<Account>> {
+public class GetAccountRequest implements Request<Optional<GetAccountResult>> {
     private String accountName;
     public GetAccountRequest(String accountName) {
         setAccountName(accountName);

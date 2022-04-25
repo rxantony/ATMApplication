@@ -3,9 +3,8 @@ package com.bank.atm.domain.service.user.query.getowelist;
 import java.util.List;
 
 import com.bank.atm.domain.common.handler.Request;
-import com.bank.atm.domain.data.Owe;
 
-public class GetOweListRequest implements Request<List<Owe>> {
+public class GetOweListRequest implements Request<List<GetOweResult>> {
     private String accountName;
 
     public GetOweListRequest(String accountName) {

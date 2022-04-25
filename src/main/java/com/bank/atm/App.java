@@ -62,7 +62,7 @@ public final class App {
                 try {
                     var line = ireader.readLine();
                     if (args.length != 0)
-                        System.out.printf("%n$ %s%n", line);
+                        System.out.format("%n$ %s%n", line);
                     return line == null ? "exit" : line;
                 } catch (IOException ex) {
                     return "exit";
