@@ -1,6 +1,5 @@
 package com.bank.atm.domain.common.handler;
 
-import java.lang.reflect.ParameterizedType;
 import java.util.HashMap;
 import java.util.Map;
 
