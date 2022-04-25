@@ -19,15 +19,15 @@ import com.bank.atm.domain.application.SessionManagerInputHandlerDefault;
 import com.bank.atm.domain.common.handler.HandlerManagerDefault;
 import com.bank.atm.domain.data.AccountRepositoryDefault;
 import com.bank.atm.domain.data.OweRepositoryDefault;
-import com.bank.atm.domain.service.account.command.createAccount.CreateAccountCommand;
-import com.bank.atm.domain.service.account.query.getAccount.GetAccountQuery;
+import com.bank.atm.domain.service.account.command.createaccount.CreateAccountCommand;
+import com.bank.atm.domain.service.account.query.getaccount.GetAccountQuery;
 import com.bank.atm.domain.service.user.command.deposit.DepositCommand;
 import com.bank.atm.domain.service.user.command.owe.ReduceOweFromCommand;
 import com.bank.atm.domain.service.user.command.owe.ReduceOweToCommand;
 import com.bank.atm.domain.service.user.command.owe.RequestOweToCommand;
 import com.bank.atm.domain.service.user.command.transfer.TransferCommand;
 import com.bank.atm.domain.service.user.command.withdraw.WithdrawCommand;
-import com.bank.atm.domain.service.user.query.getOweList.GetOweListQuery;
+import com.bank.atm.domain.service.user.query.getowelist.GetOweListQuery;
 
 public final class App {
     private App() {

@@ -10,14 +10,14 @@ import com.bank.atm.domain.data.Account;
 import com.bank.atm.domain.data.Owe;
 import com.bank.atm.domain.service.ServiceException;
 import com.bank.atm.domain.service.account.AccountNotExistsException;
-import com.bank.atm.domain.service.account.query.getAccount.GetAccountRequest;
+import com.bank.atm.domain.service.account.query.getaccount.GetAccountRequest;
 import com.bank.atm.domain.service.user.command.deposit.DepositRequest;
 import com.bank.atm.domain.service.user.command.deposit.DepositResult;
 import com.bank.atm.domain.service.user.command.transfer.TransferRequest;
 import com.bank.atm.domain.service.user.command.transfer.TransferResult;
 import com.bank.atm.domain.service.user.command.withdraw.WithdrawRequest;
 import com.bank.atm.domain.service.user.command.withdraw.WithdrawResult;
-import com.bank.atm.domain.service.user.query.getOweList.GetOweListRequest;
+import com.bank.atm.domain.service.user.query.getowelist.GetOweListRequest;
 
 public class SessionDefault implements Session {
     private boolean sessionClosed;

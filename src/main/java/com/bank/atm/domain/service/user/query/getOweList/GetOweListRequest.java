@@ -1,4 +1,4 @@
-package com.bank.atm.domain.service.user.query.getOweList;
+package com.bank.atm.domain.service.user.query.getowelist;
 
 import java.util.List;
 

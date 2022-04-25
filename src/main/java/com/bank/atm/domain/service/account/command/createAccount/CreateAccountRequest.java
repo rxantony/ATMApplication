@@ -1,4 +1,4 @@
-package com.bank.atm.domain.service.account.command.createAccount;
+package com.bank.atm.domain.service.account.command.createaccount;
 
 import com.bank.atm.domain.common.handler.Request;
 import com.bank.atm.domain.data.Account;

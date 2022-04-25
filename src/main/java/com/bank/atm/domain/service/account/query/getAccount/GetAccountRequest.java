@@ -1,4 +1,4 @@
-package com.bank.atm.domain.service.account.query.getAccount;
+package com.bank.atm.domain.service.account.query.getaccount;
 
 import java.util.Optional;
 

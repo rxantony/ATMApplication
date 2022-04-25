@@ -5,8 +5,8 @@ import java.util.Optional;
 import com.bank.atm.domain.common.Guard;
 import com.bank.atm.domain.common.ObjectFactory;
 import com.bank.atm.domain.common.handler.HandlerManager;
-import com.bank.atm.domain.service.account.command.createAccount.CreateAccountRequest;
-import com.bank.atm.domain.service.account.query.getAccount.GetAccountRequest;
+import com.bank.atm.domain.service.account.command.createaccount.CreateAccountRequest;
+import com.bank.atm.domain.service.account.query.getaccount.GetAccountRequest;
 
 public class SessionManagerDefault implements SessionManager {
     private Session currentSession;
