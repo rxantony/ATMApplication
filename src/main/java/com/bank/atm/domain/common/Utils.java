@@ -4,6 +4,8 @@ import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 public class Utils {
+    private Utils(){}
+    
     public static <T> Stream<T> streamFrom(Iterable<T> it){
         return streamFrom(it, false);
     }
