@@ -17,7 +17,7 @@ public class SessionManagerInputHandlerDefault extends AbstractInputHandler {
         initCommandInfos();
     }
 
-    protected void initCommandInfos() {
+    private void initCommandInfos() {
         commandInfos.put("login", "login [string accountName]");
         commandInfos.put("help", "help");
         commandInfos.put("exit", "exit");
