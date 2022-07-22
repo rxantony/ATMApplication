@@ -16,7 +16,7 @@ public class GetAccountQuery extends AbstractHandler<GetAccountRequest, Optional
     }
 
     @Override
-    public Optional<GetAccountResult> execute(GetAccountRequest request) {
+    public Optional<GetAccountResult> handle(GetAccountRequest request) {
         var acc = accountRepo.get(request.getAccountName());
         if(!acc.isPresent())
             return Optional.empty();

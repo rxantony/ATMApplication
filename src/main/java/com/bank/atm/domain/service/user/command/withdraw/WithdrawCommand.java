@@ -12,7 +12,7 @@ public class WithdrawCommand extends AbstractCommand<WithdrawRequest, WithdrawRe
     }
 
     @Override
-    public WithdrawResult execute(WithdrawRequest request) throws ServiceException {
+    public WithdrawResult handle(WithdrawRequest request) throws ServiceException {
         Guard.validateArgNotNullOrEmpty(request.getAccountName(), "accountName");
 
         if (request.getAmount() < 1)

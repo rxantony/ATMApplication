@@ -11,5 +11,5 @@ public abstract class AbstractHandler<TRequest extends Request<TResult>, TResult
         return requestClass;
     }
 
-    public abstract TResult execute(TRequest request);
+    public abstract TResult handle(TRequest request);
 }

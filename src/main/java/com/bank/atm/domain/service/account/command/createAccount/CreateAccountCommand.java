@@ -15,7 +15,7 @@ public class CreateAccountCommand extends AbstractHandler<CreateAccountRequest, 
     }
 
     @Override
-    public CreateAccountResult execute(CreateAccountRequest request) {
+    public CreateAccountResult handle(CreateAccountRequest request) {
         var oacc = accountRepo.get(request.getAccountName());
         if (oacc.isPresent())
             return new CreateAccountResult(oacc.get().getName(), oacc.get().getBalance());

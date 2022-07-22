@@ -14,7 +14,7 @@ public class HandlerManagerDefault implements HandlerManager {
         var handler = (AbstractHandler<TRequest, TResult>) handlerStores.get(cls);
         if (handler == null)
             throw new HandlerNotFoundException(cls.getCanonicalName());
-        return handler.execute(request);
+        return handler.handle(request);
     }
 
     @Override
@@ -33,7 +33,7 @@ public class HandlerManagerDefault implements HandlerManager {
         var handler = (AbstractHandlerWithError<TRequest, TResult, TException>) handlerWithErrStores.get(cls);
         if (handler == null)
             throw new HandlerNotFoundException(cls.getCanonicalName());
-        return handler.execute(request);
+        return handler.handle(request);
     }
 
     @Override

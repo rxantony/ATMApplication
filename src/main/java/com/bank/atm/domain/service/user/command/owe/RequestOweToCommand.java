@@ -17,10 +17,10 @@ public class RequestOweToCommand extends AbstractHandler<OweRequest, Integer> {
     }
 
     @Override
-    public Integer execute(OweRequest request) {
+    public Integer handle(OweRequest request) {
         if (request.getAmount() <= request.getAccount().getBalance()) {
             if (nextOweCmd != null)
-                return nextOweCmd.execute(request);
+                return nextOweCmd.handle(request);
             return request.getAmount();
         }
 

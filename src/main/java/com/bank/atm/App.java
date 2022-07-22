@@ -34,15 +34,14 @@ public final class App {
     }
 
     public static void main(String[] args) {
-        try(var input = createInput(args); var output = createOutput();){
+        try (var input = createInput(args); var output = createOutput();) {
             runAtmMachine(input, output);
-        }
-        catch(Exception ex){
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
 
-    private static MediaInput createInput(String[] args) throws Exception{
+    private static MediaInput createInput(String[] args) throws Exception {
         BufferedReader reader = null;
         if (args.length == 0) {
             reader = System.console() != null ? new BufferedReader(System.console().reader())
@@ -76,9 +75,9 @@ public final class App {
         };
     }
 
-    private static MediaOutput createOutput(){
+    private static MediaOutput createOutput() {
         var writer = System.console() != null ? System.console().writer()
-                        : new PrintWriter(new BufferedOutputStream(System.out));
+                : new PrintWriter(new BufferedOutputStream(System.out));
         return new MediaOutput() {
             @Override
             public void writeln(String str) {
@@ -96,26 +95,24 @@ public final class App {
             }
         };
     }
+
     private static void runAtmMachine(MediaInput input, MediaOutput output) {
         // 1. create repos
         var accRepo = new AccountRepositoryDefault();
         var oweRepo = new OweRepositoryDefault();
 
-        // 2. create owe commands and handler manager
-        var oweCmd = new ReduceOweFromCommand(oweRepo,
-                        new ReduceOweToCommand(oweRepo, 
-                            new RequestOweToCommand(oweRepo, null)));
-
-        var transferCmd = new TransferCommand(accRepo, oweCmd);
-        var handlerMgr = new HandlerManagerDefault()
-                .registerHandler(new GetAccountQuery(accRepo))
+        var handlerMgr = new HandlerManagerDefault();
+        handlerMgr.registerHandler(new GetAccountQuery(accRepo))
                 .registerHandler(new GetOweListQuery(oweRepo))
+                .registerHandler(new RequestOweToCommand(oweRepo,
+                        new ReduceOweFromCommand(oweRepo,
+                                new ReduceOweToCommand(oweRepo, null))))
                 .registerHandler(new CreateAccountCommand(accRepo))
-                .registerHandler(transferCmd)
+                .registerHandler(new TransferCommand(accRepo, handlerMgr))
                 .registerHandler(new WithdrawCommand(accRepo))
-                .registerHandler(new DepositCommand(accRepo, oweRepo, transferCmd));
+                .registerHandler(new DepositCommand(accRepo, oweRepo, handlerMgr));
 
-        // 3. create session manager
+        // 2. create session manager
         var sessionMgr = new SessionManagerDefault(handlerMgr,
                 arg -> new SessionDefault(arg.accountName, handlerMgr, arg.eventLogout,
                         session -> new SessionInputHandlerDefault(session, output)),

@@ -4,6 +4,7 @@ import java.util.Comparator;
 import java.util.stream.Collectors;
 
 import com.bank.atm.domain.common.Guard;
+import com.bank.atm.domain.common.handler.HandlerManager;
 import com.bank.atm.domain.data.AccountRepository;
 import com.bank.atm.domain.data.Owe;
 import com.bank.atm.domain.data.OweRepository;
@@ -14,19 +15,19 @@ import com.bank.atm.domain.service.user.command.transfer.TransferResult;
 
 public class DepositCommand extends AbstractCommand<DepositRequest, DepositResult> {
     private final OweRepository oweRepo;
-    private final AbstractCommand<TransferRequest, TransferResult> transferCommand;
+    private final HandlerManager handlerManager;
 
     public DepositCommand(AccountRepository accRepo, OweRepository oweRepo,
-            AbstractCommand<TransferRequest, TransferResult> transferCommand) {
+            HandlerManager handlerManager) {
         super(accRepo, DepositRequest.class);
-        Guard.validateArgNotNull(transferCommand, "transferCommand");
+        Guard.validateArgNotNull(handlerManager, "handlerManager");
         Guard.validateArgNotNull(oweRepo, "oweRepo");
-        this.transferCommand = transferCommand;
+        this.handlerManager = handlerManager;
         this.oweRepo = oweRepo;
     }
 
     @Override
-    public DepositResult execute(DepositRequest request) throws ServiceException {
+    public DepositResult handle(DepositRequest request) throws ServiceException {
         Guard.validateArgNotNullOrEmpty(request.getAccountName(), "accountName");
 
         if (request.getAmount() < 1)
@@ -55,12 +56,13 @@ public class DepositCommand extends AbstractCommand<DepositRequest, DepositResul
                 transAmount = -oweTo.getAmount();
             }
             var transferRequest = new TransferRequest(request.getAccountName(), oweTo.getAccount2(), transAmount);
-            transferResult = transferCommand.execute(transferRequest);
+            transferResult = handlerManager.handle(transferRequest);
             result.addTransferResult(transferResult);
             amount -= transAmount;
         }
         result.setAmount(amount);
-        result.setBalance(transferResult.getBalance());
+        if(transferResult != null) 
+            result.setBalance(transferResult.getBalance());
         return result;
     }
 

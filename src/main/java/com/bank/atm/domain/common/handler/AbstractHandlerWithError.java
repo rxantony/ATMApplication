@@ -11,6 +11,6 @@ public abstract class AbstractHandlerWithError<TRequest, TResult, TException ext
         return requestClass;
     }
     
-    public abstract TResult execute(TRequest request) throws TException;
+    public abstract TResult handle(TRequest request) throws TException;
 }
  

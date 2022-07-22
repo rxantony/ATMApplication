@@ -16,11 +16,11 @@ public class ReduceOweToCommand extends AbstractHandler<OweRequest, Integer> {
     }
 
     @Override
-    public Integer execute(OweRequest request) {
+    public Integer handle(OweRequest request) {
         var ooweTo = repo.getOweTo(request.getAccount().getName(), request.getRecipient().getName());
         if (!ooweTo.isPresent()) {
             if (nextOweCmd != null)
-                return nextOweCmd.execute(request);
+                return nextOweCmd.handle(request);
             return request.getAmount();
         }
 
