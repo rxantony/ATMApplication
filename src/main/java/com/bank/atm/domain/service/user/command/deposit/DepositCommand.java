@@ -7,17 +7,17 @@ import com.bank.atm.domain.common.Guard;
 import com.bank.atm.domain.data.AccountRepository;
 import com.bank.atm.domain.data.Owe;
 import com.bank.atm.domain.data.OweRepository;
-import com.bank.atm.domain.service.AbstractServiceCommand;
+import com.bank.atm.domain.service.AbstractCommand;
 import com.bank.atm.domain.service.ServiceException;
 import com.bank.atm.domain.service.user.command.transfer.TransferRequest;
 import com.bank.atm.domain.service.user.command.transfer.TransferResult;
 
-public class DepositCommand extends AbstractServiceCommand<DepositRequest, DepositResult> {
+public class DepositCommand extends AbstractCommand<DepositRequest, DepositResult> {
     private final OweRepository oweRepo;
-    private final AbstractServiceCommand<TransferRequest, TransferResult> transferCommand;
+    private final AbstractCommand<TransferRequest, TransferResult> transferCommand;
 
     public DepositCommand(AccountRepository accRepo, OweRepository oweRepo,
-            AbstractServiceCommand<TransferRequest, TransferResult> transferCommand) {
+            AbstractCommand<TransferRequest, TransferResult> transferCommand) {
         super(accRepo, DepositRequest.class);
         Guard.validateArgNotNull(transferCommand, "transferCommand");
         Guard.validateArgNotNull(oweRepo, "oweRepo");

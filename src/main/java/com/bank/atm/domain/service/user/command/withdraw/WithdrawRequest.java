@@ -1,9 +1,9 @@
 package com.bank.atm.domain.service.user.command.withdraw;
 
-import com.bank.atm.domain.common.handler.RequestWithException;
+import com.bank.atm.domain.common.handler.RequestWithError;
 import com.bank.atm.domain.service.ServiceException;
 
-public class WithdrawRequest implements RequestWithException<WithdrawResult, ServiceException> {
+public class WithdrawRequest implements RequestWithError<WithdrawResult, ServiceException> {
     private int amount;
     private String accountName;
 

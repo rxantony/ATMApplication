@@ -1,9 +1,9 @@
 package com.bank.atm.domain.service.user.command.deposit;
 
-import com.bank.atm.domain.common.handler.RequestWithException;
+import com.bank.atm.domain.common.handler.RequestWithError;
 import com.bank.atm.domain.service.ServiceException;
 
-public class DepositRequest implements RequestWithException<DepositResult, ServiceException> {
+public class DepositRequest implements RequestWithError<DepositResult, ServiceException> {
     private int amount;
     private String accountName;
 

@@ -1,9 +1,9 @@
 package com.bank.atm.domain.service.user.command.transfer;
 
-import com.bank.atm.domain.common.handler.RequestWithException;
+import com.bank.atm.domain.common.handler.RequestWithError;
 import com.bank.atm.domain.service.ServiceException;
 
-public class TransferRequest implements RequestWithException<TransferResult, ServiceException> {
+public class TransferRequest implements RequestWithError<TransferResult, ServiceException> {
     private String accountName;
     private String recipient;
     private int amount;

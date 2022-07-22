@@ -71,7 +71,7 @@ public final class App {
 
             @Override
             public void close() throws Exception {
-                ireader.close();;
+                ireader.close();
             }
         };
     }
