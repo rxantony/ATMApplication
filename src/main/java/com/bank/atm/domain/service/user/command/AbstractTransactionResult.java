@@ -2,17 +2,17 @@ package com.bank.atm.domain.service.user.command;
 
 import com.bank.atm.domain.common.Guard;
 
-public abstract class TransactionResult {
+public abstract class AbstractTransactionResult {
     private final String accountName;
     private int amount;
     private int balace;
 
-    protected TransactionResult(String accountName) {
+    protected AbstractTransactionResult(String accountName) {
         Guard.validateArgNotNullOrEmpty(accountName, "accountName");
         this.accountName = accountName;
     }
 
-    protected TransactionResult(String accountName, int amount, int balace) {
+    protected AbstractTransactionResult(String accountName, int amount, int balace) {
         this(accountName);
         setAmount(amount);
         setBalance(balace);

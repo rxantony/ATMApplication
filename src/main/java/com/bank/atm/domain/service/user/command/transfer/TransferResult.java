@@ -5,9 +5,9 @@ import java.util.Collections;
 import com.bank.atm.domain.common.Guard;
 import com.bank.atm.domain.data.Owe;
 import com.bank.atm.domain.service.OweListResult;
-import com.bank.atm.domain.service.user.command.TransactionResult;
+import com.bank.atm.domain.service.user.command.AbstractTransactionResult;
 
-public class TransferResult extends TransactionResult implements OweListResult {
+public class TransferResult extends AbstractTransactionResult implements OweListResult {
     private final String recipient;
     private final Iterable<Owe> oweList;
     private static final Iterable<Owe> EMPTY_OWES = Collections.emptyList();

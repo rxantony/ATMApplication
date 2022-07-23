@@ -8,10 +8,10 @@ import java.util.stream.StreamSupport;
 import com.bank.atm.domain.common.Guard;
 import com.bank.atm.domain.data.Owe;
 import com.bank.atm.domain.service.OweListResult;
-import com.bank.atm.domain.service.user.command.TransactionResult;
+import com.bank.atm.domain.service.user.command.AbstractTransactionResult;
 import com.bank.atm.domain.service.user.command.transfer.TransferResult;
 
-public class DepositResult extends TransactionResult implements OweListResult {
+public class DepositResult extends AbstractTransactionResult implements OweListResult {
     private final List<TransferResult> transferList;
 
     public DepositResult(String accountName) {

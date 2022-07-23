@@ -6,7 +6,7 @@ import java.util.HashMap;
 
 import com.bank.atm.domain.common.Guard;
 import com.bank.atm.domain.service.OweListResult;
-import com.bank.atm.domain.service.user.command.TransactionResult;
+import com.bank.atm.domain.service.user.command.AbstractTransactionResult;
 import com.bank.atm.domain.service.user.command.transfer.TransferResult;
 
 public class DefaultSessionInputHandler extends AbstractInputHandler {
@@ -95,7 +95,7 @@ public class DefaultSessionInputHandler extends AbstractInputHandler {
         output.writelnf("Transferred $%d to %s", result.getAmount(), result.getRecipient());
     }
 
-    private void printBalance(TransactionResult result) {
+    private void printBalance(AbstractTransactionResult result) {
         output.writelnf("Your balance is $%d", result.getBalance());
     }
 
