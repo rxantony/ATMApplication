@@ -25,15 +25,18 @@ public class DefaultSessionManager implements SessionManager {
         currentSession = null;
     }
 
+    @Override
     public Session getSession() {
         return currentSession;
     }
 
+    @Override
     public AbstractInputHandler getInputHandler() {
         return inputHandler;
     }
 
-    public void login(String userName) {
+    @Override
+    public Session login(String userName) {
         String accName = null;
         var result = handlerMgr.handle(new GetAccountRequest(userName));
         if (result.isPresent()) {
@@ -44,6 +47,7 @@ public class DefaultSessionManager implements SessionManager {
             accName = newAcc.getName();
         }
         currentSession = sessionFactory.create(accName, this::whenSessionLoggedOut);
+        return currentSession;
     }
 
     @Override

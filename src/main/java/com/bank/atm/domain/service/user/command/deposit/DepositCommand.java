@@ -41,7 +41,7 @@ public class DepositCommand extends AbstractCommand<DepositRequest, DepositResul
                 .sorted(Comparator.comparing(Owe::getCreatedAt).reversed()).collect(Collectors.toList());
 
         if (oweToList.isEmpty()) {
-            DepositResult result = new DepositResult(request.getAccountName());
+            var result = new DepositResult(request.getAccountName());
             result.setAmount(request.getAmount());
             result.setBalance(acc.getBalance());
             return result;
