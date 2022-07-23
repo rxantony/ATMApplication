@@ -17,7 +17,7 @@ public abstract class AbstractInputHandler {
         try {
             if(!handleInternal(command, params))
                 showCommands();
-        } catch (IndexOutOfBoundsException | NumberFormatException | DateTimeParseException ex) {
+        } catch (IndexOutOfBoundsException | IllegalArgumentException | DateTimeParseException ex) {
             showCommandInfo(command);
         } catch (Exception ex) {
             showError(ex);
