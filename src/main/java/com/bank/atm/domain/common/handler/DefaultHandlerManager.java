@@ -3,7 +3,7 @@ package com.bank.atm.domain.common.handler;
 import java.util.HashMap;
 import java.util.Map;
 
-public class HandlerManagerDefault implements HandlerManager {
+public class DefaultHandlerManager implements HandlerManager {
     private final Map<Class<?>, AbstractHandler<?, ?>> handlerStores = new HashMap<>();
     private final Map<Class<?>, AbstractHandlerWithError<?, ?, ?>> handlerWithErrStores = new HashMap<>();
 
@@ -37,7 +37,7 @@ public class HandlerManagerDefault implements HandlerManager {
     }
 
     @Override
-    public <TRequest extends RequestWithError<TResult, TException>, TResult, TException extends Exception> HandlerManagerDefault registerHandler(
+    public <TRequest extends RequestWithError<TResult, TException>, TResult, TException extends Exception> DefaultHandlerManager registerHandler(
             AbstractHandlerWithError<TRequest, TResult, TException> handler) {
         var requestCls = handler.getRequestClass();
         handlerWithErrStores.put(requestCls, handler);

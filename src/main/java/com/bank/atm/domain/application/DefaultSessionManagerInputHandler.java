@@ -4,12 +4,12 @@ import java.util.HashMap;
 
 import com.bank.atm.domain.common.Guard;
 
-public class SessionManagerInputHandlerDefault extends AbstractInputHandler {
+public class DefaultSessionManagerInputHandler extends AbstractInputHandler {
     private final SessionManager sessionMgr;
     private final MediaOutput output;
     private final HashMap<String, String> commandInfos = new HashMap<>();
 
-    public SessionManagerInputHandlerDefault(SessionManager sessionMgr, MediaOutput output) {
+    public DefaultSessionManagerInputHandler(SessionManager sessionMgr, MediaOutput output) {
         Guard.validateArgNotNull(sessionMgr, "sessionMgr");
         Guard.validateArgNotNull(output, "output");
         this.sessionMgr = sessionMgr;

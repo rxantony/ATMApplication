@@ -9,12 +9,12 @@ import com.bank.atm.domain.service.OweListResult;
 import com.bank.atm.domain.service.user.command.TransactionResult;
 import com.bank.atm.domain.service.user.command.transfer.TransferResult;
 
-public class SessionInputHandlerDefault extends AbstractInputHandler {
+public class DefaultSessionInputHandler extends AbstractInputHandler {
     private final Session session;
     private final MediaOutput output;
     protected final HashMap<String, String> commandInfos = new HashMap<>();
 
-    public SessionInputHandlerDefault(Session session, MediaOutput output) {
+    public DefaultSessionInputHandler(Session session, MediaOutput output) {
         Guard.validateArgNotNull(session, "session");
         Guard.validateArgNotNull(output, "output");
         this.session = session;

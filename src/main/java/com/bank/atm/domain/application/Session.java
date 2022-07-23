@@ -9,7 +9,7 @@ import com.bank.atm.domain.service.user.command.transfer.TransferResult;
 import com.bank.atm.domain.service.user.command.withdraw.WithdrawResult;
 import com.bank.atm.domain.service.user.query.getowelist.GetOweResult;
 
-public interface Session {
+public interface Session extends AutoCloseable{
     void logout();
 
     String getAccountName();

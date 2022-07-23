@@ -12,13 +12,14 @@ import java.nio.file.Paths;
 import com.bank.atm.domain.application.ATMMachine;
 import com.bank.atm.domain.application.MediaInput;
 import com.bank.atm.domain.application.MediaOutput;
-import com.bank.atm.domain.application.SessionDefault;
-import com.bank.atm.domain.application.SessionInputHandlerDefault;
-import com.bank.atm.domain.application.SessionManagerDefault;
-import com.bank.atm.domain.application.SessionManagerInputHandlerDefault;
-import com.bank.atm.domain.common.handler.HandlerManagerDefault;
-import com.bank.atm.domain.data.AccountRepositoryDefault;
-import com.bank.atm.domain.data.OweRepositoryDefault;
+import com.bank.atm.domain.application.DefaultSession;
+import com.bank.atm.domain.application.DefaultSessionInputHandler;
+import com.bank.atm.domain.application.DefaultSessionManager;
+import com.bank.atm.domain.application.SessionManagerFactory;
+import com.bank.atm.domain.application.DefaultSessionManagerInputHandler;
+import com.bank.atm.domain.common.handler.DefaultHandlerManager;
+import com.bank.atm.domain.data.DefaultAccountRepository;
+import com.bank.atm.domain.data.DefaultOweRepository;
 import com.bank.atm.domain.service.account.command.createaccount.CreateAccountCommand;
 import com.bank.atm.domain.service.account.query.getaccount.GetAccountQuery;
 import com.bank.atm.domain.service.user.command.deposit.DepositCommand;
@@ -98,10 +99,10 @@ public final class App {
 
     private static void runAtmMachine(MediaInput input, MediaOutput output) {
         // 1. create repos
-        var accRepo = new AccountRepositoryDefault();
-        var oweRepo = new OweRepositoryDefault();
+        var accRepo = new DefaultAccountRepository();
+        var oweRepo = new DefaultOweRepository();
 
-        var handlerMgr = new HandlerManagerDefault();
+        var handlerMgr = new DefaultHandlerManager();
         handlerMgr.registerHandler(new GetAccountQuery(accRepo))
                 .registerHandler(new GetOweListQuery(oweRepo))
                 .registerHandler(new RequestOweToCommand(oweRepo,
@@ -113,13 +114,12 @@ public final class App {
                 .registerHandler(new DepositCommand(accRepo, oweRepo, handlerMgr));
 
         // 2. create session manager
-        var sessionMgr = new SessionManagerDefault(handlerMgr,
-                arg -> new SessionDefault(arg.accountName, handlerMgr, arg.eventLogout,
-                        session -> new SessionInputHandlerDefault(session, output)),
-                mgr -> new SessionManagerInputHandlerDefault(mgr, output));
+        SessionManagerFactory sessionMgrFactory =  ()-> new DefaultSessionManager(handlerMgr,
+                (accName, logoutCallback) -> new DefaultSession(accName, handlerMgr, logoutCallback, session -> new DefaultSessionInputHandler(session, output)),
+                sessionMgr -> new DefaultSessionManagerInputHandler(sessionMgr, output));
 
-        // 4. create and run atm machine.
-        var atm = new ATMMachine(sessionMgr, input, output);
+        // 3. create and run atm machine.
+        var atm = new ATMMachine(sessionMgrFactory, input, output);
         atm.run();
     }
 }

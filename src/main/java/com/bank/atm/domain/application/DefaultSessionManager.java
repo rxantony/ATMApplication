@@ -1,19 +1,18 @@
 package com.bank.atm.domain.application;
 
 import com.bank.atm.domain.common.Guard;
-import com.bank.atm.domain.common.ObjectFactory;
 import com.bank.atm.domain.common.handler.HandlerManager;
 import com.bank.atm.domain.service.account.command.createaccount.CreateAccountRequest;
 import com.bank.atm.domain.service.account.query.getaccount.GetAccountRequest;
 
-public class SessionManagerDefault implements SessionManager {
+public class DefaultSessionManager implements SessionManager {
     private Session currentSession;
     private final HandlerManager handlerMgr;
     private final AbstractInputHandler inputHandler;
-    private final ObjectFactory<CreateSessionArg, Session> sessionFactory;
+    private final SessionFactory sessionFactory;
 
-    public SessionManagerDefault(HandlerManager handlerMgr, ObjectFactory<CreateSessionArg, Session> sessionFactory,
-            ObjectFactory<SessionManager, AbstractInputHandler> inputhandlerFactory) {
+    public  DefaultSessionManager(HandlerManager handlerMgr, SessionFactory sessionFactory,
+            AbstractInputHandlerFactory<SessionManager> inputhandlerFactory) {
         Guard.validateArgNotNull(handlerMgr, "handlerMgr");
         Guard.validateArgNotNull(sessionFactory, "sessionFactory");
         Guard.validateArgNotNull(inputhandlerFactory, "inputhandlerFactory");
@@ -44,7 +43,12 @@ public class SessionManagerDefault implements SessionManager {
             var newAcc = handlerMgr.handle(new CreateAccountRequest(userName, 0));
             accName = newAcc.getName();
         }
-        var arg = new CreateSessionArg(accName, this::whenSessionLoggedOut);
-        currentSession = sessionFactory.create(arg);
+        currentSession = sessionFactory.create(accName, this::whenSessionLoggedOut);
+    }
+
+    @Override
+    public void close() throws Exception {
+        if(currentSession != null)
+            currentSession.close();
     }
 }

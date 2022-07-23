@@ -5,35 +5,34 @@ import com.bank.atm.domain.common.Guard;
 public class ATMMachine {
     private final MediaInput input;
     private final MediaOutput output;
-    private final SessionManager sessionMgr;
+    private final SessionManagerFactory sessionMgrFactory;
 
-    public ATMMachine(SessionManager sessionMgr, MediaInput input, MediaOutput output) {
-        Guard.validateArgNotNull(sessionMgr, "sessionMgr");
+    public ATMMachine(SessionManagerFactory sessionMgrFactory, MediaInput input, MediaOutput output) {
+        Guard.validateArgNotNull(sessionMgrFactory, "sessionMgrFactory");
         Guard.validateArgNotNull(input, "input");
         Guard.validateArgNotNull(output, "output");
-        this.sessionMgr = sessionMgr;
+        this.sessionMgrFactory = sessionMgrFactory;
         this.input = input;
         this.output = output;
     }
 
     public void run() {
         output.writeln("Welcome to atm.");
-        sessionMgr.getInputHandler().showCommands();
-
-        while (true) {
-            var session = sessionMgr.getSession();
-            var line = input.readLine().trim();
-            if (line.equals("exit")) {
-                if (session != null)
-                    session.logout();
-                return;
+        try(var sessionMgr = sessionMgrFactory.create();){
+            sessionMgr.getInputHandler().showCommands();
+            while (true) {
+                var line = input.readLine().trim();
+                if (line.equals("exit")) {
+                    return;
+                }
+                if (sessionMgr.getSession() == null)
+                    sessionMgr.getInputHandler().handle(line);
+                else
+                    sessionMgr.getSession().getInputHandler().handle(line);
             }
-            AbstractInputHandler handler;
-            if (session == null)
-                handler = sessionMgr.getInputHandler();
-            else
-                handler = session.getInputHandler();
-            handler.handle(line);
+        }
+        catch(Exception ex){
+            ex.printStackTrace();
         }
     }
 }

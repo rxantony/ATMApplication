@@ -14,7 +14,7 @@ class OweRepositoryDefaultTest {
 
     @Test
     void addNullOweAndThrowIllegalArumentException(){
-        var repo = new OweRepositoryDefault();
+        var repo = new DefaultOweRepository();
         var owe = new Owe(bob, alice, 0);
         assertThrows(IllegalArgumentException.class, () ->  repo.add(owe, null));
         assertThrows(IllegalArgumentException.class, () ->  repo.add(null, owe));
@@ -24,7 +24,7 @@ class OweRepositoryDefaultTest {
     void addNewOwesAndGet(){
         var bobOweToAlice = new Owe(bob, alice, -10);
         var aliceOweFromBob = new Owe(alice, bob, 10);
-        var repo = new OweRepositoryDefault();
+        var repo = new DefaultOweRepository();
 
         var getBobOweToAlice =  repo.get(bob, alice);
         var getALiceToBob =  repo.get(alice, bob);
@@ -48,7 +48,7 @@ class OweRepositoryDefaultTest {
     @Test
     void addNewOwesGetAndChangeAmountValueDoesNotEffectTheOtherOne(){
         var bobOweToAlice = new Owe(bob, alice, -10);
-        var repo = new OweRepositoryDefault();
+        var repo = new DefaultOweRepository();
 
         repo.add(bobOweToAlice);
         var getBobOweToAlice =  repo.get(bob, alice);
@@ -61,7 +61,7 @@ class OweRepositoryDefaultTest {
 
     @Test
     void updateWithNotExistsOweThanThowIllegalArgumentException(){
-        var repo = new OweRepositoryDefault();
+        var repo = new DefaultOweRepository();
         var owe1 = new Owe(bob, alice, 100);
         var owe2 = new Owe("dylan", alice, 200);
         var owe3 = new Owe(alice, bob, 300);
@@ -71,7 +71,7 @@ class OweRepositoryDefaultTest {
 
     @Test
     void updateExixtingOwe(){
-        var repo = new OweRepositoryDefault();
+        var repo = new DefaultOweRepository();
         var bobOweFromAlice = new Owe(bob, alice, 100);
         var dylanOweFromAlice = new Owe("dylan", alice, 200);
         var aliceOweFromBob = new Owe(alice, bob, 300);
@@ -96,7 +96,7 @@ class OweRepositoryDefaultTest {
     @Test
     void getOweFrom(){
         var bobOweFromAlice = new Owe(bob, alice, 10);
-        var repo = new OweRepositoryDefault();
+        var repo = new DefaultOweRepository();
         repo.add(bobOweFromAlice);
         var getBobOweFromAlice = repo.getOweFrom(bob, alice);
 
@@ -106,7 +106,7 @@ class OweRepositoryDefaultTest {
     @Test
     void getOweTo(){
         var bobOweToAlice = new Owe(bob, alice, -10);
-        var repo = new OweRepositoryDefault();
+        var repo = new DefaultOweRepository();
         repo.add(bobOweToAlice);
         var getBobOweToAlice = repo.getOweTo(bob, alice);
 
@@ -121,7 +121,7 @@ class OweRepositoryDefaultTest {
         var bobOweFromJosh = new Owe(bob, "josh", 910);
         var bobOweFromJenny = new Owe(bob, "jenny", 0);
 
-        var repo = new OweRepositoryDefault();
+        var repo = new DefaultOweRepository();
         repo.add(bobOweToAlice, bobOweToAndy, bobOweFromJosh, bobOweFromJenny, bobOweToDylan);
         var getBobOweToList= repo.getOweToList(bob);
 
@@ -137,7 +137,7 @@ class OweRepositoryDefaultTest {
         var bobOweFromJosh = new Owe(bob, "josh", 910);
         var bobOweFromJenny = new Owe(bob, "jenny", 0);
 
-        var repo = new OweRepositoryDefault();
+        var repo = new DefaultOweRepository();
         repo.add(bobOweToAlice, bobOweFromJosh, bobOweFromAndy, bobOweFromJenny, bobOweToDylan);
         var getBobOweToList= repo.getList(bob);
         var bobOweToCount = getBobOweToList.stream().filter(o-> o.getAmount() < 0).count();

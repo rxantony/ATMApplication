@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-public class OweRepositoryDefault implements OweRepository {
+public class DefaultOweRepository implements OweRepository {
     private final List<Owe> db = new ArrayList<>();
 
     @Override

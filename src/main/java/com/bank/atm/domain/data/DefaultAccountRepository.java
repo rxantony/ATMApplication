@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class AccountRepositoryDefault implements AccountRepository {
+public class DefaultAccountRepository implements AccountRepository {
     private final List<Account> db = new ArrayList<>();
 
     @Override

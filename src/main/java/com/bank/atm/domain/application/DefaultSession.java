@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.function.Consumer;
 
 import com.bank.atm.domain.common.Guard;
-import com.bank.atm.domain.common.ObjectFactory;
 import com.bank.atm.domain.common.handler.HandlerManager;
 import com.bank.atm.domain.service.ServiceException;
 import com.bank.atm.domain.service.account.AccountNotExistsException;
@@ -19,25 +18,25 @@ import com.bank.atm.domain.service.user.command.withdraw.WithdrawResult;
 import com.bank.atm.domain.service.user.query.getowelist.GetOweListRequest;
 import com.bank.atm.domain.service.user.query.getowelist.GetOweResult;
 
-public class SessionDefault implements Session {
+public class DefaultSession implements Session {
     private boolean sessionClosed;
     private final String accountName;
     private final HandlerManager manager;
-    private final Consumer<String> eventLogout;
     private final AbstractInputHandler inputHandler;
-
-    public SessionDefault(String accountName, HandlerManager manager, Consumer<String> eventLogout,
-            ObjectFactory<Session, AbstractInputHandler> inputhandlerFactory) {
+    private final Consumer<String> logoutCallback;
+    
+    public DefaultSession(String accountName, HandlerManager manager, Consumer<String> logoutCallback,
+            AbstractInputHandlerFactory<Session> inputHandlerFactory) {
 
         Guard.validateArgNotNullOrEmpty(accountName, "accountName");
         Guard.validateArgNotNull(manager, "manager");
-        Guard.validateArgNotNull(eventLogout, "eventLogout");
-        Guard.validateArgNotNull(inputhandlerFactory, "inputhandlerFactory");
+        Guard.validateArgNotNull(logoutCallback, "logoutCallback");
+        Guard.validateArgNotNull(inputHandlerFactory, "inputhandlerFactory");
 
         this.accountName = accountName;
         this.manager = manager;
-        this.eventLogout = eventLogout;
-        this.inputHandler = inputhandlerFactory.create(this);
+        this.logoutCallback = logoutCallback;
+        this.inputHandler = inputHandlerFactory.create(this);
     }
 
     @Override
@@ -61,7 +60,7 @@ public class SessionDefault implements Session {
     public void logout() {
         validateSessionExpired();
         sessionClosed = true;
-        eventLogout.accept(accountName);
+        logoutCallback.accept(accountName);
     }
 
     @Override
@@ -97,5 +96,11 @@ public class SessionDefault implements Session {
     private void validateSessionExpired() {
         if (sessionClosed)
             throw new SessionExpiredException();
+    }
+
+    @Override
+    public void close() throws Exception {
+        if(!sessionClosed)
+            logout();
     }
 }
