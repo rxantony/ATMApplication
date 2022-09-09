@@ -20,7 +20,7 @@ public class GetOweListQuery extends AbstractHandler<GetOweListRequest, List<Get
     public List<GetOweResult> handle(GetOweListRequest request) {
         var oweList = oweRepo.getList(request.getAccountName());
         return oweList.stream()
-                    .map(o-> new GetOweResult(o.getAccount1(), o.getAccount2(), o.getAmount(), o.getCreatedAt()))
-                    .collect(Collectors.toList());
+                .map(o -> new GetOweResult(o.getAccount1(), o.getAccount2(), o.getAmount(), o.getCreatedAt()))
+                .collect(Collectors.toList());
     }
 }

@@ -31,8 +31,7 @@ import com.bank.atm.domain.service.user.command.withdraw.WithdrawCommand;
 import com.bank.atm.domain.service.user.query.getowelist.GetOweListQuery;
 
 public final class App {
-    private App() {
-    }
+    private App() {}
 
     public static void main(String[] args) {
         try (var input = createInput(args); var output = createOutput();) {
@@ -114,8 +113,9 @@ public final class App {
                 .registerHandler(new DepositCommand(accRepo, oweRepo, handlerMgr));
 
         // 2. create session manager
-        SessionManagerFactory sessionMgrFactory =  ()-> new DefaultSessionManager(handlerMgr,
-                (accName, logoutCallback) -> new DefaultSession(accName, handlerMgr, logoutCallback, session -> new DefaultSessionInputHandler(session, output)),
+        SessionManagerFactory sessionMgrFactory = () -> new DefaultSessionManager(handlerMgr,
+                (accName, logoutCallback) -> new DefaultSession(accName, handlerMgr, logoutCallback,
+                        session -> new DefaultSessionInputHandler(session, output)),
                 sessionMgr -> new DefaultSessionManagerInputHandler(sessionMgr, output));
 
         // 3. create and run atm machine.

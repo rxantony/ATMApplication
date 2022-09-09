@@ -35,5 +35,5 @@ public class GetOweResult {
 
     public Date getCreatedAt() {
         return createdAt;
-    }   
+    }
 }
