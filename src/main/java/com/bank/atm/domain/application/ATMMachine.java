@@ -32,7 +32,7 @@ public class ATMMachine {
             }
         }
         catch(Exception ex){
-            ex.printStackTrace();
+            output.writeln(ex.getMessage());
         }
     }
 }
