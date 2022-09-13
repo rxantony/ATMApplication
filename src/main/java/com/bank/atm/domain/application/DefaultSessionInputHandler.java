@@ -49,7 +49,7 @@ public class DefaultSessionInputHandler extends AbstractInputHandler {
 
     @Override
     protected boolean handleInternal(String command, String... args) throws Exception {
-        var accName = session.getAccountName();
+        var accName = session.getAccount().getName();
 
         if (command.equals("deposit")) {
             var amount = Integer.parseInt(args[0]);

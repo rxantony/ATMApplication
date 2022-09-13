@@ -40,13 +40,7 @@ public class DefaultSession implements Session {
     }
 
     @Override
-    public String getAccountName() {
-        validateSessionExpired();
-        return accountName;
-    }
-
-    @Override
-    public GetAccountResult getAccount() throws ServiceException {
+    public GetAccountResult getAccount() throws AccountNotExistsException {
         validateSessionExpired();
         var oacc = manager.handle(new GetAccountRequest(accountName));
         if (!oacc.isPresent()) {
