@@ -5,6 +5,9 @@ import java.util.stream.Stream;
 
 import com.bank.atm.domain.common.Guard;
 
+/**
+    AbstractInputHandler
+*/
 public abstract class AbstractInputHandler {
     protected AbstractInputHandler() {
     }
