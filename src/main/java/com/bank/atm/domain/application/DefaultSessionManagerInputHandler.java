@@ -42,8 +42,8 @@ public class DefaultSessionManagerInputHandler extends AbstractInputHandler {
     @Override
     protected boolean handleInternal(String command, String... args) throws Exception {
         if (command.equals("login")) {
-            String userName = args[0];
-            Session session = sessionMgr.login(userName);
+            var userName = args[0];
+            var session = sessionMgr.login(userName);
             output.writeln(String.format("Hello, %s!", userName));
             output.writeln(String.format("Your balance is $%d", session.getAccount().getBalance()));
             session.getOweList().stream().filter(o -> o.getAmount() != 0)
