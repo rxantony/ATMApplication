@@ -4,7 +4,7 @@ import java.util.Collection;
 
 import javax.validation.constraints.NotEmpty;
 
-import com.bank.atm.domain.common.handler.VoidRequest;
+import com.bank.atm.domain.common.handler.Request;
 import com.bank.atm.domain.service.dto.DebtDto;
 
 import lombok.AllArgsConstructor;
@@ -17,7 +17,7 @@ import lombok.Singular;
 @Setter
 @Builder
 @AllArgsConstructor
-public class AddDebtsCommand implements VoidRequest {
+public class AddDebtsCommand implements Request<Collection<DebtDto>> {
   @NotEmpty
   @Singular
   private Collection<DebtDto> debts;

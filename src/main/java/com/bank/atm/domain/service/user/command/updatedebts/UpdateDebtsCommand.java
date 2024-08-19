@@ -5,7 +5,6 @@ import java.util.Collection;
 import javax.validation.constraints.NotEmpty;
 
 import com.bank.atm.domain.common.handler.Request;
-import com.bank.atm.domain.common.handler.VoidRequest;
 import com.bank.atm.domain.service.dto.DebtDto;
 
 import lombok.AllArgsConstructor;

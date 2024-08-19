@@ -1,7 +1,6 @@
 package com.bank.atm.domain.service.user.command.deposit;
 
 import java.util.Optional;
-import com.bank.atm.domain.common.CollectionExtensions;
 import com.bank.atm.domain.common.handler.RequestHandlerManager;
 import com.bank.atm.domain.common.handler.AbstractRequestHandler;
 import com.bank.atm.domain.common.handler.HandlerExtensions;
