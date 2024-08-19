@@ -5,9 +5,9 @@ import java.util.Collection;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
+import com.bank.atm.domain.data.dto.DebtDto;
 import com.bank.atm.domain.data.model.Debt;
-import com.bank.atm.domain.service.dto.DebtDto;
-import com.bank.atm.domain.service.user.command.requestdebt.RequestDebtCommand;
+import com.bank.atm.domain.service.debt.command.requestdebt.RequestDebtCommand;
 
 @Mapper
 public interface DebtMapper {

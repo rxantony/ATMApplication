@@ -6,9 +6,10 @@ import java.util.function.Consumer;
 import com.bank.atm.domain.common.Guard;
 import com.bank.atm.domain.common.handler.HandlerExtensions;
 import com.bank.atm.domain.common.handler.RequestHandlerManager;
+import com.bank.atm.domain.data.dto.AccountDto;
+import com.bank.atm.domain.data.dto.DebtDto;
 import com.bank.atm.domain.service.account.query.getoptaccount.GetOptAccountQuery;
-import com.bank.atm.domain.service.dto.AccountDto;
-import com.bank.atm.domain.service.dto.DebtDto;
+import com.bank.atm.domain.service.debt.query.getdebtlist.GetDebtListQuery;
 import com.bank.atm.domain.service.exception.AccountNotExistsException;
 import com.bank.atm.domain.service.user.command.deposit.DepositCommand;
 import com.bank.atm.domain.service.user.command.deposit.DepositResult;
@@ -16,7 +17,6 @@ import com.bank.atm.domain.service.user.command.transfer.TransferCommand;
 import com.bank.atm.domain.service.user.command.transfer.TransferResult;
 import com.bank.atm.domain.service.user.command.withdraw.WithdrawCommand;
 import com.bank.atm.domain.service.user.command.withdraw.WithdrawResult;
-import com.bank.atm.domain.service.user.query.getdebtlist.GetDebtListQuery;
 
 import lombok.experimental.ExtensionMethod;
 

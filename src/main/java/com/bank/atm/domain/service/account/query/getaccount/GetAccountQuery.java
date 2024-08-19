@@ -3,7 +3,7 @@ package com.bank.atm.domain.service.account.query.getaccount;
 import javax.validation.constraints.NotBlank;
 
 import com.bank.atm.domain.common.handler.Request;
-import com.bank.atm.domain.service.dto.AccountDto;
+import com.bank.atm.domain.data.dto.AccountDto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

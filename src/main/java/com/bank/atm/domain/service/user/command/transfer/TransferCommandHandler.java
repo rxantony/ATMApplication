@@ -14,11 +14,11 @@ import com.bank.atm.domain.service.account.command.updateaccount.UpdateAccountCo
 import com.bank.atm.domain.service.account.command.updateaccount.UpdateAccountCommand.BalanceUpdate;
 import com.bank.atm.domain.service.account.command.updateaccounts.UpdateAccountsCommand;
 import com.bank.atm.domain.service.account.query.getaccount.GetAccountQuery;
+import com.bank.atm.domain.service.debt.command.reducedebt.ReduceDebtCommand;
+import com.bank.atm.domain.service.debt.command.reducedebt.ReduceDebtResult;
+import com.bank.atm.domain.service.debt.command.requestdebt.RequestDebtCommand;
+import com.bank.atm.domain.service.debt.command.requestdebt.RequestDebtResult;
 import com.bank.atm.domain.service.mapper.AccountMapper;
-import com.bank.atm.domain.service.user.command.reducedebt.ReduceDebtCommand;
-import com.bank.atm.domain.service.user.command.reducedebt.ReduceDebtResult;
-import com.bank.atm.domain.service.user.command.requestdebt.RequestDebtCommand;
-import com.bank.atm.domain.service.user.command.requestdebt.RequestDebtResult;
 
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.ExtensionMethod;

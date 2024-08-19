@@ -2,8 +2,8 @@ package com.bank.atm.domain.application;
 
 import java.util.Collection;
 
-import com.bank.atm.domain.service.dto.AccountDto;
-import com.bank.atm.domain.service.dto.DebtDto;
+import com.bank.atm.domain.data.dto.AccountDto;
+import com.bank.atm.domain.data.dto.DebtDto;
 import com.bank.atm.domain.service.user.command.deposit.DepositResult;
 import com.bank.atm.domain.service.user.command.transfer.TransferResult;
 import com.bank.atm.domain.service.user.command.withdraw.WithdrawResult;

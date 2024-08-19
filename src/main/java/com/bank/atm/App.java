@@ -27,18 +27,18 @@ import com.bank.atm.domain.service.account.command.updateaccount.UpdateAccountCo
 import com.bank.atm.domain.service.account.command.updateaccounts.UpdateAccountsCommandHandler;
 import com.bank.atm.domain.service.account.query.getaccount.GetAccountQueryHandler;
 import com.bank.atm.domain.service.account.query.getoptaccount.GetOptAccountQueryHandler;
+import com.bank.atm.domain.service.debt.command.adddebts.AddDebtsCommandHandler;
+import com.bank.atm.domain.service.debt.command.reducedebt.ReduceDebtCommandHandler;
+import com.bank.atm.domain.service.debt.command.reducedebts.ReduceDebtsCommandHandler;
+import com.bank.atm.domain.service.debt.command.requestdebt.RequestDebtCommandHandler;
+import com.bank.atm.domain.service.debt.command.updatedebts.UpdateDebtsCommandHandler;
+import com.bank.atm.domain.service.debt.query.getdebt.GetOptDebtQueryHandler;
+import com.bank.atm.domain.service.debt.query.getdebtlist.GetDebtListQueryHandler;
 import com.bank.atm.domain.service.mapper.AccountMapper;
 import com.bank.atm.domain.service.mapper.DebtMapper;
-import com.bank.atm.domain.service.user.command.adddebts.AddDebtsCommandHandler;
 import com.bank.atm.domain.service.user.command.deposit.DepositCommandHandler;
-import com.bank.atm.domain.service.user.command.reducedebt.ReduceDebtCommandHandler;
-import com.bank.atm.domain.service.user.command.reducedebts.ReduceDebtsCommandHandler;
-import com.bank.atm.domain.service.user.command.requestdebt.RequestDebtCommandHandler;
 import com.bank.atm.domain.service.user.command.transfer.TransferCommandHandler;
-import com.bank.atm.domain.service.user.command.updatedebts.UpdateDebtsCommandHandler;
 import com.bank.atm.domain.service.user.command.withdraw.WithdrawCommandHandler;
-import com.bank.atm.domain.service.user.query.getdebt.GetOptDebtQueryHandler;
-import com.bank.atm.domain.service.user.query.getdebtlist.GetDebtListQueryHandler;
 
 public final class App {
 	private App() {

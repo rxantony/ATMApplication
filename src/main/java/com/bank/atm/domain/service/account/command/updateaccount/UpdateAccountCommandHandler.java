@@ -5,8 +5,8 @@ import java.util.Optional;
 import javax.validation.constraints.NotNull;
 
 import com.bank.atm.domain.common.handler.AbstractRequestHandler;
+import com.bank.atm.domain.data.dto.AccountDto;
 import com.bank.atm.domain.data.repository.AccountRepository;
-import com.bank.atm.domain.service.dto.AccountDto;
 import com.bank.atm.domain.service.mapper.AccountMapper;
 
 import lombok.RequiredArgsConstructor;

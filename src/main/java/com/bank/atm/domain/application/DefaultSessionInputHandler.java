@@ -6,8 +6,8 @@ import java.util.HashMap;
 import java.util.Optional;
 
 import com.bank.atm.domain.common.Guard;
-import com.bank.atm.domain.service.user.command.reducedebt.ReduceDebtResult;
-import com.bank.atm.domain.service.user.command.requestdebt.RequestDebtResult;
+import com.bank.atm.domain.service.debt.command.reducedebt.ReduceDebtResult;
+import com.bank.atm.domain.service.debt.command.requestdebt.RequestDebtResult;
 
 public class DefaultSessionInputHandler extends AbstractInputHandler {
 	private final Session session;

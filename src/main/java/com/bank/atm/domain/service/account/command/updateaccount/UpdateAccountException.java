@@ -3,7 +3,7 @@ package com.bank.atm.domain.service.account.command.updateaccount;
 import javax.validation.constraints.NotNull;
 
 import com.bank.atm.domain.common.ATMException;
-import com.bank.atm.domain.service.dto.AccountDto;
+import com.bank.atm.domain.data.dto.AccountDto;
 
 import lombok.Getter;
 

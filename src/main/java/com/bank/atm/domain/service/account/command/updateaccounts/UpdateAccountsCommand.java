@@ -5,8 +5,8 @@ import java.util.Collection;
 import javax.validation.constraints.NotEmpty;
 
 import com.bank.atm.domain.common.handler.Request;
+import com.bank.atm.domain.data.dto.AccountDto;
 import com.bank.atm.domain.service.account.command.updateaccount.UpdateAccountCommand;
-import com.bank.atm.domain.service.dto.AccountDto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

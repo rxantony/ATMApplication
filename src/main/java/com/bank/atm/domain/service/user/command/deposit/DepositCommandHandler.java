@@ -2,12 +2,13 @@ package com.bank.atm.domain.service.user.command.deposit;
 
 import java.util.Optional;
 import com.bank.atm.domain.common.handler.RequestHandlerManager;
+import com.bank.atm.domain.data.dto.AccountDto;
 import com.bank.atm.domain.common.handler.AbstractRequestHandler;
 import com.bank.atm.domain.common.handler.HandlerExtensions;
 import com.bank.atm.domain.service.account.command.updateaccount.UpdateAccountCommand;
 import com.bank.atm.domain.service.account.command.updateaccount.UpdateAccountCommand.BalanceUpdate;
-import com.bank.atm.domain.service.dto.AccountDto;
-import com.bank.atm.domain.service.user.command.reducedebts.ReduceDebtsCommand;
+import com.bank.atm.domain.service.debt.command.reducedebts.ReduceDebtsCommand;
+
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.ExtensionMethod;
 
