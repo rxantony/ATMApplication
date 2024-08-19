@@ -8,13 +8,13 @@ import com.bank.atm.domain.common.handler.RequestHandlerManager;
 import com.bank.atm.domain.data.dto.AccountDto;
 import com.bank.atm.domain.data.dto.DebtDto;
 import com.bank.atm.domain.data.repository.DebtRepository;
+
 import com.bank.atm.domain.service.account.command.updateaccount.UpdateAccountCommand;
 import com.bank.atm.domain.service.account.command.updateaccount.UpdateAccountCommand.BalanceUpdate;
 import com.bank.atm.domain.service.account.query.getaccount.GetAccountQuery;
 import com.bank.atm.domain.service.debt.command.adddebts.AddDebtsCommand;
 import com.bank.atm.domain.service.debt.command.updatedebts.UpdateDebtsCommand;
 import com.bank.atm.domain.service.debt.query.getdebt.GetOptDebtQuery;
-import com.bank.atm.domain.service.mapper.DebtMapper;
 import com.bank.atm.domain.common.handler.AbstractRequestHandler;
 import com.bank.atm.domain.common.handler.HandlerExtensions;
 import com.bank.atm.domain.service.account.command.updateaccounts.UpdateAccountsCommand;
@@ -33,8 +33,6 @@ public class RequestDebtCommandHandler
 	@NotNull
 	private final DebtRepository repo;
 
-	@NotNull
-	private final DebtMapper mapper;
 
 	@Override
 	public Optional<RequestDebtResult> handle(RequestDebtCommand request) {

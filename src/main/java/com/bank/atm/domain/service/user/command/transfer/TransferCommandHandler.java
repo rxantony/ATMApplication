@@ -7,6 +7,7 @@ import java.util.Optional;
 import javax.validation.constraints.NotNull;
 
 import com.bank.atm.domain.common.handler.RequestHandlerManager;
+import com.bank.atm.domain.mapper.AccountMapper;
 import com.bank.atm.domain.common.CollectionExtensions;
 import com.bank.atm.domain.common.handler.AbstractRequestHandler;
 import com.bank.atm.domain.common.handler.HandlerExtensions;
@@ -18,7 +19,6 @@ import com.bank.atm.domain.service.debt.command.reducedebt.ReduceDebtCommand;
 import com.bank.atm.domain.service.debt.command.reducedebt.ReduceDebtResult;
 import com.bank.atm.domain.service.debt.command.requestdebt.RequestDebtCommand;
 import com.bank.atm.domain.service.debt.command.requestdebt.RequestDebtResult;
-import com.bank.atm.domain.service.mapper.AccountMapper;
 
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.ExtensionMethod;

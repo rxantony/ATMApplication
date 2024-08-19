@@ -5,10 +5,10 @@ import javax.validation.constraints.NotNull;
 import com.bank.atm.domain.common.handler.AbstractRequestHandler;
 import com.bank.atm.domain.common.handler.HandlerExtensions;
 import com.bank.atm.domain.common.handler.RequestHandlerManager;
+import com.bank.atm.domain.mapper.AccountMapper;
 import com.bank.atm.domain.service.account.command.updateaccount.UpdateAccountCommand;
 import com.bank.atm.domain.service.account.command.updateaccount.UpdateAccountCommand.BalanceUpdate;
 import com.bank.atm.domain.service.account.query.getaccount.GetAccountQuery;
-import com.bank.atm.domain.service.mapper.AccountMapper;
 
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.ExtensionMethod;

@@ -22,7 +22,10 @@ import com.bank.atm.domain.application.DefaultSessionManagerInputHandler;
 import com.bank.atm.domain.common.handler.DefaultRequestHandlerManager;
 import com.bank.atm.domain.data.repository.DefaultAccountRepository;
 import com.bank.atm.domain.data.repository.DefaultDebRepository;
+import com.bank.atm.domain.mapper.AccountMapper;
+import com.bank.atm.domain.mapper.DebtMapper;
 import com.bank.atm.domain.service.account.command.createaccount.CreateAccountCommandHandler;
+import com.bank.atm.domain.service.account.command.createaccount.CreateAccountMapper;
 import com.bank.atm.domain.service.account.command.updateaccount.UpdateAccountCommandHandler;
 import com.bank.atm.domain.service.account.command.updateaccounts.UpdateAccountsCommandHandler;
 import com.bank.atm.domain.service.account.query.getaccount.GetAccountQueryHandler;
@@ -34,8 +37,6 @@ import com.bank.atm.domain.service.debt.command.requestdebt.RequestDebtCommandHa
 import com.bank.atm.domain.service.debt.command.updatedebts.UpdateDebtsCommandHandler;
 import com.bank.atm.domain.service.debt.query.getdebt.GetOptDebtQueryHandler;
 import com.bank.atm.domain.service.debt.query.getdebtlist.GetDebtListQueryHandler;
-import com.bank.atm.domain.service.mapper.AccountMapper;
-import com.bank.atm.domain.service.mapper.DebtMapper;
 import com.bank.atm.domain.service.user.command.deposit.DepositCommandHandler;
 import com.bank.atm.domain.service.user.command.transfer.TransferCommandHandler;
 import com.bank.atm.domain.service.user.command.withdraw.WithdrawCommandHandler;
@@ -114,18 +115,19 @@ public final class App {
 		var accRepo = new DefaultAccountRepository();
 		var debtRepo = new DefaultDebRepository();
 		var manager = new DefaultRequestHandlerManager(Validation.buildDefaultValidatorFactory().getValidator());
+		
 		manager.register(new GetAccountQueryHandler(accRepo, AccountMapper.INSTANCE))
 				.register(new GetOptAccountQueryHandler(accRepo, AccountMapper.INSTANCE))
 				.register(new GetOptDebtQueryHandler(debtRepo, DebtMapper.INSTANCE))
 				.register(new GetDebtListQueryHandler(debtRepo, DebtMapper.INSTANCE))
-				.register(new CreateAccountCommandHandler(accRepo, AccountMapper.INSTANCE))
+				.register(new CreateAccountCommandHandler(accRepo, CreateAccountMapper.INSTANCE))
 				.register(new UpdateAccountCommandHandler(accRepo, AccountMapper.INSTANCE))
 				.register(new UpdateAccountsCommandHandler(accRepo, AccountMapper.INSTANCE))
 				.register(new AddDebtsCommandHandler(debtRepo, DebtMapper.INSTANCE))
 				.register(new DepositCommandHandler(manager))
 				.register(new ReduceDebtCommandHandler(manager))
 				.register(new ReduceDebtsCommandHandler(manager, debtRepo, DebtMapper.INSTANCE))
-				.register(new RequestDebtCommandHandler(manager, debtRepo, DebtMapper.INSTANCE))
+				.register(new RequestDebtCommandHandler(manager, debtRepo))
 				.register(new TransferCommandHandler(manager, AccountMapper.INSTANCE))
 				.register(new UpdateDebtsCommandHandler(debtRepo, DebtMapper.INSTANCE))
 				.register(new WithdrawCommandHandler(manager, AccountMapper.INSTANCE));

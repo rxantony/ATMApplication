@@ -9,7 +9,7 @@ import javax.validation.constraints.NotNull;
 import com.bank.atm.domain.common.handler.AbstractRequestHandler;
 import com.bank.atm.domain.data.dto.DebtDto;
 import com.bank.atm.domain.data.repository.DebtRepository;
-import com.bank.atm.domain.service.mapper.DebtMapper;
+import com.bank.atm.domain.mapper.DebtMapper;
 
 import lombok.RequiredArgsConstructor;
 

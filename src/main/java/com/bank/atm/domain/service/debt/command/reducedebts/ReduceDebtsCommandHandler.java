@@ -10,6 +10,7 @@ import com.bank.atm.domain.common.handler.RequestHandlerManager;
 import com.bank.atm.domain.data.dto.DebtDto;
 import com.bank.atm.domain.data.model.Debt;
 import com.bank.atm.domain.data.repository.DebtRepository;
+import com.bank.atm.domain.mapper.DebtMapper;
 import com.bank.atm.domain.service.account.command.updateaccount.UpdateAccountCommand;
 import com.bank.atm.domain.service.account.command.updateaccount.UpdateAccountCommand.BalanceUpdate;
 import com.bank.atm.domain.service.account.command.updateaccounts.UpdateAccountsCommand;
@@ -17,7 +18,6 @@ import com.bank.atm.domain.service.debt.command.reducedebt.ReduceDebtException;
 import com.bank.atm.domain.service.debt.command.reducedebt.ReduceDebtResult;
 import com.bank.atm.domain.service.debt.command.updatedebts.UpdateDebtsCommand;
 import com.bank.atm.domain.service.debt.query.getdebt.GetOptDebtQuery;
-import com.bank.atm.domain.service.mapper.DebtMapper;
 
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.ExtensionMethod;

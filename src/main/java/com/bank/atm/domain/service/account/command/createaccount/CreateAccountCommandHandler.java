@@ -7,7 +7,7 @@ import javax.validation.constraints.NotNull;
 import com.bank.atm.domain.common.handler.AbstractRequestHandler;
 import com.bank.atm.domain.data.dto.AccountDto;
 import com.bank.atm.domain.data.repository.AccountRepository;
-import com.bank.atm.domain.service.mapper.AccountMapper;
+import static com.bank.atm.domain.service.account.command.createaccount.CreateAccountMapper.ACCOUNT_MAPPER_INSTANCE;
 
 import lombok.RequiredArgsConstructor;
 
@@ -19,17 +19,17 @@ public class CreateAccountCommandHandler
 	private final AccountRepository repo;
 
 	@NotNull
-	private final AccountMapper mapper;
+	private final CreateAccountMapper mapper;
 
 	@Override
 	public AccountDto handle(CreateAccountCommand request) {
 		return repo.get(request.getName())
 				.filter(a -> a != null)
-				.map(mapper::toDto)
+				.map(ACCOUNT_MAPPER_INSTANCE::toDto)
 				.orElseGet(() -> Optional.of(request)
 						.map(mapper::toModel)
 						.map(repo::add)
-						.map(mapper::toDto)
+						.map(ACCOUNT_MAPPER_INSTANCE::toDto)
 						.get()
 				);
 	}
