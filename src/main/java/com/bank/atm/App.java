@@ -69,19 +69,19 @@ public final class App {
 		final var ireader = reader;
 		return new MediaInput() {
 			@Override
-			public String readLine() {
+			public String readLine(){
 				try {
 					var line = ireader.readLine();
 					if (args.length != 0)
 						System.out.format("%n$ %s%n", line);
 					return line == null ? "exit" : line.trim();
 				} catch (IOException ex) {
-					return "exit";
+					throw new RuntimeException(ex);
 				}
 			}
 
 			@Override
-			public void close() throws Exception {
+			public void close() throws IOException {
 				ireader.close();
 			}
 		};
@@ -112,8 +112,8 @@ public final class App {
 
 	private static void runAtmMachine(MediaInput input, MediaOutput output) {
 		// 1. create repos
-		var accRepo = new DefaultAccountRepository();
-		var debtRepo = new DefaultDebRepository();
+		var debtRepo = new DefaultDebRepository(DebtMapper.INSTANCE);
+		var accRepo = new DefaultAccountRepository(AccountMapper.INSTANCE);
 		var manager = new DefaultRequestHandlerManager(Validation.buildDefaultValidatorFactory().getValidator());
 
 		manager.register(new GetAccountQueryHandler(accRepo, AccountMapper.INSTANCE))

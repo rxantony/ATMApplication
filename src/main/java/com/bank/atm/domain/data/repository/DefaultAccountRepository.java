@@ -6,15 +6,25 @@ import java.util.Date;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import com.bank.atm.domain.data.model.Account;
+import javax.validation.constraints.NotNull;
 
+import com.bank.atm.domain.data.model.Account;
+import com.bank.atm.domain.mapper.AccountMapper;
+
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
 public class DefaultAccountRepository implements AccountRepository {
-	private final ArrayList<Account> db = new ArrayList<>();
+	@NotNull
+	private final AccountMapper mapper;
+
+	private ArrayList<Account> db = new ArrayList<>();
 
 	@Override
 	public Optional<Account> get(String accountName) {
 		return db.stream().filter(a -> a.getName().equals(accountName))
-				.findFirst();
+				.findFirst()
+				.map(mapper::toModel);
 	}
 
 	@Override

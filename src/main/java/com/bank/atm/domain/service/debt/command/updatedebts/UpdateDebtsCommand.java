@@ -20,7 +20,7 @@ import lombok.Singular;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UpdateDebtsCommand implements Request<Collection<DebtDto>> {
-  @NotEmpty
-  @Singular
-  private Collection<DebtDto> debts;
+	@NotEmpty
+	@Singular
+	private Collection<DebtDto> debts;
 }

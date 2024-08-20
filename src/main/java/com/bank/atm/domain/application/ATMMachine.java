@@ -31,8 +31,12 @@ public class ATMMachine {
 					sessionMgr.getSession().getInputHandler().handle(line);
 				}
 			}
-		} catch (Exception ex) {
+		}
+		catch (Exception ex) {
 			output.writeln(ex.getMessage());
+			if(Thread.currentThread().isInterrupted()){
+				Thread.currentThread().interrupt();
+			}
 		}
 	}
 }

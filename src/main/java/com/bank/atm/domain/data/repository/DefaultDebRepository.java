@@ -7,10 +7,19 @@ import java.util.Date;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import com.bank.atm.domain.data.model.Debt;
+import javax.validation.constraints.NotNull;
 
+import com.bank.atm.domain.data.model.Debt;
+import com.bank.atm.domain.mapper.DebtMapper;
+
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
 public class DefaultDebRepository implements DebtRepository {
-	private final ArrayList<Debt> db = new ArrayList<>();
+	@NotNull
+	private final DebtMapper mapper;
+	
+	private ArrayList<Debt> db = new ArrayList<>();
 
 	@Override
 	public Debt add(Debt debt) {
@@ -56,7 +65,8 @@ public class DefaultDebRepository implements DebtRepository {
 	@Override
 	public Optional<Debt> get(String account1, String accoun2) {
 		return db.stream().filter(o -> o.getAccountName1().equals(account1) && o.getAccountName2().equals(accoun2))
-				.findFirst();
+				.findFirst()
+				.map(mapper::toModel);
 	}
 
 	@Override

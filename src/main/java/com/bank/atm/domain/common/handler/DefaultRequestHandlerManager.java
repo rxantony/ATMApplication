@@ -5,6 +5,8 @@ import java.util.Map;
 
 import javax.validation.Validator;
 
+import com.bank.atm.domain.common.Guard;
+
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -25,10 +27,8 @@ public class DefaultRequestHandlerManager implements RequestHandlerManager {
 	public <TRequest extends Request<TResult>, TResult> TResult handle(TRequest request)
 			throws Exception {
 
-		if(request == null){
-			throw new IllegalArgumentException("request is required");
-		}
-
+		validate(request);
+		
 		var cls = request.getClass();
 		var handler = (AbstractRequestHandler<TRequest, TResult>) handlerStores.get(cls);
 
@@ -36,16 +36,19 @@ public class DefaultRequestHandlerManager implements RequestHandlerManager {
 			throw new RequestHandlerNotFoundException(cls.getCanonicalName());
 		}
 
-		try {
-			validator.validate(request);	
+		try {	
 			return handler.handle(request);
 		}
 		catch(Exception ex){
-			if(handler instanceof RequestHandlerExceptionFactory){
-				Throwable iex = ex instanceof RuntimeException ? ex.getCause(): ex;
-				throw ((RequestHandlerExceptionFactory<TRequest>)handler).createException(request, iex);
+			if(ex instanceof RuntimeException && ex.getCause() instanceof Exception){
+				throw (Exception) ex.getCause();
 			}
 			throw ex;
 		}
+	}
+
+	private void validate(Object request){
+		Guard.validateArgNotNull(request, "request is required");
+		validator.validate(request);
 	}
 }

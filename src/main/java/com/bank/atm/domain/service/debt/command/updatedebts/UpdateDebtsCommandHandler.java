@@ -14,21 +14,21 @@ import com.bank.atm.domain.mapper.DebtMapper;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public class UpdateDebtsCommandHandler 
-  extends AbstractRequestHandler<UpdateDebtsCommand, Collection<DebtDto>> {
+public class UpdateDebtsCommandHandler
+		extends AbstractRequestHandler<UpdateDebtsCommand, Collection<DebtDto>> {
 
-  @NotNull
-  private final DebtRepository repo;
+	@NotNull
+	private final DebtRepository repo;
 
-  @NotNull
+	@NotNull
 	private final DebtMapper mapper;
 
-  @Override
-  public Collection<DebtDto> handle(UpdateDebtsCommand request) throws Exception {
-    return Optional.of(request.getDebts())
-      .map(mapper::toModels)
-      .map(repo::update)
-      .map(mapper::toDtos)
-      .orElseGet(()-> Arrays.asList());
-  }
+	@Override
+	public Collection<DebtDto> handle(UpdateDebtsCommand request) throws Exception {
+		return Optional.of(request.getDebts())
+				.map(mapper::toModels)
+				.map(repo::update)
+				.map(mapper::toDtos)
+				.orElseGet(() -> Arrays.asList());
+	}
 }

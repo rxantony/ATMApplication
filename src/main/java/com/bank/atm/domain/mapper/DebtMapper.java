@@ -15,6 +15,7 @@ public interface DebtMapper {
   DebtDto toDto(Debt model);
   Collection<DebtDto> toDtos(Collection<Debt> models);
   
+  Debt toModel(Debt dto);
   Debt toModel(DebtDto dto);
-  Collection<Debt> toModels(Collection<DebtDto> models);
+  Collection<Debt> toModels(Collection<DebtDto> dtos);
 }
