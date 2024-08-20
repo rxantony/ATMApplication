@@ -46,9 +46,7 @@ public class RequestDebtCommandHandler
 	}
 
 	private AccountDto getAccount(String accountName) {
-		return manager.execute(GetAccountQuery.builder()
-				.accountName(accountName)
-				.build());
+		return manager.execute(new GetAccountQuery(accountName));
 	}
 
 	private int calcAvailableAmount(int requestAmount, int availableBalance) {
@@ -65,13 +63,9 @@ public class RequestDebtCommandHandler
 	}
 
 	private RequestDebtResult createDebt(RequestDebtCommand request, int amount) {
-		var acc = manager.execute(GetAccountQuery.builder()
-				.accountName(request.getAccountName1())
-				.build());
+		var acc = manager.execute(new GetAccountQuery(request.getAccountName1()));
 
-		var recAcc = manager.execute(GetAccountQuery.builder()
-				.accountName(request.getAccountName2())
-				.build());
+		var recAcc = manager.execute(new GetAccountQuery(request.getAccountName2()));
 
 		var debt = DebtDto.builder()
 				.accountName1(acc.getName())
