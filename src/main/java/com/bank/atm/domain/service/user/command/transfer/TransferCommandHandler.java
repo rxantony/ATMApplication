@@ -47,7 +47,7 @@ public class TransferCommandHandler
 		var acc = manager.execute(new GetAccountQuery(request.getAccountName()));
 		return Optional.of(acc)
 				.filter(a -> a.getBalance() < request.getAmount())
-				.flatMap(a -> manager.execute(RequestDebtCommand.builder()
+				.map(a -> manager.execute(RequestDebtCommand.builder()
 						.accountName1(request.getAccountName())
 						.accountName2(request.getRecipientName())
 						.amount(request.getAmount() - a.getBalance())

@@ -25,7 +25,7 @@ import lombok.experimental.ExtensionMethod;
 @RequiredArgsConstructor
 @ExtensionMethod(HandlerExtensions.class)
 public class RequestDebtCommandHandler 
-	extends AbstractRequestHandler<RequestDebtCommand, Optional<RequestDebtResult>> {
+	extends AbstractRequestHandler<RequestDebtCommand, RequestDebtResult> {
 
 	@NotNull
 	private final RequestHandlerManager manager;
@@ -35,13 +35,14 @@ public class RequestDebtCommandHandler
 
 
 	@Override
-	public Optional<RequestDebtResult> handle(RequestDebtCommand request) {
+	public RequestDebtResult handle(RequestDebtCommand request) {
 		var account = getAccount(request.getAccountName2());
 		return Optional.of(account.getBalance())
 			.filter(b -> b > 0)
 			.map(b -> calcAvailableAmount(request.getAmount(), b))
 			.map(a -> makeDebt(request, a))
-			.map(r -> updateAccount(request, r));
+			.map(r -> updateAccount(request, r))
+			.orElseThrow(() -> RequestDebtException.noSufficientAmountToBorrow(request.getAccountName1(), request.getAccountName2()));
 	}
 
 	private AccountDto getAccount(String accountName){

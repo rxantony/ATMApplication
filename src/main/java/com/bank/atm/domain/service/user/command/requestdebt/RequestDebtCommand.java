@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class RequestDebtCommand implements Request<Optional<RequestDebtResult>> {
+public class RequestDebtCommand implements Request<RequestDebtResult> {
     @NotNull
     private String accountName1;
 

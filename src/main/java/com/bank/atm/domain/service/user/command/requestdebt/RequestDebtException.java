@@ -17,6 +17,11 @@ public class RequestDebtException extends ATMException{
 
   public static RequestDebtException noDebtExists(String accountName1, String accountName2){
     return new RequestDebtException(accountName1, accountName2, 
-      String.format("cno debt exists, account name 1: %s,  account name 2: %s with amount", accountName1, accountName2));
+      String.format("no debt exists, account name 1: %s,  account name 2: %s with amount", accountName1, accountName2));
+  }
+
+  public static RequestDebtException noSufficientAmountToBorrow(String accountName1, String accountName2){
+    return new RequestDebtException(accountName1, accountName2, 
+      String.format("no sufficient amount to borrow of %s", accountName2));
   }
 }

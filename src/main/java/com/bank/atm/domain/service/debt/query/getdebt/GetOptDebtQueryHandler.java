@@ -23,13 +23,6 @@ public class GetOptDebtQueryHandler
 
   @Override
   public Optional<DebtDto> handle(GetOptDebtQuery request) throws Exception {
-    /*if(request.isDebtor()){
-      return repo.getDebtTo(request.getAccountName1(), request.getAccountName2())
-      .map(mapper::toDto);
-    }
-    return repo.getDebtFrom(request.getAccountName1(), request.getAccountName2())
-      .map(mapper::toDto);*/
-
     return repo.get(request.getAccountName1(), request.getAccountName2())
       .map(mapper::toDto);
   }
