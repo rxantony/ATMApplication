@@ -89,7 +89,7 @@ public class DefaultSessionInputHandler extends AbstractInputHandler {
 		if ("logout".equals(command)) {
 			var accName = session.getAccount().getName();
 			session.logout();
-			output.writelnf("Goodbye, %s!", accName);
+			output.writeln("Goodbye, %s!", accName);
 			return true;
 		}
 
@@ -97,7 +97,7 @@ public class DefaultSessionInputHandler extends AbstractInputHandler {
 	}
 
 	private void printBalance(int balance) {
-		output.writelnf("Your balance is $%d", balance);
+		output.writeln("Your balance is $%d", balance);
 	}
 
 	private void printDebts(Collection<DebtDto> debts) {
@@ -112,22 +112,22 @@ public class DefaultSessionInputHandler extends AbstractInputHandler {
 										.filter(d2 -> d2.getAccountName1().equals(d.getAccountName2()))
 										.findFirst()
 										.ifPresent(d2 -> {
-											output.writelnf("%d -> %s : %s", d.getAmount(), d2.getAccountName1(), d2.getAmount());
+											output.writeln("%d -> %s : %s", d.getAmount(), d2.getAccountName1(), d2.getAmount());
 										});
 							});
 					return output;
 				})
-				.orElseGet(() -> output.writelnf("no debts exists"));
+				.orElseGet(() -> output.writeln("no debts exists"));
 	}
 
 	private void printRequestDebt(RequestDebtResult debt) {
 		Optional.ofNullable(debt)
-				.ifPresent(d -> output.writelnf("owe $%d to %s", d.getDebt().getAmount(), d.getDebt().getAccountName2()));
+				.ifPresent(d -> output.writeln("owe $%d to %s", d.getDebt().getAmount(), d.getDebt().getAccountName2()));
 	}
 
 	private void printReducedDebt(ReduceDebtResult debt) {
 		Optional.ofNullable(debt)
-				.ifPresent(d -> output.writelnf("paid debt $%d to %s", d.getAmount(), d.getDebt1().getAccountName2()));
+				.ifPresent(d -> output.writeln("paid debt $%d to %s", d.getAmount(), d.getDebt1().getAccountName2()));
 	}
 
 	private void printReducedDebts(Iterable<ReduceDebtResult> debts) {

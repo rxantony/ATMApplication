@@ -92,13 +92,7 @@ public final class App {
 				: new PrintWriter(new BufferedOutputStream(System.out));
 		return new MediaOutput() {
 			@Override
-			public MediaOutput writeln(String str) {
-				writer.println(str);
-				return this;
-			}
-
-			@Override
-			public MediaOutput writelnf(String format, Object... args) {
+			public MediaOutput writeln(String format, Object... args) {
 				writer.println(String.format(format, args));
 				return this;
 			}
