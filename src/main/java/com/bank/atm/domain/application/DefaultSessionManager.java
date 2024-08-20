@@ -8,7 +8,6 @@ import com.bank.atm.domain.service.account.query.getoptaccount.GetOptAccountQuer
 
 import lombok.experimental.ExtensionMethod;
 
-
 @ExtensionMethod(HandlerExtensions.class)
 public class DefaultSessionManager implements SessionManager {
 	private Session activeSession;
@@ -50,7 +49,7 @@ public class DefaultSessionManager implements SessionManager {
 	@Override
 	public Session login(String userName) {
 		var acc = manager.execute(new GetOptAccountQuery(userName))
-			.orElseGet(() -> manager.execute(new CreateAccountCommand(userName, 0)));
+				.orElseGet(() -> manager.execute(new CreateAccountCommand(userName, 0)));
 		activeSession = sessionFactory.create(acc.getName(), this::whenSessionLoggedOut);
 		return activeSession;
 	}

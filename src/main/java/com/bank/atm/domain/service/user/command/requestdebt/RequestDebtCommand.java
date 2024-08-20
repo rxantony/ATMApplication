@@ -1,7 +1,5 @@
 package com.bank.atm.domain.service.user.command.requestdebt;
 
-import java.util.Optional;
-
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 

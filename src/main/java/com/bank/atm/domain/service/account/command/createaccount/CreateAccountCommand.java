@@ -12,15 +12,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-
 @Getter
 @Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class CreateAccountCommand implements Request<AccountDto> {
-    @NotBlank
-    private String name;
-    @Min(0)
-    private int balance;
+	@NotBlank
+	private String name;
+	@Min(0)
+	private int balance;
 }

@@ -60,21 +60,21 @@ public class DefaultSessionManagerInputHandler extends AbstractInputHandler {
 		var accName = session.getAccount().getName();
 		var dbList = session.getDebtList(true);
 		Optional.ofNullable(dbList)
-		.filter(ds -> ObjectUtils.isNotEmpty(ds))
-		.map(ds -> {
-			ds.stream()
-					.filter(d -> d.getAccountName1().equals(accName))
-					.forEach(d -> {
-						ds.stream()
-								.filter(d2 -> d2.getAccountName1().equals(d.getAccountName2()))
-								.findFirst()
-								.ifPresent(d2 -> {
-									output.writelnf("%d -> %s : %s", d.getAmount(), d2.getAccountName1(), d2.getAmount());
-								});
-					});
-			return output;
-		})
-		.orElseGet(() -> output.writelnf("no debts exists"));
+				.filter(ds -> ObjectUtils.isNotEmpty(ds))
+				.map(ds -> {
+					ds.stream()
+							.filter(d -> d.getAccountName1().equals(accName))
+							.forEach(d -> {
+								ds.stream()
+										.filter(d2 -> d2.getAccountName1().equals(d.getAccountName2()))
+										.findFirst()
+										.ifPresent(d2 -> {
+											output.writelnf("%d -> %s : %s", d.getAmount(), d2.getAccountName1(), d2.getAmount());
+										});
+							});
+					return output;
+				})
+				.orElseGet(() -> output.writelnf("no debts exists"));
 		return true;
 	}
 

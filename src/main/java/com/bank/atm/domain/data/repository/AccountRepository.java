@@ -6,12 +6,12 @@ import java.util.Optional;
 import com.bank.atm.domain.data.model.Account;
 
 public interface AccountRepository {
-    
-    Optional<Account> get(String accountName);
 
-    Account add(Account account);
+	Optional<Account> get(String accountName);
 
-    Optional<Account> update(Account account);
-    
-    Collection<Account> update(Collection<Account> accounts);
+	Account add(Account account);
+
+	Optional<Account> update(Account account);
+
+	Collection<Account> update(Collection<Account> accounts);
 }

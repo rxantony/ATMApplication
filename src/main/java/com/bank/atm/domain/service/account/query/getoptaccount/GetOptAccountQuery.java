@@ -19,6 +19,6 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class GetOptAccountQuery implements Request<Optional<AccountDto>> {
-    @NotBlank
-    private String name;
+	@NotBlank
+	private String name;
 }

@@ -1,4 +1,5 @@
 package com.bank.atm.domain.service.user.command.deposit;
+
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 
@@ -14,9 +15,9 @@ import lombok.Setter;
 @Builder
 @AllArgsConstructor
 public class DepositCommand implements Request<DepositResult> {
-    @NotBlank
-    private String accountName;
+	@NotBlank
+	private String accountName;
 
-    @Min(1)
-    private int amount;
+	@Min(1)
+	private int amount;
 }

@@ -24,8 +24,8 @@ import lombok.experimental.ExtensionMethod;
 
 @RequiredArgsConstructor
 @ExtensionMethod(HandlerExtensions.class)
-public class RequestDebtCommandHandler 
-	extends AbstractRequestHandler<RequestDebtCommand, RequestDebtResult> {
+public class RequestDebtCommandHandler
+		extends AbstractRequestHandler<RequestDebtCommand, RequestDebtResult> {
 
 	@NotNull
 	private final RequestHandlerManager manager;
@@ -33,29 +33,29 @@ public class RequestDebtCommandHandler
 	@NotNull
 	private final DebtRepository repo;
 
-
 	@Override
 	public RequestDebtResult handle(RequestDebtCommand request) {
 		var account = getAccount(request.getAccountName2());
 		return Optional.of(account.getBalance())
-			.filter(b -> b > 0)
-			.map(b -> calcAvailableAmount(request.getAmount(), b))
-			.map(a -> makeDebt(request, a))
-			.map(r -> updateAccount(request, r))
-			.orElseThrow(() -> RequestDebtException.noSufficientAmountToBorrow(request.getAccountName1(), request.getAccountName2()));
+				.filter(b -> b > 0)
+				.map(b -> calcAvailableAmount(request.getAmount(), b))
+				.map(a -> makeDebt(request, a))
+				.map(r -> updateAccount(request, r))
+				.orElseThrow(() -> RequestDebtException.noSufficientAmountToBorrow(request.getAccountName1(),
+						request.getAccountName2()));
 	}
 
-	private AccountDto getAccount(String accountName){
+	private AccountDto getAccount(String accountName) {
 		return manager.execute(GetAccountQuery.builder()
-			.accountName(accountName)
-			.build());
+				.accountName(accountName)
+				.build());
 	}
 
-	private int calcAvailableAmount(int requestAmount, int availableBalance){
-		return requestAmount > availableBalance ?  availableBalance : requestAmount;
+	private int calcAvailableAmount(int requestAmount, int availableBalance) {
+		return requestAmount > availableBalance ? availableBalance : requestAmount;
 	}
 
-	private RequestDebtResult makeDebt(RequestDebtCommand request, int amount){
+	private RequestDebtResult makeDebt(RequestDebtCommand request, int amount) {
 		return manager.execute(GetOptDebtQuery.builder()
 				.accountName1(request.getAccountName1())
 				.accountName2(request.getAccountName2())
@@ -124,17 +124,17 @@ public class RequestDebtCommandHandler
 				.build();
 	}
 
-	private RequestDebtResult updateAccount(RequestDebtCommand request, RequestDebtResult result){
+	private RequestDebtResult updateAccount(RequestDebtCommand request, RequestDebtResult result) {
 		manager.execute(UpdateAccountsCommand.builder()
-			.request(UpdateAccountCommand.builder()
-				.name(request.getAccountName1())
-				.balanceUpdate(BalanceUpdate.of(request.getAmount(), true))
-				.build())
-			.request(UpdateAccountCommand.builder()
-				.name(request.getAccountName2())
-				.balanceUpdate(BalanceUpdate.of(request.getAmount(), false))
-				.build())
-			.build());
+				.request(UpdateAccountCommand.builder()
+						.name(request.getAccountName1())
+						.balanceUpdate(BalanceUpdate.of(request.getAmount(), true))
+						.build())
+				.request(UpdateAccountCommand.builder()
+						.name(request.getAccountName2())
+						.balanceUpdate(BalanceUpdate.of(request.getAmount(), false))
+						.build())
+				.build());
 		return result;
 	}
 }

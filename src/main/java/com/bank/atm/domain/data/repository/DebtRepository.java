@@ -6,19 +6,19 @@ import java.util.Optional;
 import com.bank.atm.domain.data.model.Debt;
 
 public interface DebtRepository {
-    Debt add(Debt debt);
+	Debt add(Debt debt);
 
-    Collection<Debt> add(Collection<Debt> debts);
+	Collection<Debt> add(Collection<Debt> debts);
 
-    Optional<Debt> update(Debt debt);
+	Optional<Debt> update(Debt debt);
 
-    Collection<Debt> update(Collection<Debt> debts);
+	Collection<Debt> update(Collection<Debt> debts);
 
-    Collection<Debt> getList(String accountName);
+	Collection<Debt> getList(String accountName);
 
-    Collection<Debt> getAllList(String accountName);
+	Collection<Debt> getAllList(String accountName);
 
-    Collection<String> getAccountList(String accountName);
+	Collection<String> getAccountList(String accountName);
 
-    Optional<Debt> get(String accountName1, String accountName2);
+	Optional<Debt> get(String accountName1, String accountName2);
 }

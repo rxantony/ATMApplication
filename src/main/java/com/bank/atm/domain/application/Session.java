@@ -8,18 +8,18 @@ import com.bank.atm.domain.service.user.command.deposit.DepositResult;
 import com.bank.atm.domain.service.user.command.transfer.TransferResult;
 import com.bank.atm.domain.service.user.command.withdraw.WithdrawResult;
 
-public interface Session extends AutoCloseable{
-    void logout();
+public interface Session extends AutoCloseable {
+	void logout();
 
-    AccountDto getAccount();
+	AccountDto getAccount();
 
-    DepositResult deposit(int amount);
+	DepositResult deposit(int amount);
 
-    WithdrawResult withdraw(int amount);
+	WithdrawResult withdraw(int amount);
 
-    TransferResult transfer(String toAccountName, int amount);
+	TransferResult transfer(String toAccountName, int amount);
 
-    Collection<DebtDto> getDebtList(boolean all);
+	Collection<DebtDto> getDebtList(boolean all);
 
-    AbstractInputHandler getInputHandler();
+	AbstractInputHandler getInputHandler();
 }
