@@ -1,7 +1,7 @@
 package com.bank.atm.domain.service.user.command.transfer;
 
-import com.bank.atm.domain.service.debt.command.reducedebt.ReduceDebtResult;
-import com.bank.atm.domain.service.debt.command.requestdebt.RequestDebtResult;
+import com.bank.atm.domain.service.user.command.reducedebt.ReduceDebtResult;
+import com.bank.atm.domain.service.user.command.requestdebt.RequestDebtResult;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -19,6 +19,6 @@ public class TransferResult {
 	private int amount;
 	private int balance;
 	private String recipient;
-	private RequestDebtResult requestDebt;
-	private Iterable<ReduceDebtResult> paidDebts;
+	private RequestDebtResult requestedDebt;
+	private ReduceDebtResult reducedDebt;
 }

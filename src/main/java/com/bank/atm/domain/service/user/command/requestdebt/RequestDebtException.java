@@ -1,4 +1,4 @@
-package com.bank.atm.domain.service.debt.command.requestdebt;
+package com.bank.atm.domain.service.user.command.requestdebt;
 
 import com.bank.atm.domain.common.ATMException;
 import lombok.Getter;

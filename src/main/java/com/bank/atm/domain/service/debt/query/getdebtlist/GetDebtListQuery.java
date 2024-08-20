@@ -22,5 +22,5 @@ public class GetDebtListQuery implements Request<Collection<DebtDto>> {
 	@NotBlank
 	private String accountName;
 
-	private boolean debtor;
+	private boolean all;
 }

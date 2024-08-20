@@ -1,4 +1,4 @@
-package com.bank.atm.domain.service.debt.command.reducedebts;
+package com.bank.atm.domain.service.user.command.reducedebts;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;

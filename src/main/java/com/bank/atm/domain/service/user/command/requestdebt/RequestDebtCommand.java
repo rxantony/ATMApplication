@@ -1,4 +1,4 @@
-package com.bank.atm.domain.service.debt.command.requestdebt;
+package com.bank.atm.domain.service.user.command.requestdebt;
 
 import java.util.Optional;
 

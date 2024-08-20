@@ -1,6 +1,6 @@
 package com.bank.atm.domain.service.user.command.deposit;
 
-import com.bank.atm.domain.service.debt.command.reducedebt.ReduceDebtResult;
+import com.bank.atm.domain.service.user.command.reducedebt.ReduceDebtResult;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

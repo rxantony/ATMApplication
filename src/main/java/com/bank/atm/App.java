@@ -31,9 +31,9 @@ import com.bank.atm.domain.service.account.command.updateaccounts.UpdateAccounts
 import com.bank.atm.domain.service.account.query.getaccount.GetAccountQueryHandler;
 import com.bank.atm.domain.service.account.query.getoptaccount.GetOptAccountQueryHandler;
 import com.bank.atm.domain.service.debt.command.adddebts.AddDebtsCommandHandler;
-import com.bank.atm.domain.service.debt.command.reducedebt.ReduceDebtCommandHandler;
-import com.bank.atm.domain.service.debt.command.reducedebts.ReduceDebtsCommandHandler;
-import com.bank.atm.domain.service.debt.command.requestdebt.RequestDebtCommandHandler;
+import com.bank.atm.domain.service.user.command.reducedebt.ReduceDebtCommandHandler;
+import com.bank.atm.domain.service.user.command.reducedebts.ReduceDebtsCommandHandler;
+import com.bank.atm.domain.service.user.command.requestdebt.RequestDebtCommandHandler;
 import com.bank.atm.domain.service.debt.command.updatedebts.UpdateDebtsCommandHandler;
 import com.bank.atm.domain.service.debt.query.getdebt.GetOptDebtQueryHandler;
 import com.bank.atm.domain.service.debt.query.getdebtlist.GetDebtListQueryHandler;
@@ -115,7 +115,7 @@ public final class App {
 		var accRepo = new DefaultAccountRepository();
 		var debtRepo = new DefaultDebRepository();
 		var manager = new DefaultRequestHandlerManager(Validation.buildDefaultValidatorFactory().getValidator());
-		
+
 		manager.register(new GetAccountQueryHandler(accRepo, AccountMapper.INSTANCE))
 				.register(new GetOptAccountQueryHandler(accRepo, AccountMapper.INSTANCE))
 				.register(new GetOptDebtQueryHandler(debtRepo, DebtMapper.INSTANCE))
@@ -134,8 +134,8 @@ public final class App {
 
 		// 2. create session manager
 		SessionManagerFactory sessionMgrFactory = () -> new DefaultSessionManager(manager,
-				(accName, cb) -> new DefaultSession(accName, manager, cb, 
-				(session) -> new DefaultSessionInputHandler(session, output)),
+				(accName, cb) -> new DefaultSession(accName, manager, cb,
+						(session) -> new DefaultSessionInputHandler(session, output)),
 				(sessionMgr) -> new DefaultSessionManagerInputHandler(sessionMgr, output));
 
 		// 3. create and run atm machine.

@@ -1,4 +1,4 @@
-package com.bank.atm.domain.service.debt.command.requestdebt;
+package com.bank.atm.domain.service.user.command.requestdebt;
 
 import java.util.Optional;
 
@@ -51,14 +51,13 @@ public class RequestDebtCommandHandler
 	}
 
 	private int calcAvailableAmount(int requestAmount, int availableBalance){
-		return requestAmount > availableBalance ? requestAmount - availableBalance : availableBalance;
+		return requestAmount > availableBalance ?  availableBalance : requestAmount;
 	}
 
 	private RequestDebtResult makeDebt(RequestDebtCommand request, int amount){
 		return manager.execute(GetOptDebtQuery.builder()
 				.accountName1(request.getAccountName1())
 				.accountName2(request.getAccountName2())
-				.debtor(true)
 				.build())
 				.map(d -> updateDebt(request, d, amount))
 				.orElseGet(() -> createDebt(request, amount));
@@ -102,7 +101,6 @@ public class RequestDebtCommandHandler
 		var receiveable = manager.execute(GetOptDebtQuery.builder()
 				.accountName1(debt.getAccountName2())
 				.accountName2(debt.getAccountName1())
-				.debtor(false)
 				.build())
 				.map(r -> {
 					debt.setAmount(debt.getAmount() - amount);
@@ -117,6 +115,7 @@ public class RequestDebtCommandHandler
 				.build());
 
 		return RequestDebtResult.builder()
+				.accountName(request.getAccountName1())
 				.amount(amount)
 				.requestAmount(request.getAmount())
 				.debt(debt)

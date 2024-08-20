@@ -24,6 +24,4 @@ public class GetOptDebtQuery implements Request<Optional<DebtDto>> {
 
   @NotBlank
   private String accountName2;
-
-  private boolean debtor;
 }

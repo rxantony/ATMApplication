@@ -5,9 +5,14 @@ import static com.bank.atm.domain.common.Utils.streamFrom;
 import java.util.HashMap;
 import java.util.Optional;
 
+import org.apache.commons.lang3.ObjectUtils;
+
+import java.util.Collection;
+
 import com.bank.atm.domain.common.Guard;
-import com.bank.atm.domain.service.debt.command.reducedebt.ReduceDebtResult;
-import com.bank.atm.domain.service.debt.command.requestdebt.RequestDebtResult;
+import com.bank.atm.domain.data.dto.DebtDto;
+import com.bank.atm.domain.service.user.command.reducedebt.ReduceDebtResult;
+import com.bank.atm.domain.service.user.command.requestdebt.RequestDebtResult;
 
 public class DefaultSessionInputHandler extends AbstractInputHandler {
 	private final Session session;
@@ -27,6 +32,7 @@ public class DefaultSessionInputHandler extends AbstractInputHandler {
 		commandInfos.put("withdraw", "withdraw [int amount]");
 		commandInfos.put("transfer", "transfer [string accountName], [int amount]");
 		commandInfos.put("logout", "logout");
+		commandInfos.put("debts", "debts");
 		commandInfos.put("help", "help");
 		commandInfos.put("exit", "exit");
 	}
@@ -52,7 +58,7 @@ public class DefaultSessionInputHandler extends AbstractInputHandler {
 		if ("deposit".equals(command)) {
 			var amount = Integer.parseInt(args[0]);
 			var result = session.deposit(amount);
-			printPaidDebts(result.getPaidDebts());
+			printReducedDebts(result.getPaidDebts());
 			printBalance(result.getBalance());
 			return true;
 		}
@@ -61,8 +67,8 @@ public class DefaultSessionInputHandler extends AbstractInputHandler {
 			var recipient = args[0];
 			var amount = Integer.parseInt(args[1]);
 			var result = session.transfer(recipient, amount);
-			printPaidDebts(result.getPaidDebts());
-			printDebt(result.getRequestDebt());
+			printReducedDebt(result.getReducedDebt());
+			printRequestDebt(result.getRequestedDebt());
 			printBalance(result.getBalance());
 			return true;
 		}
@@ -71,6 +77,12 @@ public class DefaultSessionInputHandler extends AbstractInputHandler {
 			var amount = Integer.parseInt(args[0]);
 			var result = session.withdraw(amount);
 			printBalance(result.getBalance());
+			return true;
+		}
+
+		if ("debts".equals(command)) {
+			var result = session.getDebtList(true);
+			printDebts(result);
 			return true;
 		}
 
@@ -88,14 +100,38 @@ public class DefaultSessionInputHandler extends AbstractInputHandler {
 		output.writelnf("Your balance is $%d", balance);
 	}
 
-	private void printDebt(RequestDebtResult debt){
-		Optional.ofNullable(debt)
-		.ifPresent(d -> output.writelnf("owe $%d to %s", d.getDebt().getAmount(), d.getDebt().getAccountName2()));
+	private void printDebts(Collection<DebtDto> debts) {
+		var accName = session.getAccount().getName();
+		Optional.ofNullable(debts)
+				.filter(ds -> ObjectUtils.isNotEmpty(ds))
+				.map(ds -> {
+					ds.stream()
+							.filter(d -> d.getAccountName1().equals(accName))
+							.forEach(d -> {
+								ds.stream()
+										.filter(d2 -> d2.getAccountName1().equals(d.getAccountName2()))
+										.findFirst()
+										.ifPresent(d2 -> {
+											output.writelnf("%d -> %s : %s", d.getAmount(), d2.getAccountName1(), d2.getAmount());
+										});
+							});
+					return output;
+				})
+				.orElseGet(() -> output.writelnf("no debts exists"));
 	}
 
-	private void printPaidDebts(Iterable<ReduceDebtResult> paidDebts){
-		Optional.ofNullable(paidDebts)
-			.map(pd -> streamFrom(pd))
-			.ifPresent(s-> s.forEach(d->output.writelnf("paid debt $%d to %s", d.getAmount(), d.getDebt().getAccountName2())));
+	private void printRequestDebt(RequestDebtResult debt) {
+		Optional.ofNullable(debt)
+				.ifPresent(d -> output.writelnf("owe $%d to %s", d.getDebt().getAmount(), d.getDebt().getAccountName2()));
+	}
+
+	private void printReducedDebt(ReduceDebtResult debt) {
+		Optional.ofNullable(debt)
+				.ifPresent(d -> output.writelnf("paid debt $%d to %s", d.getAmount(), d.getDebt1().getAccountName2()));
+	}
+
+	private void printReducedDebts(Iterable<ReduceDebtResult> debts) {
+		Optional.ofNullable(debts)
+				.ifPresent(p -> streamFrom(p).forEach(d -> printReducedDebt(d)));
 	}
 }

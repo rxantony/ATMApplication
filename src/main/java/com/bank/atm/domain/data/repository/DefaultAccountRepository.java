@@ -2,6 +2,7 @@ package com.bank.atm.domain.data.repository;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -21,6 +22,7 @@ public class DefaultAccountRepository implements AccountRepository {
 		return Optional.ofNullable(account)
 				.map(a -> {
 					var newAcc = new Account(account);
+					newAcc.setCreatedAt(new Date());
 					db.add(newAcc);
 					return newAcc;
 				})

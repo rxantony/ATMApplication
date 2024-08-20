@@ -24,12 +24,12 @@ public class GetDebtListQueryHandler
 	
 	@Override
 	public Collection<DebtDto> handle(GetDebtListQuery request) {
-		if(request.isDebtor()){
-			return repo.getDebtToList(request.getAccountName()).stream()
-					.map(mapper::toDto)
-					.collect(Collectors.toList());
+		if(request.isAll()){
+		return repo.getAllList(request.getAccountName()).stream()
+			.map(mapper::toDto)
+			.collect(Collectors.toList());
 		}
-		return repo.getDebtFromList(request.getAccountName()).stream()
+		return repo.getList(request.getAccountName()).stream()
 			.map(mapper::toDto)
 			.collect(Collectors.toList());
 	}

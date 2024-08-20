@@ -3,7 +3,7 @@ package com.bank.atm.domain.data.repository;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
-import java.util.List;
+import java.util.Date;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -17,7 +17,8 @@ public class DefaultDebRepository implements DebtRepository {
 		return Optional.ofNullable(debt)
 				.map(o -> {
 					var newDebt = new Debt(o);
-					db.add(o);
+					newDebt.setCreatedAt(new Date());
+					db.add(newDebt);
 					return newDebt;
 				})
 				.orElseThrow(() -> new IllegalArgumentException("debt is required"));
@@ -59,21 +60,7 @@ public class DefaultDebRepository implements DebtRepository {
 	}
 
 	@Override
-	public Optional<Debt> getDebtTo(String accountName1, String accountName2) {
-		return db.stream().filter(
-				o -> o.getAccountName1().equals(accountName1) && o.getAccountName2().equals(accountName2) && o.getAmount() < 0)
-				.findFirst();
-	}
-
-	@Override
-	public Optional<Debt> getDebtFrom(String accountName1, String accountName2) {
-		return db.stream().filter(
-				o -> o.getAccountName1().equals(accountName1) && o.getAccountName2().equals(accountName2) && o.getAmount() > 0)
-				.findFirst();
-	}
-
-	@Override
-	public List<Debt> getList(String accountName) {
+	public Collection<Debt> getList(String accountName) {
 		return db.stream().filter(o -> o.getAccountName1().equals(accountName))
 				.sorted(Comparator.comparing(Debt::getCreatedAt).reversed())
 				.map(Debt::new)
@@ -81,18 +68,19 @@ public class DefaultDebRepository implements DebtRepository {
 	}
 
 	@Override
-	public Collection<Debt> getDebtToList(String accountName) {
-		return db.stream()
-				.filter(o -> o.getAccountName1().equals(accountName) && o.getAmount() < 0)
+	public Collection<Debt> getAllList(String accountName) {
+		return db.stream().filter(o -> o.getAccountName1().equals(accountName) || o.getAccountName2().equals(accountName))
 				.sorted(Comparator.comparing(Debt::getCreatedAt).reversed())
+				.map(Debt::new)
 				.collect(Collectors.toList());
 	}
 
+
 	@Override
-	public Collection<Debt> getDebtFromList(String accountName) {
-		return db.stream()
-				.filter(o -> o.getAccountName1().equals(accountName) && o.getAmount() > 0)
-				.sorted(Comparator.comparing(Debt::getCreatedAt).reversed())
-				.collect(Collectors.toList());
+	public Collection<String> getAccountList(String accountName){
+		return db.stream().filter(o -> o.getAccountName1().equals(accountName))
+			.sorted(Comparator.comparing(Debt::getCreatedAt).reversed())
+			.map(d -> d.getAccountName2())
+			.collect(Collectors.toList());
 	}
 }

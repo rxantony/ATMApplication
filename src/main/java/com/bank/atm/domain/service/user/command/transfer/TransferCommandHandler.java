@@ -1,7 +1,5 @@
 package com.bank.atm.domain.service.user.command.transfer;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Optional;
 
 import javax.validation.constraints.NotNull;
@@ -15,10 +13,10 @@ import com.bank.atm.domain.service.account.command.updateaccount.UpdateAccountCo
 import com.bank.atm.domain.service.account.command.updateaccount.UpdateAccountCommand.BalanceUpdate;
 import com.bank.atm.domain.service.account.command.updateaccounts.UpdateAccountsCommand;
 import com.bank.atm.domain.service.account.query.getaccount.GetAccountQuery;
-import com.bank.atm.domain.service.debt.command.reducedebt.ReduceDebtCommand;
-import com.bank.atm.domain.service.debt.command.reducedebt.ReduceDebtResult;
-import com.bank.atm.domain.service.debt.command.requestdebt.RequestDebtCommand;
-import com.bank.atm.domain.service.debt.command.requestdebt.RequestDebtResult;
+import com.bank.atm.domain.service.user.command.reducedebt.ReduceDebtCommand;
+import com.bank.atm.domain.service.user.command.reducedebt.ReduceDebtResult;
+import com.bank.atm.domain.service.user.command.requestdebt.RequestDebtCommand;
+import com.bank.atm.domain.service.user.command.requestdebt.RequestDebtResult;
 
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.ExtensionMethod;
@@ -40,10 +38,9 @@ public class TransferCommandHandler
 			throw TransferException.cannotTransferToSameAccount(request.getAccountName(), request.getRecipientName(),
 					request.getAmount());
 		}
-		// request debt if required
 		return requestDebt(request)
 				.map(r -> transfer(request, r, null))
-				.orElseGet(() -> transfer(request, null, reduceDebtAndReceivable(request)));
+				.orElseGet(() -> transfer(request, null, reduceDebt(request)));
 	}
 
 	private Optional<RequestDebtResult> requestDebt(TransferCommand request) {
@@ -58,9 +55,26 @@ public class TransferCommandHandler
 
 	}
 
-	private TransferResult transfer(TransferCommand request, RequestDebtResult requestDebt,
-			Collection<ReduceDebtResult> paidDebts) {
+	private ReduceDebtResult reduceDebt(TransferCommand request) {
+		return Optional.of(request.getAmount())
+				.filter(a -> a != 0)
+				.flatMap(a -> manager.execute(ReduceDebtCommand.builder()
+						.accountName1(request.getAccountName())
+						.accountName2(request.getRecipientName())
+						.amount(a)
+						.build())
+						.map(r -> {
+							request.setAmount(r.getRemainder());
+							return r;
+						}))
+				.orElse(null);
+	}
+
+	private TransferResult transfer(TransferCommand request, RequestDebtResult requestedDebt,
+			ReduceDebtResult reducedDebt) {
+
 		var acc = manager.execute(new GetAccountQuery(request.getAccountName()));
+
 		if (request.getAmount() > 0) {
 			var recAcc = manager.execute(new GetAccountQuery(request.getRecipientName()));
 
@@ -78,49 +92,14 @@ public class TransferCommandHandler
 							.build())
 					.build());
 		}
+
 		return TransferResult.builder()
 				.accountName(request.getAccountName())
 				.recipient(request.getRecipientName())
 				.amount(request.getAmount())
 				.balance(acc.getBalance())
-				.paidDebts(paidDebts)
-				.requestDebt(requestDebt)
+				.reducedDebt(reducedDebt)
+				.requestedDebt(requestedDebt)
 				.build();
-	}
-
-	private Collection<ReduceDebtResult> reduceDebtAndReceivable(TransferCommand request) {
-		var result = new ArrayList<ReduceDebtResult>();
-		return Optional.of(result)
-				.flatMap(r -> reduceDebt(request).map(d -> r.addItem(d)))
-				.flatMap(r -> reduceReceivable(request).map(d -> r.addItem(d)))
-				.orElse(result);
-	}
-
-	private Optional<ReduceDebtResult> reduceDebt(TransferCommand request) {
-		return Optional.of(request.getAmount())
-				.filter(a -> a != 0)
-				.flatMap(a -> manager.execute(ReduceDebtCommand.builder()
-						.accountName1(request.getAccountName())
-						.accountName2(request.getRecipientName())
-						.amount(a)
-						.build())
-						.map(r -> {
-							request.setAmount(r.getRemainder());
-							return r;
-						}));
-	}
-
-	private Optional<ReduceDebtResult> reduceReceivable(TransferCommand request) {
-		return Optional.of(request.getAmount())
-				.filter(a -> a != 0)
-				.flatMap(a -> manager.execute(ReduceDebtCommand.builder()
-						.accountName1(request.getRecipientName())
-						.accountName2(request.getAccountName())
-						.amount(a)
-						.build())
-						.map(r -> {
-							request.setAmount(r.getRemainder());
-							return r;
-						}));
 	}
 }

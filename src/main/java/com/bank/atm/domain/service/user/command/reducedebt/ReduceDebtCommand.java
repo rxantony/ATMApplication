@@ -1,4 +1,4 @@
-package com.bank.atm.domain.service.debt.command.reducedebt;
+package com.bank.atm.domain.service.user.command.reducedebt;
 
 import java.util.Optional;
 
@@ -20,5 +20,5 @@ public class ReduceDebtCommand implements Request<Optional<ReduceDebtResult>> {
 	@Min(1)
 	private int amount;
 
-	private boolean debtor;
+	//private boolean debtor;
 }

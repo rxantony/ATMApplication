@@ -3,6 +3,8 @@ package com.bank.atm.domain.application;
 import java.util.HashMap;
 import java.util.Optional;
 
+import org.apache.commons.lang3.ObjectUtils;
+
 import com.bank.atm.domain.common.Guard;
 
 public class DefaultSessionManagerInputHandler extends AbstractInputHandler {
@@ -55,15 +57,24 @@ public class DefaultSessionManagerInputHandler extends AbstractInputHandler {
 				.writeln(String.format("Hello, %s!", userName))
 				.writeln(String.format("Your balance is $%d", session.getAccount().getBalance()));
 
-		session.getDebtList().stream()
-				.filter(d -> d.getAmount() != 0)
-				.forEach(d -> {
-					if (d.getAmount() > 0) {
-						output.writelnf("Owed %d from %s", d.getAmount(), d.getAccountName2());
-					} else {
-						output.writelnf("Owed %d to %s", -d.getAmount(), d.getAccountName2());
-					}
-				});
+		var accName = session.getAccount().getName();
+		var dbList = session.getDebtList(true);
+		Optional.ofNullable(dbList)
+		.filter(ds -> ObjectUtils.isNotEmpty(ds))
+		.map(ds -> {
+			ds.stream()
+					.filter(d -> d.getAccountName1().equals(accName))
+					.forEach(d -> {
+						ds.stream()
+								.filter(d2 -> d2.getAccountName1().equals(d.getAccountName2()))
+								.findFirst()
+								.ifPresent(d2 -> {
+									output.writelnf("%d -> %s : %s", d.getAmount(), d2.getAccountName1(), d2.getAmount());
+								});
+					});
+			return output;
+		})
+		.orElseGet(() -> output.writelnf("no debts exists"));
 		return true;
 	}
 

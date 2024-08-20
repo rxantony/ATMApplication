@@ -7,7 +7,7 @@ import com.bank.atm.domain.common.handler.AbstractRequestHandler;
 import com.bank.atm.domain.common.handler.HandlerExtensions;
 import com.bank.atm.domain.service.account.command.updateaccount.UpdateAccountCommand;
 import com.bank.atm.domain.service.account.command.updateaccount.UpdateAccountCommand.BalanceUpdate;
-import com.bank.atm.domain.service.debt.command.reducedebts.ReduceDebtsCommand;
+import com.bank.atm.domain.service.user.command.reducedebts.ReduceDebtsCommand;
 
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.ExtensionMethod;
@@ -41,8 +41,8 @@ public class DepositCommandHandler
 
 		return DepositResult.builder()
 				.accountName(account.getName())
-				.balance(account.getBalance() - debt.getTotalPaidDebtAmount())
-				.amount(request.getAmount() - debt.getTotalPaidDebtAmount())
+				.balance(account.getBalance() - debt.getTotalAmount())
+				.amount(request.getAmount() - debt.getTotalAmount())
 				.requestAmount(request.getAmount() )
 				.paidDebts(debt.getReduceDebts())
 				.build();

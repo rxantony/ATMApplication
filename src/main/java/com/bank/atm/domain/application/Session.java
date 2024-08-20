@@ -19,7 +19,7 @@ public interface Session extends AutoCloseable{
 
     TransferResult transfer(String toAccountName, int amount);
 
-    Collection<DebtDto> getDebtList();
+    Collection<DebtDto> getDebtList(boolean all);
 
     AbstractInputHandler getInputHandler();
 }

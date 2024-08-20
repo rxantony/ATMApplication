@@ -78,9 +78,9 @@ public class DefaultSession implements Session {
 	}
 
 	@Override
-	public Collection<DebtDto> getDebtList() {
+	public Collection<DebtDto> getDebtList(boolean all) {
 		validateSessionExpired();
-		return manager.execute(new GetDebtListQuery(accountName, true));
+		return manager.execute(new GetDebtListQuery(accountName, all));
 	}
 
 	@Override

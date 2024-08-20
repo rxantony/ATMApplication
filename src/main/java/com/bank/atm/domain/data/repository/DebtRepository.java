@@ -14,15 +14,11 @@ public interface DebtRepository {
 
     Collection<Debt> update(Collection<Debt> debts);
 
-    Optional<Debt> get(String accountName1, String accountName2);
-
-    Optional<Debt> getDebtTo(String accountName1, String accountName2);
-
-    Optional<Debt> getDebtFrom(String accountName1, String accountName2);
-
     Collection<Debt> getList(String accountName);
 
-    Collection<Debt> getDebtToList(String accountName);
-    
-    Collection<Debt> getDebtFromList(String accountName);
+    Collection<Debt> getAllList(String accountName);
+
+    Collection<String> getAccountList(String accountName);
+
+    Optional<Debt> get(String accountName1, String accountName2);
 }
