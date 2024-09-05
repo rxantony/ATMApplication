@@ -22,9 +22,12 @@ public class DefaultAccountRepository implements AccountRepository {
 
 	@Override
 	public Optional<Account> get(String accountName) {
+		return getCursor(accountName).map(Account::new);
+	}
+
+	private Optional<Account> getCursor(String accountName) {
 		return db.stream().filter(a -> a.getName().equals(accountName))
-				.findFirst()
-				.map(mapper::toModel);
+				.findFirst();
 	}
 
 	@Override
@@ -42,7 +45,7 @@ public class DefaultAccountRepository implements AccountRepository {
 	@Override
 	public Optional<Account> update(Account account) {
 		return Optional.ofNullable(account)
-				.flatMap(a -> get(a.getName())
+				.flatMap(a -> getCursor(a.getName())
 						.map(ia -> {
 							ia.setName(a.getName());
 							ia.setBalance(a.getBalance());

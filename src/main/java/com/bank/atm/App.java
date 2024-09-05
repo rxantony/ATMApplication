@@ -21,7 +21,7 @@ import com.bank.atm.domain.application.SessionManagerFactory;
 import com.bank.atm.domain.application.DefaultSessionManagerInputHandler;
 import com.bank.atm.domain.common.handler.DefaultRequestHandlerManager;
 import com.bank.atm.domain.data.repository.DefaultAccountRepository;
-import com.bank.atm.domain.data.repository.DefaultDebRepository;
+import com.bank.atm.domain.data.repository.DefaultDebtRepository;
 import com.bank.atm.domain.mapper.AccountMapper;
 import com.bank.atm.domain.mapper.DebtMapper;
 import com.bank.atm.domain.service.account.command.createaccount.CreateAccountCommandHandler;
@@ -35,8 +35,10 @@ import com.bank.atm.domain.service.user.command.reducedebt.ReduceDebtCommandHand
 import com.bank.atm.domain.service.user.command.reducedebts.ReduceDebtsCommandHandler;
 import com.bank.atm.domain.service.user.command.requestdebt.RequestDebtCommandHandler;
 import com.bank.atm.domain.service.debt.command.updatedebts.UpdateDebtsCommandHandler;
+import com.bank.atm.domain.service.debt.query.getaccount2List.GetAccount2ListQuery;
+import com.bank.atm.domain.service.debt.query.getaccount2List.GetAccount2ListQueryHandler;
 import com.bank.atm.domain.service.debt.query.getdebt.GetOptDebtQueryHandler;
-import com.bank.atm.domain.service.debt.query.getdebtlist.GetDebtListQueryHandler;
+import com.bank.atm.domain.service.debt.query.getdebtList.GetDebtListQueryHandler;
 import com.bank.atm.domain.service.user.command.deposit.DepositCommandHandler;
 import com.bank.atm.domain.service.user.command.transfer.TransferCommandHandler;
 import com.bank.atm.domain.service.user.command.withdraw.WithdrawCommandHandler;
@@ -106,7 +108,7 @@ public final class App {
 
 	private static void runAtmMachine(MediaInput input, MediaOutput output) {
 		// 1. create repos
-		var debtRepo = new DefaultDebRepository(DebtMapper.INSTANCE);
+		var debtRepo = new DefaultDebtRepository(DebtMapper.INSTANCE);
 		var accRepo = new DefaultAccountRepository(AccountMapper.INSTANCE);
 		var manager = new DefaultRequestHandlerManager(Validation.buildDefaultValidatorFactory().getValidator());
 
@@ -114,14 +116,15 @@ public final class App {
 				.register(new GetOptAccountQueryHandler(accRepo, AccountMapper.INSTANCE))
 				.register(new GetOptDebtQueryHandler(debtRepo, DebtMapper.INSTANCE))
 				.register(new GetDebtListQueryHandler(debtRepo, DebtMapper.INSTANCE))
+				.register(new GetAccount2ListQueryHandler(debtRepo))
 				.register(new CreateAccountCommandHandler(accRepo, CreateAccountMapper.INSTANCE))
 				.register(new UpdateAccountCommandHandler(accRepo, AccountMapper.INSTANCE))
 				.register(new UpdateAccountsCommandHandler(accRepo, AccountMapper.INSTANCE))
 				.register(new AddDebtsCommandHandler(debtRepo, DebtMapper.INSTANCE))
 				.register(new DepositCommandHandler(manager))
 				.register(new ReduceDebtCommandHandler(manager))
-				.register(new ReduceDebtsCommandHandler(manager, debtRepo, DebtMapper.INSTANCE))
-				.register(new RequestDebtCommandHandler(manager, debtRepo))
+				.register(new ReduceDebtsCommandHandler(manager, DebtMapper.INSTANCE))
+				.register(new RequestDebtCommandHandler(manager))
 				.register(new TransferCommandHandler(manager, AccountMapper.INSTANCE))
 				.register(new UpdateDebtsCommandHandler(debtRepo, DebtMapper.INSTANCE))
 				.register(new WithdrawCommandHandler(manager, AccountMapper.INSTANCE));

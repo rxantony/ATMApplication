@@ -1,4 +1,4 @@
-package com.bank.atm.domain.service.debt.query.getdebtlist;
+package com.bank.atm.domain.service.debt.query.getdebtList;
 
 import java.util.Collection;
 import java.util.stream.Collectors;

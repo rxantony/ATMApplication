@@ -18,7 +18,7 @@ public interface DebtRepository {
 
 	Collection<Debt> getAllList(String accountName);
 
-	Collection<String> getAccountList(String accountName);
+	Collection<String> getAccount2List(String accountName);
 
 	Optional<Debt> get(String accountName1, String accountName2);
 }

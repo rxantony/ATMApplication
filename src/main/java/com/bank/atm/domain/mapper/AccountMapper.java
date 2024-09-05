@@ -9,6 +9,5 @@ import com.bank.atm.domain.data.model.Account;
 @Mapper
 public interface AccountMapper {
   AccountMapper INSTANCE = Mappers.getMapper( AccountMapper.class);
-  Account toModel(Account model);
   AccountDto toDto(Account model);
 }

@@ -7,8 +7,6 @@ import javax.validation.constraints.NotNull;
 import com.bank.atm.domain.common.handler.RequestHandlerManager;
 import com.bank.atm.domain.data.dto.AccountDto;
 import com.bank.atm.domain.data.dto.DebtDto;
-import com.bank.atm.domain.data.repository.DebtRepository;
-
 import com.bank.atm.domain.service.account.command.updateaccount.UpdateAccountCommand;
 import com.bank.atm.domain.service.account.command.updateaccount.UpdateAccountCommand.BalanceUpdate;
 import com.bank.atm.domain.service.account.query.getaccount.GetAccountQuery;
@@ -29,9 +27,6 @@ public class RequestDebtCommandHandler
 
 	@NotNull
 	private final RequestHandlerManager manager;
-
-	@NotNull
-	private final DebtRepository repo;
 
 	@Override
 	public RequestDebtResult handle(RequestDebtCommand request) {

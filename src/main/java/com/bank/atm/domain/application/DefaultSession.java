@@ -10,7 +10,7 @@ import com.bank.atm.domain.data.dto.AccountDto;
 import com.bank.atm.domain.data.dto.DebtDto;
 import com.bank.atm.domain.exception.AccountNotExistsException;
 import com.bank.atm.domain.service.account.query.getoptaccount.GetOptAccountQuery;
-import com.bank.atm.domain.service.debt.query.getdebtlist.GetDebtListQuery;
+import com.bank.atm.domain.service.debt.query.getdebtList.GetDebtListQuery;
 import com.bank.atm.domain.service.user.command.deposit.DepositCommand;
 import com.bank.atm.domain.service.user.command.deposit.DepositResult;
 import com.bank.atm.domain.service.user.command.transfer.TransferCommand;

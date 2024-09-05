@@ -1,11 +1,10 @@
-package com.bank.atm.domain.service.debt.query.getdebtList;
+package com.bank.atm.domain.service.debt.query.getaccount2List;
 
 import java.util.Collection;
 
 import javax.validation.constraints.NotBlank;
 
 import com.bank.atm.domain.common.handler.Request;
-import com.bank.atm.domain.data.dto.DebtDto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -18,9 +17,7 @@ import lombok.Setter;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class GetDebtListQuery implements Request<Collection<DebtDto>> {
-	@NotBlank
-	private String accountName;
-
-	private boolean all;
+public class GetAccount2ListQuery implements Request<Collection<String>> {
+  @NotBlank
+  private String accountName;
 }
