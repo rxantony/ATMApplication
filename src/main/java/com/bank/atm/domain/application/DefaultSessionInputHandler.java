@@ -33,6 +33,7 @@ public class DefaultSessionInputHandler extends AbstractInputHandler {
 		commandInfos.put("transfer", "transfer [string accountName], [int amount]");
 		commandInfos.put("logout", "logout");
 		commandInfos.put("debts", "debts");
+		commandInfos.put("info", "info");
 		commandInfos.put("help", "help");
 		commandInfos.put("exit", "exit");
 	}
@@ -86,6 +87,12 @@ public class DefaultSessionInputHandler extends AbstractInputHandler {
 			return true;
 		}
 
+		
+		if ("info".equals(command)) {
+			printInfo();
+			return true;
+		}
+
 		if ("logout".equals(command)) {
 			var accName = session.getAccount().getName();
 			session.logout();
@@ -95,6 +102,13 @@ public class DefaultSessionInputHandler extends AbstractInputHandler {
 
 		return false;
 	}
+
+	private void printInfo(){
+		var currentAcc = session.getAccount();
+		printBalance(currentAcc.getBalance());
+		var result = session.getDebtList(true);
+		printDebts(result);
+	} 
 
 	private void printBalance(int balance) {
 		output.writeln("Your balance is $%d", balance);

@@ -35,7 +35,6 @@ import com.bank.atm.domain.service.user.command.reducedebt.ReduceDebtCommandHand
 import com.bank.atm.domain.service.user.command.reducedebts.ReduceDebtsCommandHandler;
 import com.bank.atm.domain.service.user.command.requestdebt.RequestDebtCommandHandler;
 import com.bank.atm.domain.service.debt.command.updatedebts.UpdateDebtsCommandHandler;
-import com.bank.atm.domain.service.debt.query.getaccount2List.GetAccount2ListQuery;
 import com.bank.atm.domain.service.debt.query.getaccount2List.GetAccount2ListQueryHandler;
 import com.bank.atm.domain.service.debt.query.getdebt.GetOptDebtQueryHandler;
 import com.bank.atm.domain.service.debt.query.getdebtList.GetDebtListQueryHandler;
